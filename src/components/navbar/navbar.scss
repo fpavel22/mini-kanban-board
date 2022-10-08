@@ -1,0 +1,48 @@
+@import '../../styles/variables';
+@import '../../styles/colors';
+@import '../../styles/mixins/typography';
+
+.header {
+  background-color: $color-white;
+  height: $navbar-height;
+  display: flex;
+  align-items: center;
+  
+  &__logo,
+  &__informative {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  &__logo {
+    border-right: 1px solid $light-gray;
+    padding-left: 2.125rem;
+    width: $sidebar-width;
+  }
+
+  &__informative {
+    border-bottom: 1px solid $light-gray;
+    padding-right: 2.125rem;
+    width: 100%;
+    justify-content: space-between;
+
+    h2 {
+      @include header-xl;
+
+      padding-left: 1.5rem;
+    }
+  }
+
+  &--d-mode {
+    background-color: $color-black-30;
+
+    .header__logo {
+      border-color: $color-black-50;
+    }
+
+    .header__informative {
+      border-color: $color-black-50;
+    }
+  }
+}

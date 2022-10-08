@@ -19,11 +19,13 @@ body {
 }
 
 main.app {
-  background-color: $light-gray;
+  background-color: $lightest-gray;
+  min-height: 100vh;
 }
 
 main.app--dark {
-  background-color: $color-black-30;
+  background-color: $color-black-25;
+  color: $color-white;
 }
 
 a {
