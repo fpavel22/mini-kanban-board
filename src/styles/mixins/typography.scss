@@ -1,0 +1,24 @@
+@mixin header-xl {
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+}
+
+@mixin header-lg {
+  font-size: 1.125rem;
+  line-height: 1.4375rem;
+}
+
+@mixin header-md {
+  font-size: .9375rem;
+  line-height: 1.1875rem;
+}
+
+@mixin header-sm {
+  font-size: .75rem;
+  line-height: .9375rem;
+}
+
+@mixin body-md {
+  font-size: .8125rem;
+  line-height: 1.4375rem;
+}

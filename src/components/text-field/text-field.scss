@@ -1,0 +1,47 @@
+@import '../../styles/colors';
+@import '../../styles/mixins/typography';
+
+.text-field {
+  @include body-md;
+
+  background-color: $color-white;
+  border-radius: .25rem;
+  border: 1px solid $middle-gray;
+  height: 2.5rem;
+  display: block;
+  position: relative;
+  overflow: hidden;  
+  
+  input {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    padding: .5rem 1rem;
+    height: 100%;
+    width: 100%;
+    outline: none;
+
+    &::placeholder {
+      font-size: inherit;
+      font-family: inherit;
+      color: $middle-gray;
+    }
+  }
+
+  &--error {
+    border-color: $danger-m-red;
+  }
+
+  &--feedback {
+    color: $danger-m-red;
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+  }
+
+  &--d-mode {
+    background-color: $color-black-30;
+    color: $color-white;
+  }
+}

@@ -1,0 +1,53 @@
+@import '../../styles/colors';
+@import '../../styles/mixins/typography';
+
+.btn {
+  @include body-md;
+
+  border-radius: 1.25rem;
+  border: none;
+  color: $color-white;
+  padding: 0 1.125rem;
+  height: 2.5rem;
+  min-width: 6rem;
+  cursor: pointer;
+
+  &--primary {
+    background-color: $primary-m-purple;
+
+    &:hover {
+      background-color: $primary-l-purple;
+    }
+  }
+
+  &--secondary {
+    background-color: $secondary-l-purple;
+    color: $primary-m-purple;
+
+    &:hover {
+      background-color: $secondary-m-purple;
+    }
+
+    &.btn--d-mode {
+      background-color: $color-white;
+
+      &:hover {
+        background-color: $color-white;
+      }
+    }
+  }
+
+  &--danger {
+    background-color: $danger-m-red;
+
+    &:hover {
+      background-color: $danger-l-red;
+    }
+  }
+
+  &--lg {
+    @include header-md;
+
+    height: 3rem;
+  }
+}
