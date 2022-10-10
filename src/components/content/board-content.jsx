@@ -1,3 +1,3 @@
 export const BoardContent = () => {
-  return <div>content</div>
+  return <div className="board__content">content</div>
 };

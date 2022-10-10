@@ -11,8 +11,7 @@ export const Navbar = ({ sidebarVisible, className, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
 
   const _className = cn('header', {
-    'header--d-mode': darkMode,
-    'header--sidebar-visible': sidebarVisible
+    'header--d-mode': darkMode
   }, className);
 
   const headerLogoClassName = cn('header__logo', {
