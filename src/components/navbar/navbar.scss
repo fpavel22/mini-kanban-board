@@ -1,5 +1,5 @@
-@import '../../styles/variables';
 @import '../../styles/colors';
+@import '../../styles/variables';
 @import '../../styles/mixins/typography';
 
 .header {
@@ -17,7 +17,7 @@
   
   &__logo {
     border-right: 1px solid $light-gray;
-    padding-left: 2.125rem;
+    padding-left: $padding-horizontal;
 
     &--border-bottom {
       border-bottom: 1px solid $light-gray;
@@ -26,14 +26,14 @@
 
   &__informative {
     border-bottom: 1px solid $light-gray;
-    padding-right: 2.125rem;
+    padding-right: $padding-horizontal;
     width: 100%;
     justify-content: space-between;
 
     h2 {
       @include header-xl;
 
-      padding-left: 1.5rem;
+      padding-left: $padding-base-horizontal;
     }
   }
 

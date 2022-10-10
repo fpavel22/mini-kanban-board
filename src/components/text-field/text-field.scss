@@ -1,13 +1,14 @@
 @import '../../styles/colors';
+@import '../../styles/variables';
 @import '../../styles/mixins/typography';
 
 .text-field {
   @include body-md;
 
   background-color: $color-white;
-  border-radius: .25rem;
+  border-radius: $border-radius-xs;
   border: 1px solid $middle-gray;
-  height: 2.5rem;
+  height: $btn-height;
   display: block;
   position: relative;
   overflow: hidden;  
@@ -16,7 +17,7 @@
     background-color: transparent;
     border: none;
     color: inherit;
-    padding: .5rem 1rem;
+    padding: $padding-xs-horizontal $padding-sm-horizontal;
     height: 100%;
     width: 100%;
     outline: none;

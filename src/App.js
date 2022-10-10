@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { Navbar } from './components/navbar';
 import { Sidebar } from './components/sidebar';
-import { BoardContent } from './components/content';
+import { BoardContent } from './components/board-content';
 import { themeSliceSelector } from './features/themeSlice';
 import './styles/App.scss';
 
