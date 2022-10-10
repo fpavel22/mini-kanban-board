@@ -1,0 +1,133 @@
+@import '../../styles/variables';
+@import '../../styles/colors';
+
+.sidebar {
+  background-color: $color-white;
+  color: $middle-gray;
+  border-right: 1px solid $light-gray;
+  padding: 1.5rem 1.5rem 2rem 0;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform-origin: left;
+  transition: transform 100ms ease;
+  position: relative;
+  z-index: 5;
+
+  &--d-mode {
+    background-color: $color-black-30;
+    border-color: $color-black-50;
+  }
+
+  &--hidden {
+    transform: scaleX(0);
+    z-index: 1;
+  }
+
+  &__content-title {
+    padding-left: 2rem;
+    margin-bottom: 1.1875rem;
+    text-transform: uppercase;
+    letter-spacing: .125rem;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+
+    li {
+      padding-left: 2rem;
+      display: flex;
+      align-items: center;
+      height: 3rem;
+      width: 100%;
+      border-top-right-radius: 1.25rem;
+      border-bottom-right-radius: 1.25rem;
+      cursor: pointer;
+
+      &.active {
+        background-color: $primary-m-purple;
+        color: $color-white;
+      }
+
+      img {
+        margin-right: 1rem;
+      }
+    }
+  }
+
+  &__create {
+    color: $primary-m-purple;
+  }
+
+  &__misc {
+    padding: 0 1.5rem;
+  }
+
+  &__theme-toggler {
+    background-color: $lightest-gray;
+    border-radius: .375rem;
+    margin-bottom: .5rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--dark {
+      background-color: $color-black-25;
+    }
+  }
+
+  &__toggler {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    img {
+      margin-right: 1rem;
+    }
+  }
+
+  .theme__slider {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    border-radius: 12px;
+    margin: 0 20px;
+    background-color: $primary-m-purple;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      position: absolute;
+      background-color: $color-white;
+      top: 50%;
+      left: 3px;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+
+    &--d-mode {
+      &::after {
+        left: calc(100% - 14px - 3px);
+      }
+    }
+  }
+}
+
+.btn--show-sidebar {
+  border-top-left-radius: unset;
+  border-bottom-left-radius: unset;
+  min-width: unset;
+  position: fixed;
+  bottom: 2rem;
+  transition: opacity 300ms ease;
+
+  &--hidden {
+    opacity: 0;
+  }
+}

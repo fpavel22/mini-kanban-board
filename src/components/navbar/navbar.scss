@@ -4,9 +4,9 @@
 
 .header {
   background-color: $color-white;
-  height: $navbar-height;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: $sidebar-width 1fr;
+  grid-column: 1 / -1;
   
   &__logo,
   &__informative {
@@ -18,7 +18,10 @@
   &__logo {
     border-right: 1px solid $light-gray;
     padding-left: 2.125rem;
-    width: $sidebar-width;
+
+    &--border-bottom {
+      border-bottom: 1px solid $light-gray;
+    }
   }
 
   &__informative {

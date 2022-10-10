@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
 
 @import 'colors';
+@import 'variables';
 
 * {
   margin: 0;
@@ -21,6 +22,9 @@ body {
 main.app {
   background-color: $lightest-gray;
   min-height: 100vh;
+  display: grid;
+  grid-template-columns: $sidebar-width 1fr;
+  grid-template-rows: $navbar-height 1fr;
 }
 
 main.app--dark {
