@@ -1,12 +1,15 @@
 import cn from 'classnames';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Navbar } from './components/navbar';
+import { Sidebar } from './components/sidebar';
+import { BoardContent } from './components/content';
 import { themeSliceSelector } from './features/themeSlice';
 import './styles/App.scss';
 
 function App() {
+  const [ sidebarVisible, setSidebarVisible ] = useState(true);
   const darkMode = useSelector(themeSliceSelector);
 
   const _className = cn('app', {
@@ -15,7 +18,9 @@ function App() {
 
   return (
     <main className={ _className }>
-      <Navbar />
+      <Navbar sidebarVisible={ sidebarVisible } />
+      <Sidebar sidebarVisible={ sidebarVisible } setSidebarVisible={ setSidebarVisible } />
+      <BoardContent />
     </main>
   );
 }
