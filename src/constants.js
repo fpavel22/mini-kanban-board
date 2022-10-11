@@ -4,5 +4,12 @@ export const SIZE = {
 
 export const REDUCERS = {
   THEME: 'theme',
-  SHOW_ADD_TASK: 'show_add_task'
-}
+  SHOW_MODAL: 'show_modal',
+  TASKS: 'tasks'
+};
+
+export const BOARD_CONTENT_LABELS = [
+  { status: 'to_do', sectionName: 'To do' },
+  { status: 'in_progress', sectionName: 'In progress' },
+  { status: 'done', sectionName: 'Done' }
+];

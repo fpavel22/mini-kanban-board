@@ -1,0 +1,94 @@
+[
+  {
+    "title": "Create navbar",
+    "description": "Create navbar with two sections. First section is the logo and must be of specific width. Second section contains a title which indicates the current page and an \"Add Task\" button.",
+    "subtasks": [
+      {
+        "value": "Create navbar structure",
+        "completed": true
+      },
+      {
+        "value": "Create first section",
+        "completed": true
+      },
+      {
+        "value": "Create second section",
+        "completed": true
+      }
+    ],
+    "status": "done"
+  },
+  {
+    "title": "Create sidebar",
+    "description": "Create sidebar, it must have two sections, first is the navigation, which are dynamic, and the second section controls the sidebar toggling and the overall theme (light/dark).",
+    "subtasks": [
+      {
+        "value": "Create sidebar structure",
+        "completed": true
+      },
+      {
+        "value": "Hardcode navigation links for now",
+        "completed": true
+      },
+      {
+        "value": "Create Redux slice for theme",
+        "completed": true
+      },
+      {
+        "value": "Add sidebar toggling & theme functionality",
+        "completed": true
+      }
+    ],
+    "status": "done"
+  },
+  {
+    "title": "Create re-usable components",
+    "description": "Create the components that will be re-used in different places on the page.",
+    "subtasks": [
+      {
+        "value": "Create buttons",
+        "completed": true
+      },
+      {
+        "value": "Create text-fields",
+        "completed": true
+      },
+      {
+        "value": "Create card modal",
+        "completed": true
+      },
+      {
+        "value": "Create task form (add/edit tasks)",
+        "completed": true
+      },
+      {
+        "value": "Create custom checkbox",
+        "completed": false
+      },
+      {
+        "value": "Create darkmode for each of these components",
+        "completed": false
+      }
+    ],
+    "status": "in_progress"
+  },
+  {
+    "title": "Change navigation to be dynamic",
+    "description": "The sidebar navigation must be dynamic, depending on what the user creates.",
+    "subtasks": [
+      {
+        "value": "Create fetch functionality",
+        "completed": false
+      },
+      {
+        "value": "Create json data (for now), like cards have",
+        "completed": false
+      },
+      {
+        "value": "Implement routing and change navbar title to contain the current page",
+        "completed": false
+      }
+    ],
+    "status": "to_do"
+  }
+]

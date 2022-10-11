@@ -1,3 +1,17 @@
+// Globals
+$border-radius-xs: .25rem;
+$border-radius-sm: .375rem;
+$border-radius-base: .5rem;
+$border-radius-lg: .75rem;
+
+$padding-xs-horizontal: .5rem;
+$padding-sm-horizontal: 1rem;
+$padding-base-horizontal: 1.5rem;
+$padding-lg-horizontal: 2rem;
+
+$z-index-medium: 5;
+$z-index-important: 10;
+
 // Buttons
 $btn-horizontal-padding: 1.125rem;
 $btn-border-radius: 1.25rem;
@@ -22,16 +36,9 @@ $sidebar-slider-height: 1.25rem;
 $sidebar-slider-width: 2.5rem;
 $sidebar-width: 18.75rem;
 
-// Globals
-$border-radius-xs: .25rem;
-$border-radius-sm: .375rem;
-$border-radius-base: .5rem;
-$border-radius-lg: .75rem;
+// Board content
+$flex-row-gap: 1.25rem;
+$flex-column-gap: $padding-base-horizontal;
 
-$padding-xs-horizontal: .5rem;
-$padding-sm-horizontal: 1rem;
-$padding-base-horizontal: 1.5rem;
-$padding-lg-horizontal: 2rem;
-
-$z-index-medium: 5;
-$z-index-important: 10;
+// Cards section
+$cards-section-max-width: 17.5rem;

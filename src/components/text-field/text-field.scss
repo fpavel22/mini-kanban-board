@@ -11,11 +11,16 @@
   
     background-color: $color-white;
     border-radius: $border-radius-xs;
-    border: 1px solid $middle-gray;
+    border: 1px solid $middle-gray-25;
     display: block;
     position: relative;
     flex: 1 0 auto;
-    overflow: hidden;  
+    overflow: hidden;
+
+    &:hover,
+    &:focus-within {
+      border-color: $primary-m-purple;
+    }
     
     input,
     textarea {
@@ -59,6 +64,11 @@
     &.text-field--d-mode {
       background-color: $color-black-30;
       color: $color-white;
+
+      input,
+      textarea {
+        color: inherit;
+      }
     }
   }
 

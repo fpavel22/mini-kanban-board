@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import { Button } from '../button';
 import { themeSliceSelector } from '../../features/themeSlice';
-import { displayModal } from '../../features/showAddTaskModalSlice';
+import { showAddTaskModal } from '../../features/showModalSlice';
 
 import logoDark from '../../assets/logo-dark.svg';
 import logoLight from '../../assets/logo-light.svg';
@@ -22,7 +22,7 @@ export const Navbar = ({ sidebarVisible, className, ...props }) => {
   });
 
   function showCardModal() {
-    dispatch(displayModal());
+    dispatch(showAddTaskModal());
   }
 
   return (

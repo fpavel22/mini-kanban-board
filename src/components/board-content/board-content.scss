@@ -1,10 +1,50 @@
-.board__content {
-  padding: 1.5rem;
-}
+@import '../../styles/variables';
+@import '../../styles/mixins/typography';
 
-.empty__board {
-  height: 100%;
+.board__content {
+  padding: $padding-base-horizontal;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: $flex-row-gap $flex-column-gap;
+
+  .empty__board {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cards__section {
+    max-width: $cards-section-max-width;
+    flex: 1 1 auto;
+
+    .cards__section-title {
+      @include header-sm;
+
+      margin-bottom: $padding-base-horizontal;
+      display: flex;
+      align-items: center;
+      text-transform: uppercase;
+      letter-spacing: .1rem;
+    }
+
+    .cards__section-status {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-right: 0.75rem;
+
+      &--to_do {
+        background-color: #49C4E5;
+      }
+
+      &--in_progress {
+        background-color: #8471F2;
+      }
+
+      &--done {
+        background-color: #67E2AE;
+      }
+    }
+  }
 }

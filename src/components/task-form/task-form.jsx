@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-import { hideModal } from '../../features/showAddTaskModalSlice';
+import { hideAddTaskModal } from '../../features/showModalSlice';
+import { addTask } from '../../features/tasksSlice';
 import { Button } from '../button';
 import { TextField } from '../text-field';
 import { Dropdown } from '../dropdown';
@@ -65,7 +66,19 @@ export const TaskForm = ({ editing }) => {
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    dispatch(hideModal());
+    const { title, description, subtasks, status } = formFieldsState;
+
+    if (title && description && subtasks.length && status) {
+      const newTask = {
+        title,
+        description,
+        subtasks,
+        status
+      };
+  
+      dispatch(addTask(newTask));
+      dispatch(hideAddTaskModal());
+    }
   }
 
   return (

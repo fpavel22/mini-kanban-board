@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { themeSliceSelector } from './features/themeSlice';
-import { showAddTaskSelector } from './features/showAddTaskModalSlice';
+import { showModalSelector } from './features/showModalSlice';
 
 import { Navbar } from './components/navbar';
 import { Sidebar } from './components/sidebar';
@@ -17,7 +17,7 @@ function App() {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);
 
   const darkMode = useSelector(themeSliceSelector);
-  const showModal = useSelector(showAddTaskSelector);
+  const { showAddTaskModal } = useSelector(showModalSelector);
 
   const _className = cn('app', {
     'app--dark': darkMode
@@ -28,7 +28,7 @@ function App() {
       <Navbar sidebarVisible={ sidebarVisible } />
       <Sidebar sidebarVisible={ sidebarVisible } setSidebarVisible={ setSidebarVisible } />
       <BoardContent />
-      { showModal && (
+      { showAddTaskModal && (
         <CardModal>
           <TaskForm />
         </CardModal>

@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
-import { hideModal } from '../../features/showAddTaskModalSlice';
+import { hideAddTaskModal, hideTaskDetailsModal } from '../../features/showModalSlice';
 import './card-modal.scss';
 
 export const CardModal = ({ children, ...props }) => {
@@ -17,7 +17,8 @@ export const CardModal = ({ children, ...props }) => {
     const classNameList = className.split(' ');
 
     if (classNameList.includes('card__modal')) {
-      dispatch(hideModal());
+      dispatch(hideAddTaskModal());
+      dispatch(hideTaskDetailsModal());
     }
   }
 
