@@ -1,19 +1,24 @@
 @import '../../styles/colors';
+@import '../../styles/variables';
 @import '../../styles/mixins/typography';
 
 .btn {
   @include body-md;
 
-  border-radius: 1.25rem;
+  border-radius: $btn-border-radius;
   border: none;
   color: $color-white;
-  font-weight: 600;
-  padding: 0 1.125rem;
-  height: 2.5rem;
-  min-width: 6rem;
+  padding: 0 $btn-horizontal-padding;
+  height: $btn-height;
   cursor: pointer;
 
-  &--primary {
+  &.btn--lg {
+    @include header-md;
+
+    height: $btn-lg-height;
+  }
+
+  &.btn--primary {
     background-color: $primary-m-purple;
 
     &:hover {
@@ -21,7 +26,7 @@
     }
   }
 
-  &--secondary {
+  &.btn--secondary {
     background-color: $secondary-l-purple;
     color: $primary-m-purple;
 
@@ -38,17 +43,11 @@
     }
   }
 
-  &--danger {
+  &.btn--danger {
     background-color: $danger-m-red;
 
     &:hover {
       background-color: $danger-l-red;
     }
-  }
-
-  &--lg {
-    @include header-md;
-
-    height: 3rem;
   }
 }

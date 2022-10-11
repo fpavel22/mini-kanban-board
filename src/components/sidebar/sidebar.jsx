@@ -3,8 +3,9 @@ import { useSelector } from "react-redux";
 
 import { themeSliceSelector } from "../../features/themeSlice";
 import { Button } from "../button";
-import { SidebarContent } from "./sidebar-content";
+import { SidebarBoards } from "./sidebar-boards";
 import { SidebarMisc } from "./sidebar-misc";
+
 import showSidebar from "../../assets/icon-show-sidebar.svg";
 import "./sidebar.scss";
 
@@ -23,7 +24,7 @@ export const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
   return (
     <>
       <aside className={_className}>
-        <SidebarContent />
+        <SidebarBoards />
         <SidebarMisc darkMode={darkMode} setSidebarVisible={ setSidebarVisible } />
       </aside>
       <Button className={ showSidebarBtnClassName }

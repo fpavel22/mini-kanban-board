@@ -1,47 +1,69 @@
 @import '../../styles/colors';
+@import '../../styles/variables';
 @import '../../styles/mixins/typography';
 
-.text-field {
-  @include body-md;
+.text-field__control {
+  display: flex;
+  align-items: center;
 
-  background-color: $color-white;
-  border-radius: .25rem;
-  border: 1px solid $middle-gray;
-  height: 2.5rem;
-  display: block;
-  position: relative;
-  overflow: hidden;  
+  .text-field {
+    @include body-md;
   
-  input {
-    background-color: transparent;
-    border: none;
-    color: inherit;
-    padding: .5rem 1rem;
-    height: 100%;
-    width: 100%;
-    outline: none;
-
-    &::placeholder {
-      font-size: inherit;
+    background-color: $color-white;
+    border-radius: $border-radius-xs;
+    border: 1px solid $middle-gray;
+    display: block;
+    position: relative;
+    flex: 1 0 auto;
+    overflow: hidden;  
+    
+    input,
+    textarea {
+      background-color: transparent;
+      color: inherit;
+      border: none;
       font-family: inherit;
-      color: $middle-gray;
+      font-weight: 500;
+      padding: $padding-xs-horizontal $padding-sm-horizontal;
+      height: calc($btn-height - 2px);
+      width: 100%;
+      outline: none;
+  
+      &::placeholder {
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: inherit;
+        color: $middle-gray;
+      }
+    }
+  
+    textarea {
+      font-family: inherit;
+      height: 6.825rem;
+      display: block;
+      resize: none;
+    }
+  
+    &.text-field--error {
+      border-color: $danger-m-red;
+    }
+  
+    &.text-field--feedback {
+      color: $danger-m-red;
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+    }
+  
+    &.text-field--d-mode {
+      background-color: $color-black-30;
+      color: $color-white;
     }
   }
 
-  &--error {
-    border-color: $danger-m-red;
-  }
-
-  &--feedback {
-    color: $danger-m-red;
-    position: absolute;
-    top: 50%;
-    right: 1rem;
-    transform: translateY(-50%);
-  }
-
-  &--d-mode {
-    background-color: $color-black-30;
-    color: $color-white;
+  .text-field--close {
+    margin-left: $padding-sm-horizontal;
+    cursor: pointer;
   }
 }
