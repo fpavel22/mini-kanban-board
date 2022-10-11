@@ -12,7 +12,13 @@
   height: $btn-height;
   cursor: pointer;
 
-  &--primary {
+  &.btn--lg {
+    @include header-md;
+
+    height: $btn-lg-height;
+  }
+
+  &.btn--primary {
     background-color: $primary-m-purple;
 
     &:hover {
@@ -20,7 +26,7 @@
     }
   }
 
-  &--secondary {
+  &.btn--secondary {
     background-color: $secondary-l-purple;
     color: $primary-m-purple;
 
@@ -37,17 +43,11 @@
     }
   }
 
-  &--danger {
+  &.btn--danger {
     background-color: $danger-m-red;
 
     &:hover {
       background-color: $danger-l-red;
     }
-  }
-
-  &--lg {
-    @include header-md;
-
-    height: $btn-lg-height;
   }
 }

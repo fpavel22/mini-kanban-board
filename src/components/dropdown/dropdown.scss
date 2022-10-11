@@ -1,0 +1,17 @@
+@import '../../styles/colors';
+@import '../../styles/variables';
+
+.dropdown__select {
+  border: 1px solid $middle-gray;
+  border-radius: $border-radius-xs;
+  padding: 0 $padding-sm-horizontal;
+  height: $btn-height;
+  width: 100%;
+  display: block;
+  outline: none;
+
+  &.dropdown__select--d-mode {
+    background-color: $color-black-30;
+    color: $color-white;
+  }
+}

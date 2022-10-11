@@ -2,9 +2,10 @@ import cn from 'classnames';
 import { useSelector } from 'react-redux';
 
 import { themeSliceSelector } from '../../features/themeSlice';
+import iconClose from '../../assets/icon-cross.svg';
 import './text-field.scss';
 
-export const TextField = ({ error, className, ...props }) => {
+export const TextField = ({ multiline, error, closable, className, onClick, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
 
   const _className = cn('text-field', {
@@ -12,10 +13,17 @@ export const TextField = ({ error, className, ...props }) => {
     'text-field--d-mode': darkMode
   }, className);
 
+  const field = multiline
+    ? <textarea { ...props }></textarea>
+    : <input { ...props } type="text" />;
+
   return (
-    <label className={ _className }>
-      <input { ...props } type="text" />
-      { error && <span className="text-field--feedback">Can't be empty</span> }
-    </label>
+    <div className="text-field__control">
+      <label className={ _className }>
+        { field }
+        { error && <span className="text-field--feedback">Can't be empty</span> }
+      </label>
+      { closable && <img className="text-field--close" src={ iconClose } alt="Close icon" onClick={ onClick } />}
+    </div>
   );
 }

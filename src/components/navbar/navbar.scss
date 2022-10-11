@@ -8,36 +8,36 @@
   grid-template-columns: $sidebar-width 1fr;
   grid-column: 1 / -1;
   
-  &__logo,
-  &__informative {
+  .header__logo,
+  .header__informative {
     height: 100%;
     display: flex;
     align-items: center;
   }
   
-  &__logo {
+  .header__logo {
     border-right: 1px solid $light-gray;
     padding-left: $padding-horizontal;
 
-    &--border-bottom {
+    &.header__logo--border-bottom {
       border-bottom: 1px solid $light-gray;
     }
   }
 
-  &__informative {
+  .header__informative {
     border-bottom: 1px solid $light-gray;
     padding-right: $padding-horizontal;
     width: 100%;
     justify-content: space-between;
 
-    h2 {
+    .header__informative-title {
       @include header-xl;
 
       padding-left: $padding-base-horizontal;
     }
   }
 
-  &--d-mode {
+  &.header--d-mode {
     background-color: $color-black-30;
 
     .header__logo {

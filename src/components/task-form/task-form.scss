@@ -1,0 +1,29 @@
+@import '../../styles/colors';
+@import '../../styles/variables';
+@import '../../styles/mixins/typography';
+
+.task__form {
+  .task__form-title {
+    @include header-lg;
+  }
+
+  .task__form-group {
+    margin-top: $padding-base-horizontal;
+
+    .task__form-group--title {
+      color: $middle-gray;
+      margin-bottom: $padding-xs-horizontal;
+    }
+
+    .btn {
+      font-weight: inherit;
+      width: 100%;
+    }
+  }
+
+  .task__form-group--subtasks {
+    .text-field__control {
+      margin-bottom: .75rem;
+    }
+  }
+}

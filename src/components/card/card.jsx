@@ -5,6 +5,7 @@ import './card.scss';
 
 export const Card = ({ title, tasks, tasksCompleted, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
+
   const _className = cn('card', {
     'card--d-mode': darkMode
   });

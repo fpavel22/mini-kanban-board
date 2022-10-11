@@ -6,18 +6,13 @@
   background-color: $color-white;
   padding: $card-vertical-padding $padding-sm-horizontal;
   border-radius: $border-radius-base;
+  box-shadow: 0rem .25rem .375rem rgba(54, 78, 126, 0.1);
+  cursor: pointer;
 
   // these two can probably be removed
   max-width: 320px;
   margin-bottom: 20px;
   //
-
-  cursor: pointer;
-  box-shadow: 0rem .25rem .375rem rgba(54, 78, 126, 0.1);
-
-  &--d-mode {
-    background-color: $color-black-30;
-  }
 
   .card__header {
     @include header-md;
@@ -29,5 +24,9 @@
     @include header-sm;
 
     color: $middle-gray;
+  }
+
+  &.card--d-mode {
+    background-color: $color-black-30;
   }
 }

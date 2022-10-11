@@ -10,21 +10,23 @@
   left: 0;
   z-index: $z-index-important;
 
-  &--d-mode {
-    .card__modal-content {
-      background-color: $color-black-30;
-    }
-  }
-
-  &-content {
+  .card__modal-content {
     background-color: $color-white;
     border-radius: $border-radius-sm;
     padding: $padding-lg-horizontal;
     width: $card-modal-width;
     max-width: 85%;
+    max-height: 85%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow-y: auto;
+  }
+
+  &.card__modal--d-mode {
+    .card__modal-content {
+      background-color: $color-black-30;
+    }
   }
 }
