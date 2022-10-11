@@ -19,21 +19,21 @@
     
     input,
     textarea {
+      @include body-md;
+
       background-color: transparent;
-      color: inherit;
+      color: $color-black;
       border: none;
       font-family: inherit;
-      font-weight: 500;
       padding: $padding-xs-horizontal $padding-sm-horizontal;
       height: calc($btn-height - 2px);
       width: 100%;
       outline: none;
   
       &::placeholder {
-        font-size: inherit;
+        color: $middle-gray;
         font-family: inherit;
         font-weight: inherit;
-        color: $middle-gray;
       }
     }
   

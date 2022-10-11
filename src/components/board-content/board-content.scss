@@ -1,3 +1,10 @@
 .board__content {
   padding: 1.5rem;
 }
+
+.empty__board {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

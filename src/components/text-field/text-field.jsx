@@ -1,5 +1,5 @@
-import cn from 'classnames';
 import { useSelector } from 'react-redux';
+import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
 import iconClose from '../../assets/icon-cross.svg';

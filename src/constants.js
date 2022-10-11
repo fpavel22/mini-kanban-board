@@ -3,5 +3,6 @@ export const SIZE = {
 };
 
 export const REDUCERS = {
-  THEME: 'theme'
+  THEME: 'theme',
+  SHOW_ADD_TASK: 'show_add_task'
 }

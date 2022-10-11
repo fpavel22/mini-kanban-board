@@ -1,7 +1,7 @@
-import cn from 'classnames';
 import { useSelector } from 'react-redux';
-import { themeSliceSelector } from '../../features/themeSlice';
+import cn from 'classnames';
 
+import { themeSliceSelector } from '../../features/themeSlice';
 import './dropdown.scss';
 
 const OPTIONS = [

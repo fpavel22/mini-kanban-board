@@ -1,11 +1,10 @@
-import cn from 'classnames';
 import { useDispatch } from 'react-redux';
+import cn from 'classnames';
 
 import { enableDarkTheme, enableLightTheme } from '../../features/themeSlice';
-import { Button } from '../button';
 import iconDarkTheme from '../../assets/icon-dark-theme.svg';
 import iconLightTheme from '../../assets/icon-light-theme.svg';
-import hideSidebar from '../../assets/icon-hide-sidebar.svg';
+import iconHideSidebar from '../../assets/icon-hide-sidebar.svg';
 
 export const SidebarMisc = ({ darkMode, setSidebarVisible }) => {
   const dispatch = useDispatch();
@@ -38,7 +37,7 @@ export const SidebarMisc = ({ darkMode, setSidebarVisible }) => {
         <img src={ iconDarkTheme } alt="Dark theme icon" />
       </div>
       <div className="sidebar__toggler" onClick={ handleClick }>
-        <img src={ hideSidebar } alt="Hide sidebar icon" />
+        <img src={ iconHideSidebar } alt="Hide sidebar icon" />
         <span>Hide sidebar</span>
       </div>
     </div>
