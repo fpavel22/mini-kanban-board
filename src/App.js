@@ -1,10 +1,9 @@
-import cn from 'classnames';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import cn from 'classnames';
 
 import { themeSliceSelector } from './features/themeSlice';
 import { showModalSelector } from './features/showModalSlice';
-
 import { Navbar } from './components/navbar';
 import { Sidebar } from './components/sidebar';
 import { BoardContent } from './components/board-content';

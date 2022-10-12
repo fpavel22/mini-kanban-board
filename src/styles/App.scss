@@ -42,7 +42,12 @@ main.app {
     border-radius: 1.25rem;
   }
 
-  h2, h4 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: $color-black;
   }
 }
@@ -54,7 +59,12 @@ main.app--dark {
     background-color: $light-gray;
   }
 
-  h2, h4 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: $color-white;
   }
 }

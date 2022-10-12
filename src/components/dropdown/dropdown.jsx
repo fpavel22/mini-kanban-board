@@ -2,17 +2,12 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
+import { DROPDOWN_OPTIONS } from '../../constants';
 import './dropdown.scss';
-
-const OPTIONS = [
-  { value: 'to_do', label: 'To do' },
-  { value: 'in_progress', label: 'In progress' },
-  { value: 'done', label: 'Done' }
-];
 
 export const Dropdown = ({ options, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
-  const _options = options ?? OPTIONS;
+  const _options = options ?? DROPDOWN_OPTIONS;
 
   const _className = cn('dropdown__select', {
     'dropdown__select--d-mode': darkMode

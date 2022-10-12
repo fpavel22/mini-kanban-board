@@ -1,0 +1,35 @@
+@import '../../styles/colors';
+@import '../../styles/variables';
+@import '../../styles/mixins/typography';
+
+.subtask__item {
+  @include header-sm;
+
+  background-color: $lightest-gray;
+  margin-bottom: $padding-xs-horizontal;
+  padding: 0 .75rem;
+  height: $btn-height;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  .subtask__title {
+    margin-left: $padding-sm-horizontal;
+  }
+  
+  &.subtask__item--completed {
+    text-decoration: line-through;
+  }
+
+  &:not(.subtask__item--completed) {
+    color: $color-black;
+  }
+
+  &.subtask__item--d-mode {
+    background-color: $color-black-25;
+
+    &:not(.subtask__item--completed) {
+      color: $color-white;
+    }
+  }
+}

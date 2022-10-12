@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import cn from 'classnames';
 
 import { enableDarkTheme, enableLightTheme } from '../../features/themeSlice';
+
 import iconDarkTheme from '../../assets/icon-dark-theme.svg';
 import iconLightTheme from '../../assets/icon-light-theme.svg';
 import iconHideSidebar from '../../assets/icon-hide-sidebar.svg';
@@ -18,14 +19,10 @@ export const SidebarMisc = ({ darkMode, setSidebarVisible }) => {
   });
 
   function toggleTheme() {
-    if (darkMode) {
-      dispatch(enableLightTheme());
-    } else {
-      dispatch(enableDarkTheme());
-    }
+    dispatch(darkMode ? enableLightTheme() : enableDarkTheme());
   }
 
-  function handleClick() {
+  function hideSidebar() {
     setSidebarVisible(false);
   }
 
@@ -36,7 +33,7 @@ export const SidebarMisc = ({ darkMode, setSidebarVisible }) => {
         <span className={ sliderClassName } onClick={ toggleTheme } />
         <img src={ iconDarkTheme } alt="Dark theme icon" />
       </div>
-      <div className="sidebar__toggler" onClick={ handleClick }>
+      <div className="sidebar__toggler" onClick={ hideSidebar }>
         <img src={ iconHideSidebar } alt="Hide sidebar icon" />
         <span>Hide sidebar</span>
       </div>

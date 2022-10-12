@@ -9,7 +9,13 @@ export const REDUCERS = {
 };
 
 export const BOARD_CONTENT_LABELS = [
-  { status: 'to_do', sectionName: 'To do' },
-  { status: 'in_progress', sectionName: 'In progress' },
-  { status: 'done', sectionName: 'Done' }
+  { status: 'to_do', sectionTitle: 'To do' },
+  { status: 'in_progress', sectionTitle: 'In progress' },
+  { status: 'done', sectionTitle: 'Done' }
+];
+
+export const DROPDOWN_OPTIONS = [
+  { value: 'to_do', label: 'To do' },
+  { value: 'in_progress', label: 'In progress' },
+  { value: 'done', label: 'Done' }
 ];

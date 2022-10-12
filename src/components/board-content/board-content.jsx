@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { tasksSelector, fetchTasks } from '../../features/tasksSlice';
 import { showModalSelector } from '../../features/showModalSlice';
-
 import { CardsSection } from './cards-section';
 import { CardModal } from '../card-modal';
 import { TaskView } from '../task-view';
@@ -32,9 +31,10 @@ export const BoardContent = () => {
         { tasks.length > 0
           ? (
             <>
-              { BOARD_CONTENT_LABELS.map(({ status, sectionName }) => (
-                <CardsSection status={ status }
-                    sectionName={ sectionName }
+              { BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => (
+                <CardsSection key={ status }
+                    status={ status }
+                    sectionTitle={ sectionTitle }
                     items={ filterTasksByStatus(tasks, status) }
                     setSelected={ setSelected } />
               )) }

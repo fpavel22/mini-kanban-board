@@ -12,6 +12,10 @@ $padding-lg-horizontal: 2rem;
 $z-index-medium: 5;
 $z-index-important: 10;
 
+// Board content
+$flex-row-gap: 1.25rem;
+$flex-column-gap: $padding-base-horizontal;
+
 // Buttons
 $btn-horizontal-padding: 1.125rem;
 $btn-border-radius: 1.25rem;
@@ -25,6 +29,10 @@ $card-vertical-padding: 1.4375rem;
 $card-modal-overlay-color: rgba(0, 0, 0, 0.5);
 $card-modal-width: 30rem;
 
+// Cards section
+$cards-section-max-width: 17.5rem;
+$cards-section-status-size: 1rem;
+
 // Navbar
 $padding-horizontal: 2.125rem;
 $navbar-height: 6.05rem;
@@ -35,10 +43,3 @@ $sidebar-slider-indicator-size: .875rem;
 $sidebar-slider-height: 1.25rem;
 $sidebar-slider-width: 2.5rem;
 $sidebar-width: 18.75rem;
-
-// Board content
-$flex-row-gap: 1.25rem;
-$flex-column-gap: $padding-base-horizontal;
-
-// Cards section
-$cards-section-max-width: 17.5rem;

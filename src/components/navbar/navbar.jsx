@@ -18,7 +18,7 @@ export const Navbar = ({ sidebarVisible, className, ...props }) => {
   }, className);
 
   const headerLogoClassName = cn('header__logo', {
-    'header__logo--border-bottom': !sidebarVisible
+    'header__logo--hidden-sidebar': !sidebarVisible
   });
 
   function showCardModal() {

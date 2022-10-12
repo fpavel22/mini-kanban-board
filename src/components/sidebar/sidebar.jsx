@@ -21,16 +21,20 @@ export const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
     'btn--show-sidebar--hidden': sidebarVisible
   });
 
+  function showSidebar() {
+    setSidebarVisible(true);
+  }
+
   return (
     <>
-      <aside className={_className}>
+      <aside className={ _className }>
         <SidebarBoards />
-        <SidebarMisc darkMode={darkMode} setSidebarVisible={ setSidebarVisible } />
+        <SidebarMisc darkMode={ darkMode } setSidebarVisible={ setSidebarVisible } />
       </aside>
       <Button className={ showSidebarBtnClassName }
           type="primary"
           size="lg"
-          onClick={ () => setSidebarVisible(true) }>
+          onClick={ showSidebar }>
         <img src={ iconShowSidebar } alt="Show sidebar icon" />
       </Button>
     </>
