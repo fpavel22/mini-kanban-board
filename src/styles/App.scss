@@ -2,6 +2,7 @@
 
 @import 'colors';
 @import 'variables';
+@import './mixins/typography';
 
 * {
   margin: 0;
@@ -12,25 +13,60 @@
 html {
   font-size: 16px;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 600;
 }
 
 body {
-  font-size: .8125rem;
-  line-height: 1.4375rem;
+  @include body-md;
+
+  font-weight: 600;
 }
 
 main.app {
   background-color: $lightest-gray;
+  color: $middle-gray;
   min-height: 100vh;
   display: grid;
   grid-template-columns: $sidebar-width 1fr;
   grid-template-rows: $navbar-height 1fr;
+
+  *::-webkit-scrollbar {
+    width: .5rem;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: $color-black-50;
+    border-radius: 1.25rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: $color-black;
+  }
 }
 
 main.app--dark {
   background-color: $color-black-25;
-  color: $color-white;
+
+  *::-webkit-scrollbar-thumb {
+    background-color: $light-gray;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: $color-white;
+  }
 }
 
 a {

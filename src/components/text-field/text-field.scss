@@ -11,29 +11,34 @@
   
     background-color: $color-white;
     border-radius: $border-radius-xs;
-    border: 1px solid $middle-gray;
+    border: 1px solid $middle-gray-25;
     display: block;
     position: relative;
     flex: 1 0 auto;
-    overflow: hidden;  
+    overflow: hidden;
+
+    &:hover,
+    &:focus-within {
+      border-color: $primary-m-purple;
+    }
     
     input,
     textarea {
+      @include body-md;
+
       background-color: transparent;
-      color: inherit;
+      color: $color-black;
       border: none;
       font-family: inherit;
-      font-weight: 500;
       padding: $padding-xs-horizontal $padding-sm-horizontal;
       height: calc($btn-height - 2px);
       width: 100%;
       outline: none;
   
       &::placeholder {
-        font-size: inherit;
+        color: $middle-gray;
         font-family: inherit;
         font-weight: inherit;
-        color: $middle-gray;
       }
     }
   
@@ -59,6 +64,11 @@
     &.text-field--d-mode {
       background-color: $color-black-30;
       color: $color-white;
+
+      input,
+      textarea {
+        color: inherit;
+      }
     }
   }
 

@@ -33,14 +33,6 @@
     &:hover {
       background-color: $secondary-m-purple;
     }
-
-    &.btn--d-mode {
-      background-color: $color-white;
-
-      &:hover {
-        background-color: $color-white;
-      }
-    }
   }
 
   &.btn--danger {
@@ -48,6 +40,16 @@
 
     &:hover {
       background-color: $danger-l-red;
+    }
+  }
+
+  &.btn--d-mode {
+    &.btn--secondary {
+      background-color: $color-white;
+      
+      &:hover {
+        background-color: $color-white;
+      }
     }
   }
 }

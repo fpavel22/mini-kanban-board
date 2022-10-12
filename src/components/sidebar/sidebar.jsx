@@ -1,12 +1,12 @@
-import cn from "classnames";
 import { useSelector } from "react-redux";
+import cn from "classnames";
 
 import { themeSliceSelector } from "../../features/themeSlice";
 import { Button } from "../button";
 import { SidebarBoards } from "./sidebar-boards";
 import { SidebarMisc } from "./sidebar-misc";
 
-import showSidebar from "../../assets/icon-show-sidebar.svg";
+import iconShowSidebar from "../../assets/icon-show-sidebar.svg";
 import "./sidebar.scss";
 
 export const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
@@ -21,17 +21,21 @@ export const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
     'btn--show-sidebar--hidden': sidebarVisible
   });
 
+  function showSidebar() {
+    setSidebarVisible(true);
+  }
+
   return (
     <>
-      <aside className={_className}>
+      <aside className={ _className }>
         <SidebarBoards />
-        <SidebarMisc darkMode={darkMode} setSidebarVisible={ setSidebarVisible } />
+        <SidebarMisc darkMode={ darkMode } setSidebarVisible={ setSidebarVisible } />
       </aside>
       <Button className={ showSidebarBtnClassName }
           type="primary"
           size="lg"
-          onClick={ () => setSidebarVisible(true) }>
-        <img src={showSidebar} alt="Show sidebar icon" />
+          onClick={ showSidebar }>
+        <img src={ iconShowSidebar } alt="Show sidebar icon" />
       </Button>
     </>
   );

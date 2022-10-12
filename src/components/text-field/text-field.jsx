@@ -1,7 +1,8 @@
-import cn from 'classnames';
 import { useSelector } from 'react-redux';
+import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
+
 import iconClose from '../../assets/icon-cross.svg';
 import './text-field.scss';
 
@@ -14,7 +15,7 @@ export const TextField = ({ multiline, error, closable, className, onClick, ...p
   }, className);
 
   const field = multiline
-    ? <textarea { ...props }></textarea>
+    ? <textarea { ...props } />
     : <input { ...props } type="text" />;
 
   return (
