@@ -5,38 +5,45 @@
     "subtasks": [
       {
         "value": "Create navbar structure",
-        "completed": true
+        "completed": true,
+        "id": 1
       },
       {
         "value": "Create first section",
-        "completed": true
+        "completed": true,
+        "id": 2
       },
       {
         "value": "Create second section",
-        "completed": true
+        "completed": true,
+        "id": 3
       }
     ],
     "status": "done"
   },
   {
     "title": "Create sidebar",
-    "description": "Create sidebar, it must have two sections, first is the navigation, which are dynamic, and the second section controls the sidebar toggling and the overall theme (light/dark).",
+    "description": "It must have two sections, first is the navigation, which are dynamic, and the second section controls the sidebar toggling and the overall theme (light/dark).",
     "subtasks": [
       {
         "value": "Create sidebar structure",
-        "completed": true
+        "completed": true,
+        "id": 4
       },
       {
         "value": "Hardcode navigation links for now",
-        "completed": true
+        "completed": true,
+        "id": 5
       },
       {
         "value": "Create Redux slice for theme",
-        "completed": true
+        "completed": true,
+        "id": 6
       },
       {
         "value": "Add sidebar toggling & theme functionality",
-        "completed": true
+        "completed": true,
+        "id": 7
       }
     ],
     "status": "done"
@@ -47,27 +54,33 @@
     "subtasks": [
       {
         "value": "Create buttons",
-        "completed": true
+        "completed": true,
+        "id": 8
       },
       {
         "value": "Create text-fields",
-        "completed": true
+        "completed": true,
+        "id": 9
       },
       {
         "value": "Create card modal",
-        "completed": true
+        "completed": true,
+        "id": 10
       },
       {
         "value": "Create task form (add/edit tasks)",
-        "completed": true
+        "completed": true,
+        "id": 11
       },
       {
         "value": "Create custom checkbox",
-        "completed": false
+        "completed": false,
+        "id": 12
       },
       {
         "value": "Create darkmode for each of these components",
-        "completed": false
+        "completed": false,
+        "id": 13
       }
     ],
     "status": "in_progress"
@@ -78,15 +91,18 @@
     "subtasks": [
       {
         "value": "Create fetch functionality",
-        "completed": false
+        "completed": false,
+        "id": 14
       },
       {
         "value": "Create json data (for now), like cards have",
-        "completed": false
+        "completed": false,
+        "id": 15
       },
       {
         "value": "Implement routing and change navbar title to contain the current page",
-        "completed": false
+        "completed": false,
+        "id": 16
       }
     ],
     "status": "to_do"

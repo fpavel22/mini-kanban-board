@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "path": "/launch",
+    "name": "Platform Launch"
+  },
+  {
+    "id": 2,
+    "path": "/plan",
+    "name": "Marketing Plan"
+  },
+  {
+    "id": 3,
+    "path": "/roadmap",
+    "name": "Roadmap"
+  }
+]

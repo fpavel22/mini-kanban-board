@@ -24,10 +24,6 @@ body {
 main.app {
   background-color: $lightest-gray;
   color: $middle-gray;
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: $sidebar-width 1fr;
-  grid-template-rows: $navbar-height 1fr;
 
   *::-webkit-scrollbar {
     width: .5rem;
@@ -49,6 +45,31 @@ main.app {
   h5,
   h6 {
     color: $color-black;
+  }
+
+  .header {
+    height: $navbar-height;
+    display: grid;
+    grid-template-columns: $sidebar-width 1fr;
+  }
+
+  .app__content-wrapper {
+    min-height: calc(100vh - $navbar-height);
+    display: flex;
+
+    .sidebar {
+      width: $sidebar-width;
+      transition: width 100ms ease, transform 100ms ease;
+  
+      &.sidebar--hidden {
+        width: 0;
+        transform: scaleX(0);
+      }
+    }
+
+    .board__content {
+      flex: 1;
+    }
   }
 }
 

@@ -4,11 +4,15 @@ import cn from 'classnames';
 
 import { themeSliceSelector } from './features/themeSlice';
 import { showModalSelector } from './features/showModalSlice';
-import { Navbar } from './components/navbar';
-import { Sidebar } from './components/sidebar';
-import { BoardContent } from './components/board-content';
-import { CardModal } from './components/card-modal';
-import { TaskForm } from './components/task-form';
+
+import {
+  Navbar,
+  Sidebar,
+  BoardContent,
+  CardModal,
+  TaskForm,
+  TaskView
+} from './components';
 
 import './styles/App.scss';
 
@@ -16,22 +20,37 @@ function App() {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);
 
   const darkMode = useSelector(themeSliceSelector);
-  const { showAddTaskModal } = useSelector(showModalSelector);
+  const { showAddTaskModal, showTaskDetailsModal } = useSelector(showModalSelector);
 
   const _className = cn('app', {
     'app--dark': darkMode
   });
 
+  const renderCardModalContent = () => (
+    showAddTaskModal
+      ? <TaskForm />
+      : showTaskDetailsModal
+        ? <TaskView />
+        : null
+  );
+
+  const showCardModal = () => (
+    (showAddTaskModal || showTaskDetailsModal) && <CardModal>{ renderCardModalContent() }</CardModal>
+  );
+
+  const sectionProps = {
+    sidebarVisible,
+    setSidebarVisible
+  };
+
   return (
     <main className={ _className }>
-      <Navbar sidebarVisible={ sidebarVisible } />
-      <Sidebar sidebarVisible={ sidebarVisible } setSidebarVisible={ setSidebarVisible } />
-      <BoardContent />
-      { showAddTaskModal && (
-        <CardModal>
-          <TaskForm />
-        </CardModal>
-      ) }
+      <Navbar { ...sectionProps } />
+      <div className="app__content-wrapper">
+        <Sidebar { ...sectionProps } />
+        <BoardContent />
+      </div>
+      { showCardModal() }
     </main>
   );
 }

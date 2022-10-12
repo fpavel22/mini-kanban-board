@@ -1,0 +1,36 @@
+@import '../../styles/variables';
+@import '../../styles/mixins/typography';
+
+.cards__section {
+  max-width: $cards-section-max-width;
+
+  .cards__section-title {
+    @include header-sm;
+
+    margin-bottom: $padding-base-horizontal;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+  }
+
+  .cards__section-status {
+    border-radius: 50%;
+    margin-right: .75rem;
+    height: $cards-section-status-size;
+    width: $cards-section-status-size;
+    display: inline-block;
+
+    &--to_do {
+      background-color: #49C4E5;
+    }
+
+    &--in_progress {
+      background-color: #8471F2;
+    }
+
+    &--done {
+      background-color: #67E2AE;
+    }
+  }
+}

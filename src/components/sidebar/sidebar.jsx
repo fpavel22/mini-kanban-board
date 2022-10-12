@@ -3,8 +3,8 @@ import cn from "classnames";
 
 import { themeSliceSelector } from "../../features/themeSlice";
 import { Button } from "../button";
-import { SidebarBoards } from "./sidebar-boards";
-import { SidebarMisc } from "./sidebar-misc";
+import { SidebarNavigation } from "./sidebar-navigation";
+import { SidebarToggle } from "./sidebar-toggle";
 
 import iconShowSidebar from "../../assets/icon-show-sidebar.svg";
 import "./sidebar.scss";
@@ -28,8 +28,8 @@ export const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
   return (
     <>
       <aside className={ _className }>
-        <SidebarBoards />
-        <SidebarMisc darkMode={ darkMode } setSidebarVisible={ setSidebarVisible } />
+        <SidebarNavigation />
+        <SidebarToggle darkMode={ darkMode } setSidebarVisible={ setSidebarVisible } />
       </aside>
       <Button className={ showSidebarBtnClassName }
           type="primary"

@@ -1,1 +1,1 @@
-export const filterTasksByStatus = (tasks, status) => tasks.filter((task) => task.status === status);
+export const filterTasksByStatus = (tasks, taskStatus) => tasks.filter(({ status }) => status === taskStatus);

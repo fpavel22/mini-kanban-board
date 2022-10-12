@@ -4,9 +4,6 @@
 
 .header {
   background-color: $color-white;
-  display: grid;
-  grid-template-columns: $sidebar-width 1fr;
-  grid-column: 1 / -1;
   
   .header__logo,
   .header__informative {

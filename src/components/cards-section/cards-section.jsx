@@ -3,8 +3,11 @@ import { useDispatch } from 'react-redux';
 
 import { Card } from '../card';
 import { showTaskDetailsModal } from '../../features/showModalSlice';
+import { selectTask } from '../../features/tasksSlice';
 
-export const CardsSection = ({ status, sectionTitle, items, setSelected }) => {
+import './cards-section.scss';
+
+export const CardsSection = ({ status, sectionTitle, items }) => {
   const dispatch = useDispatch();
 
   const sectionStatusClassName = cn('cards__section-status', {
@@ -12,7 +15,7 @@ export const CardsSection = ({ status, sectionTitle, items, setSelected }) => {
   });
 
   function showTaskDetails(item) {
-    setSelected(item);
+    dispatch(selectTask(item));
     dispatch(showTaskDetailsModal());
   }
 

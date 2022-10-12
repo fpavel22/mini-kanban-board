@@ -9,7 +9,7 @@ import logoDark from '../../assets/logo-dark.svg';
 import logoLight from '../../assets/logo-light.svg';
 import './navbar.scss';
 
-export const Navbar = ({ sidebarVisible, className, ...props }) => {
+export const Navbar = ({ sidebarVisible, className }) => {
   const darkMode = useSelector(themeSliceSelector);
   const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ export const Navbar = ({ sidebarVisible, className, ...props }) => {
   }
 
   return (
-    <header { ...props } className={ _className }>
+    <header className={ _className }>
       <div className={ headerLogoClassName }>
         <img src={ darkMode ? logoLight : logoDark } alt="Header logo" />
       </div>
