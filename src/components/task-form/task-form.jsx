@@ -68,13 +68,13 @@ export const TaskForm = ({ editing }) => {
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    const _title = Boolean(title);
-    const _description = Boolean(description);
-    const _subtasks = subtasks.filter(({ value }) => !value);
+    const isTitleValid = Boolean(title);
+    const isDescriptionValid = Boolean(description);
+    const emptySubtasks = subtasks.filter(({ value }) => !value);
 
-    if (_title && _description && _subtasks.length === 0) {
-      console.log('new task');
+    if (isTitleValid && isDescriptionValid && emptySubtasks.length === 0) {
       const newTask = {
+        id: uuidv4(),
         title,
         description,
         subtasks,
@@ -84,11 +84,13 @@ export const TaskForm = ({ editing }) => {
       dispatch(addTask(newTask));
       dispatch(hideAddTaskModal());
     } else {
+      const errorSubtasksIds = emptySubtasks.map(({ id }) => id);
+
       setErrors((prevState) => ({
         ...prevState,
-        title: !_title,
-        description: !_description,
-        subtasks: _subtasks
+        title: !isTitleValid,
+        description: !isDescriptionValid,
+        subtasks: errorSubtasksIds
       }));
     }
   }
@@ -119,7 +121,7 @@ export const TaskForm = ({ editing }) => {
           <TextField key={ id }
               closable={ true }
               value={ value }
-              error={ errors.subtasks.find(({ id: taskId }) => taskId === id) }
+              error={ errors.subtasks.includes(id) }
               onChange={ (event) => handleSubtaskValueChange(event, id) }
               onClick={ () => removeSubtask(id) } />
         )) }

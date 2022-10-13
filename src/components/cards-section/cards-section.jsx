@@ -20,12 +20,12 @@ export const CardsSection = ({ status, sectionTitle, items }) => {
   }
 
   function renderTaskCards(item) {
-    const { title, subtasks } = item;
+    const { title, subtasks, id } = item;
     const tasks = subtasks.length;
     const tasksCompleted = subtasks.filter(({ completed }) => completed).length;
     
     return (
-      <Card key={ title }
+      <Card key={ id }
           title={ title }
           tasks={ tasks }
           tasksCompleted={ tasksCompleted }

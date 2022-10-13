@@ -1,5 +1,6 @@
 [
   {
+    "id": "a-1",
     "title": "Create navbar",
     "description": "Create navbar with two sections. First section is the logo and must be of specific width. Second section contains a title which indicates the current page and an \"Add Task\" button.",
     "subtasks": [
@@ -22,6 +23,7 @@
     "status": "done"
   },
   {
+    "id": "a-2",
     "title": "Create sidebar",
     "description": "It must have two sections, first is the navigation, which are dynamic, and the second section controls the sidebar toggling and the overall theme (light/dark).",
     "subtasks": [
@@ -49,6 +51,7 @@
     "status": "done"
   },
   {
+    "id": "a-3",
     "title": "Create re-usable components",
     "description": "Create the components that will be re-used in different places on the page.",
     "subtasks": [
@@ -86,6 +89,7 @@
     "status": "in_progress"
   },
   {
+    "id": "a-4",
     "title": "Change navigation to be dynamic",
     "description": "The sidebar navigation must be dynamic, depending on what the user creates.",
     "subtasks": [

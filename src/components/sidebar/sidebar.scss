@@ -54,12 +54,12 @@
 
 
   .sidebar__toggle {
-    margin: 0 $padding-base-horizontal $padding-lg-horizontal $padding-base-horizontal;
+    margin: 0 $padding-base-horizontal $padding-lg-horizontal 0;
 
     .theme__toggle-wrapper {
       background-color: $lightest-gray;
       border-radius: $border-radius-sm;
-      margin-bottom: $padding-xs-horizontal;
+      margin: 0 0 $padding-xs-horizontal $padding-base-horizontal;
       height: $btn-lg-height;
       display: flex;
       align-items: center;
@@ -89,10 +89,17 @@
     }
 
     .sidebar--visibility-toggle {
+      padding-left: $padding-base-horizontal;
+      border-radius: 0 $btn-border-radius $btn-border-radius 0;
       height: $btn-lg-height;
       display: flex;
       align-items: center;
       cursor: pointer;
+
+      &:hover {
+        background-color: $secondary-m-purple;
+        color: $primary-m-purple;
+      }
   
       img {
         margin-right: 1rem;
@@ -106,6 +113,10 @@
 
     .theme__toggle-wrapper {
       background-color: $color-black-25;
+    }
+
+    .sidebar--visibility-toggle:hover {
+      background-color: $color-white;
     }
 
     .theme__slider::after {
