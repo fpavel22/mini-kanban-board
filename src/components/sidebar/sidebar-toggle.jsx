@@ -30,4 +30,4 @@ export const SidebarToggle = ({ darkMode, setSidebarVisible }) => {
       </div>
     </div>
   );
-}
+};

@@ -19,7 +19,7 @@ export const CardsSection = ({ status, sectionTitle, items }) => {
     dispatch(showTaskDetailsModal());
   }
 
-  function renderTaskItems(item) {
+  function renderTaskCards(item) {
     const { title, subtasks } = item;
     const tasks = subtasks.length;
     const tasksCompleted = subtasks.filter(({ completed }) => completed).length;
@@ -40,8 +40,8 @@ export const CardsSection = ({ status, sectionTitle, items }) => {
         <span className="cards__section-items">{ sectionTitle } ({ items.length })</span>
       </p>
       <div className="cards__section-content">
-        { items.map((item) => renderTaskItems(item)) }
+        { items.map((item) => renderTaskCards(item)) }
       </div>
     </section>
   );
-}
+};

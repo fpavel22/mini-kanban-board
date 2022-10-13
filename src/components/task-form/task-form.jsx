@@ -20,7 +20,15 @@ export const TaskForm = ({ editing }) => {
     status: 'to_do'
   });
 
+  const [ errors, setErrors ] = useState({
+    title: false,
+    description: false,
+    subtasks: []
+  });
+
   const dispatch = useDispatch();
+  
+  const { title, description, subtasks, status } = formFieldsState;
 
   function handleFormFieldsChange({ target: { name, value } }) {
     setFormFieldsState((prevState) => ({ ...prevState, [ name ]: value }));
@@ -29,36 +37,30 @@ export const TaskForm = ({ editing }) => {
   function addNewSubtask(event) {
     event.preventDefault();
 
+    const newSubtask = {
+      id: uuidv4(),
+      value: '',
+      completed: false
+    };
+
     setFormFieldsState((prevState) => ({
       ...prevState,
-      subtasks: [ ...prevState.subtasks, { id: uuidv4(), value: '', completed: false } ]
+      subtasks: [ ...prevState.subtasks, newSubtask ]
     }));
   }
 
   function removeSubtask(fieldId) {
-    const { subtasks } = formFieldsState;
     const updatedSubtasks = subtasks.filter(({ id }) => id !== fieldId);
 
-    setFormFieldsState((prevState) => {
-      return {
-        ...prevState,
-        subtasks: updatedSubtasks
-      }
-    });
+    setFormFieldsState((prevState) => ({
+      ...prevState,
+      subtasks: updatedSubtasks
+    }));
   }
 
   function handleSubtaskValueChange({ target: { value } }, fieldId) {
-    const { subtasks } = formFieldsState;
-    const updatedSubtasks = subtasks.map((task) => {
-      if (task.id === fieldId) {
-        return {
-          ...task,
-          value
-        }
-      } else {
-        return task;
-      }
-    });
+    const updatedSubtasks = subtasks.map((subtask) =>
+      subtask.id === fieldId ? { ...subtask, value } : subtask);
 
     setFormFieldsState((prevState) => ({ ...prevState, subtasks: updatedSubtasks }));
   }
@@ -66,9 +68,12 @@ export const TaskForm = ({ editing }) => {
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    const { title, description, subtasks, status } = formFieldsState;
+    const _title = Boolean(title);
+    const _description = Boolean(description);
+    const _subtasks = subtasks.filter(({ value }) => !value);
 
-    if (title && description && subtasks.length && status) {
+    if (_title && _description && _subtasks.length === 0) {
+      console.log('new task');
       const newTask = {
         title,
         description,
@@ -78,6 +83,13 @@ export const TaskForm = ({ editing }) => {
   
       dispatch(addTask(newTask));
       dispatch(hideAddTaskModal());
+    } else {
+      setErrors((prevState) => ({
+        ...prevState,
+        title: !_title,
+        description: !_description,
+        subtasks: _subtasks
+      }));
     }
   }
 
@@ -88,7 +100,8 @@ export const TaskForm = ({ editing }) => {
         <div className="task__form-group--title">Title</div>
         <TextField placeholder="e.g. Make coffee"
             name="title"
-            value={ formFieldsState.title }
+            value={ title }
+            error={ errors.title }
             onChange={ handleFormFieldsChange } />
       </div>
       <div className="task__form-group">
@@ -96,15 +109,17 @@ export const TaskForm = ({ editing }) => {
         <TextField multiline={ true }
             placeholder={ TEXTAREA_PLACEHOLDER }
             name="description"
-            value={ formFieldsState.description }
+            value={ description }
+            error={ errors.description }
             onChange={ handleFormFieldsChange } />
       </div>
       <div className="task__form-group task__form-group--subtasks">
         <div className="task__form-group--title">Subtasks</div>
-        { formFieldsState.subtasks.map(({ id, value }) => (
+        { subtasks.map(({ id, value }) => (
           <TextField key={ id }
               closable={ true }
               value={ value }
+              error={ errors.subtasks.find(({ id: taskId }) => taskId === id) }
               onChange={ (event) => handleSubtaskValueChange(event, id) }
               onClick={ () => removeSubtask(id) } />
         )) }
@@ -114,11 +129,11 @@ export const TaskForm = ({ editing }) => {
       </div>
       <div className="task__form-group">
         <div className="task__form-group--title">Status</div>
-        <Dropdown name="status" value={ formFieldsState.status } onChange={ handleFormFieldsChange } />
+        <Dropdown name="status" value={ status } onChange={ handleFormFieldsChange } />
       </div>
       <div className="task__form-group">
         <Button type="primary">{ editing ? "Save changes" : "Create task" }</Button>
       </div>
     </form>
   );
-}
+};

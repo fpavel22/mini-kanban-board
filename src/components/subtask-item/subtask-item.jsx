@@ -19,4 +19,4 @@ export const SubtaskItem = ({ completed, children }) => {
       <span className="subtask__title">{ children }</span>
     </label>
   );
-}
+};

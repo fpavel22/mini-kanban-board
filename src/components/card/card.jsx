@@ -17,4 +17,4 @@ export const Card = ({ title, tasks, tasksCompleted, ...props }) => {
       <p className="card__summary">{ tasksCompleted } of { tasks } subtasks</p>
     </div>
   );
-}
+};

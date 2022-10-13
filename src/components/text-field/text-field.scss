@@ -15,7 +15,6 @@
     display: block;
     position: relative;
     flex: 1 0 auto;
-    overflow: hidden;
 
     &:hover,
     &:focus-within {
@@ -48,12 +47,19 @@
       display: block;
       resize: none;
     }
+
+    &.text-field--multiline {
+      .text-field--feedback {
+        top: auto;
+        bottom: -2.4375rem;
+      }
+    }
   
     &.text-field--error {
       border-color: $danger-m-red;
     }
   
-    &.text-field--feedback {
+    .text-field--feedback {
       color: $danger-m-red;
       position: absolute;
       top: 50%;

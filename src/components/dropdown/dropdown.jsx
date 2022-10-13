@@ -22,4 +22,4 @@ export const Dropdown = ({ options, ...props }) => {
       )) }
     </select>
   );
-}
+};

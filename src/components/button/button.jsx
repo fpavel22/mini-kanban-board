@@ -15,4 +15,4 @@ export const Button = ({ type, size, className, children, ...props }) => {
   }, className);
 
   return <button { ...props } className={ _className }>{ children }</button>
-}
+};

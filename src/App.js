@@ -26,16 +26,16 @@ function App() {
     'app--dark': darkMode
   });
 
+  const showCardModal = () => (
+    (showAddTaskModal || showTaskDetailsModal) && <CardModal>{ renderCardModalContent() }</CardModal>
+  );
+
   const renderCardModalContent = () => (
     showAddTaskModal
       ? <TaskForm />
       : showTaskDetailsModal
         ? <TaskView />
         : null
-  );
-
-  const showCardModal = () => (
-    (showAddTaskModal || showTaskDetailsModal) && <CardModal>{ renderCardModalContent() }</CardModal>
   );
 
   const sectionProps = {

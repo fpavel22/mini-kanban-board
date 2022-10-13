@@ -10,6 +10,7 @@ export const TextField = ({ multiline, error, closable, className, onClick, ...p
   const darkMode = useSelector(themeSliceSelector);
 
   const _className = cn('text-field', {
+    'text-field--multiline': multiline,
     'text-field--error': error,
     'text-field--d-mode': darkMode
   }, className);
@@ -24,7 +25,7 @@ export const TextField = ({ multiline, error, closable, className, onClick, ...p
         { field }
         { error && <span className="text-field--feedback">Can't be empty</span> }
       </label>
-      { closable && <img className="text-field--close" src={ iconClose } alt="Close icon" onClick={ onClick } />}
+      { closable && <img className="text-field--close" src={ iconClose } alt="Close icon" onClick={ onClick } /> }
     </div>
   );
-}
+};

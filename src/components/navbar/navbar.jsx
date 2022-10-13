@@ -36,4 +36,4 @@ export const Navbar = ({ sidebarVisible, className }) => {
       </div>
     </header>
   );
-}
+};
