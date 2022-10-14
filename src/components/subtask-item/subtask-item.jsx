@@ -5,7 +5,7 @@ import { themeSliceSelector } from '../../features/themeSlice';
 
 import './subtask-item.scss';
 
-export const SubtaskItem = ({ completed, children }) => {
+export const SubtaskItem = ({ completed, children, onChange }) => {
   const darkMode = useSelector(themeSliceSelector);
 
   const _className = cn('subtask__item', {
@@ -15,7 +15,7 @@ export const SubtaskItem = ({ completed, children }) => {
 
   return (
     <label className={ _className }>
-      <input type="checkbox" checked={ completed } />
+      <input type="checkbox" checked={ completed } onChange={ onChange } />
       <span className="subtask__title">{ children }</span>
     </label>
   );

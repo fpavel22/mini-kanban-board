@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '../button';
 
-import { hideDeleteTaskModal } from '../../features/showModalSlice';
+import { toggleTaskDelete } from '../../features/showModalSlice';
 import { tasksSelector, deleteTask } from '../../features/tasksSlice';
 import './task-delete.scss';
 
@@ -11,11 +11,11 @@ export const TaskDelete = () => {
 
   function deleteSelectedTask() {
     dispatch(deleteTask(selectedTask.id));
-    dispatch(hideDeleteTaskModal());
+    dispatch(toggleTaskDelete(false));
   }
   
   function cancelAction() {
-    dispatch(hideDeleteTaskModal());
+    dispatch(toggleTaskDelete(false));
   }
 
   return (

@@ -8,6 +8,11 @@ export const REDUCERS = {
   TASKS: 'tasks'
 };
 
+export const INITIAL_TASK_FORM = {
+  addNewTask: false,
+  editTask: false
+};
+
 export const BOARD_CONTENT_LABELS = [
   { status: 'to_do', sectionTitle: 'To do' },
   { status: 'in_progress', sectionTitle: 'In progress' },
