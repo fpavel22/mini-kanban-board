@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { usePopper } from 'react-popper';
 
-import { tasksSelector } from '../../features/tasksSlice';
-import { enableEditing, showAddTaskModal, showDeleteTaskModal } from '../../features/showModalSlice';
+import { tasksSelector, updateTask } from '../../features/tasksSlice';
+import { toggleTaskForm, toggleTaskDelete } from '../../features/showModalSlice';
 import { Dropdown } from '../dropdown';
 import { Popup } from '../popup';
 import { SubtaskItem } from '../subtask-item';
@@ -17,11 +17,10 @@ export const TaskView = () => {
   const [ iconRef, setIconRef ] = useState(null);
   const [ popupRef, setPopupRef ] = useState(null);
 
+  const { selectedTask } = useSelector(tasksSelector);
   const dispatch = useDispatch();
 
   const { styles: { popper: popperStyles } } = usePopper(iconRef, popupRef);
-
-  const { selectedTask } = useSelector(tasksSelector);
 
   const { subtasks } = selectedTask;
   
@@ -32,12 +31,12 @@ export const TaskView = () => {
     if (option.value === POPUP__OPTION__VALUES.edit) {
       return  {
         ...option,
-        onClick: displayEditableTask
+        onClick: showEditDialog
       }
     } else {
       return {
         ...option,
-        onClick: deleteTask
+        onClick: showDeleteDialog
       }
     }
   });
@@ -50,13 +49,26 @@ export const TaskView = () => {
     }
   }
 
-  function displayEditableTask() {
-    dispatch(showAddTaskModal());
-    dispatch(enableEditing());
+  function showEditDialog() {
+    dispatch(toggleTaskForm({ addNewTask: false, editTask: true }));
   }
 
-  function deleteTask() {
-    dispatch(showDeleteTaskModal());
+  function showDeleteDialog() {
+    dispatch(toggleTaskDelete(true));
+  }
+
+  function handleSubtaskStatus({ target: { checked } }, subtaskId) {
+    const updatedSubtasks = selectedTask.subtasks.map((subtask) => subtask.id === subtaskId
+      ? { ...subtask, completed: checked }
+      : subtask
+    );
+
+    const task = {
+      ...selectedTask,
+      subtasks: updatedSubtasks
+    };
+
+    dispatch(updateTask(task));
   }
 
   const renderSubtasksList = (
@@ -64,7 +76,8 @@ export const TaskView = () => {
       { subtasks.map(({ id, value, completed }) => (
         <SubtaskItem key={ id }
             subtaskId={ id }
-            completed={ completed }>
+            completed={ completed }
+            onChange={ (event) => handleSubtaskStatus(event, id) }>
           { value }
         </SubtaskItem>
       )) }

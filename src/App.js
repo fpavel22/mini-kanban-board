@@ -21,29 +21,24 @@ function App() {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);
 
   const darkMode = useSelector(themeSliceSelector);
-  const {
-    showAddTaskModal,
-    showTaskDetailsModal,
-    showDeleteTaskModal,
-    editing
-  } = useSelector(showModalSelector);
+  const { taskForm: { addNewTask, editTask }, taskView, taskDelete } = useSelector(showModalSelector);
 
   const _className = cn('app', {
     'app--dark': darkMode
   });
 
   const showCardModal = () => (
-    (showAddTaskModal || showTaskDetailsModal || showDeleteTaskModal) &&
+    (taskView || taskDelete || (addNewTask || editTask)) &&
       <CardModal>{ renderCardModalContent() }</CardModal>
   );
 
   const renderCardModalContent = () => (
-    showAddTaskModal
-      ? <TaskForm editing={ editing } />
-      : showTaskDetailsModal
-        ? <TaskView />
-        : showDeleteTaskModal
-          ? <TaskDelete />
+    taskView
+      ? <TaskView />
+      : taskDelete
+        ? <TaskDelete />
+        : (addNewTask || editTask)
+          ? <TaskForm editTask={ editTask } />
           : null
   );
 

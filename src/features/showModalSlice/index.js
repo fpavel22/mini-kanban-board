@@ -1,54 +1,44 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { REDUCERS } from '../../constants';
+import { REDUCERS, INITIAL_TASK_FORM } from '../../constants';
 
 const initialState = {
-  showAddTaskModal: false,
-  showTaskDetailsModal: false,
-  showDeleteTaskModal: false,
-  editing: false
+  taskForm: INITIAL_TASK_FORM,
+  taskView: false,
+  taskDelete: false
 };
 
 const showModalSlice = createSlice({
   name: REDUCERS.SHOW_MODAL,
   initialState,
   reducers: {
-    showAddTaskModal: (state) => {
-      state.showAddTaskModal = true;
+    toggleTaskForm: (state, action) => {
+      state.taskForm = action.payload;
+      state.taskView = false;
+      state.taskDelete = false;
     },
-    hideAddTaskModal: (state) => {
-      state.showAddTaskModal = false;
+    toggleTaskView: (state, action) => {
+      state.taskForm = INITIAL_TASK_FORM;
+      state.taskView = action.payload;
+      state.taskDelete = false;
     },
-    enableEditing: (state) => {
-      state.editing = true;
+    toggleTaskDelete: (state, action) => {
+      state.taskForm = INITIAL_TASK_FORM;
+      state.taskView = false;
+      state.taskDelete = action.payload;
     },
-    disableEditing: (state) => {
-      state.editing = false;
-    },
-    showTaskDetailsModal: (state) => {
-      state.showTaskDetailsModal = true;
-    },
-    hideTaskDetailsModal: (state) => {
-      state.showTaskDetailsModal = false;
-    },
-    showDeleteTaskModal: (state) => {
-      state.showTaskDetailsModal = false;
-      state.showDeleteTaskModal = true;
-    },
-    hideDeleteTaskModal: (state) => {
-      state.showDeleteTaskModal = false;
+    hideAllContent: (state) => {
+      state.taskForm = INITIAL_TASK_FORM;
+      state.taskView = false;
+      state.taskDelete = false;
     }
   }
 });
 
 export const {
-  showAddTaskModal,
-  hideAddTaskModal,
-  enableEditing,
-  disableEditing,
-  showTaskDetailsModal,
-  hideTaskDetailsModal,
-  showDeleteTaskModal,
-  hideDeleteTaskModal
+  toggleTaskForm,
+  toggleTaskView,
+  toggleTaskDelete,
+  hideAllContent
 } = showModalSlice.actions;
 
 export const showModalSelector = (state) => state[ REDUCERS.SHOW_MODAL ];
