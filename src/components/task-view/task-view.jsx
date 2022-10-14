@@ -1,17 +1,63 @@
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { usePopper } from 'react-popper';
 
 import { tasksSelector } from '../../features/tasksSlice';
+import { enableEditing, showAddTaskModal, showDeleteTaskModal } from '../../features/showModalSlice';
 import { Dropdown } from '../dropdown';
-import { SubtaskItem } from '../subtask-item/subtask-item';
+import { Popup } from '../popup';
+import { SubtaskItem } from '../subtask-item';
+import { POPUP__OPTION__VALUES, POPUP_OPTIONS } from '../../constants';
 
+import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
 import './task-view.scss';
 
 export const TaskView = () => {
+  const [ popupVisible, setPopupVisible ] = useState(false);
+  const [ iconRef, setIconRef ] = useState(null);
+  const [ popupRef, setPopupRef ] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const { styles: { popper: popperStyles } } = usePopper(iconRef, popupRef);
+
   const { selectedTask } = useSelector(tasksSelector);
+
   const { subtasks } = selectedTask;
   
   const subtasksCount = subtasks.length;
   const subtasksCompleted = subtasks.filter(({ completed }) => completed).length;
+
+  const popupOptions = POPUP_OPTIONS.map((option) => {
+    if (option.value === POPUP__OPTION__VALUES.edit) {
+      return  {
+        ...option,
+        onClick: displayEditableTask
+      }
+    } else {
+      return {
+        ...option,
+        onClick: deleteTask
+      }
+    }
+  });
+
+  function handlePopupVisibility({ target }) {
+    if (target.className.includes('task__view-options') || target.className.includes('popup__item')) {
+      setPopupVisible(true);
+    } else {
+      setPopupVisible(false);
+    }
+  }
+
+  function displayEditableTask() {
+    dispatch(showAddTaskModal());
+    dispatch(enableEditing());
+  }
+
+  function deleteTask() {
+    dispatch(showDeleteTaskModal());
+  }
 
   const renderSubtasksList = (
     <div className="subtasks__list">
@@ -23,13 +69,19 @@ export const TaskView = () => {
         </SubtaskItem>
       )) }
     </div>
-  )
+  );
 
   return (
-    <div className="task__view">
-      <h2 className="task__view-title">
-        { selectedTask.title }
-      </h2>
+    <div className="task__view" onClick={ handlePopupVisibility }>
+      <div className="task__view-header">
+        <h2 className="task__view-title">
+          { selectedTask.title }
+        </h2>
+        <img src={ iconEllipsis }
+            className="task__view-options"
+            alt="Task view options icon"
+            ref={ setIconRef } />
+      </div>
       <p className="task__view-description">
         { selectedTask.description }
       </p>
@@ -45,6 +97,9 @@ export const TaskView = () => {
         <h5 className="task__view-label">Current status</h5>
         <Dropdown value={ selectedTask.status } disabled={ true } />
       </div>
+      { popupVisible && (
+          <Popup options={ popupOptions } style={ popperStyles } ref={ setPopupRef } />
+      ) }
     </div>
   );
 };

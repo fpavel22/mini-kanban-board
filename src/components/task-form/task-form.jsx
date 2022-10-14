@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { hideAddTaskModal } from '../../features/showModalSlice';
-import { addTask } from '../../features/tasksSlice';
+import { addTask, updateTask, tasksSelector } from '../../features/tasksSlice';
 import { Button } from '../button';
 import { TextField } from '../text-field';
 import { Dropdown } from '../dropdown';
@@ -13,11 +13,13 @@ import './task-form.scss';
 const TEXTAREA_PLACEHOLDER = "e.g. It's always good to take a break. This 15 minutes break will recharge the batteries.";
 
 export const TaskForm = ({ editing }) => {
+  const { selectedTask } = useSelector(tasksSelector);
+
   const [ formFieldsState, setFormFieldsState ] = useState({
-    title: '',
-    description: '',
-    subtasks: [],
-    status: 'to_do'
+    title: editing ? selectedTask.title : '',
+    description: editing ? selectedTask.description : '',
+    subtasks: editing ? selectedTask.subtasks : [],
+    status: editing ? selectedTask.status : 'to_do'
   });
 
   const [ errors, setErrors ] = useState({
@@ -74,14 +76,14 @@ export const TaskForm = ({ editing }) => {
 
     if (isTitleValid && isDescriptionValid && emptySubtasks.length === 0) {
       const newTask = {
-        id: uuidv4(),
+        id: editing ? selectedTask.id : uuidv4(),
         title,
         description,
         subtasks,
         status
       };
   
-      dispatch(addTask(newTask));
+      dispatch(editing ? updateTask(newTask) : addTask(newTask));
       dispatch(hideAddTaskModal());
     } else {
       const errorSubtasksIds = emptySubtasks.map(({ id }) => id);

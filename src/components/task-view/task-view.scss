@@ -2,8 +2,18 @@
 @import '../../styles/mixins/typography';
 
 .task__view {
+  .task__view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .task__view-title {
     @include header-lg;
+  }
+
+  .task__view-options {
+    cursor: pointer;
   }
 
   .task__view-description {

@@ -11,7 +11,8 @@ import {
   BoardContent,
   CardModal,
   TaskForm,
-  TaskView
+  TaskView,
+  TaskDelete
 } from './components';
 
 import './styles/App.scss';
@@ -20,22 +21,30 @@ function App() {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);
 
   const darkMode = useSelector(themeSliceSelector);
-  const { showAddTaskModal, showTaskDetailsModal } = useSelector(showModalSelector);
+  const {
+    showAddTaskModal,
+    showTaskDetailsModal,
+    showDeleteTaskModal,
+    editing
+  } = useSelector(showModalSelector);
 
   const _className = cn('app', {
     'app--dark': darkMode
   });
 
   const showCardModal = () => (
-    (showAddTaskModal || showTaskDetailsModal) && <CardModal>{ renderCardModalContent() }</CardModal>
+    (showAddTaskModal || showTaskDetailsModal || showDeleteTaskModal) &&
+      <CardModal>{ renderCardModalContent() }</CardModal>
   );
 
   const renderCardModalContent = () => (
     showAddTaskModal
-      ? <TaskForm />
+      ? <TaskForm editing={ editing } />
       : showTaskDetailsModal
         ? <TaskView />
-        : null
+        : showDeleteTaskModal
+          ? <TaskDelete />
+          : null
   );
 
   const sectionProps = {

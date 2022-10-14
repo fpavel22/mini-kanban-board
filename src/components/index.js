@@ -12,6 +12,8 @@ export * from './dropdown';
 
 export * from './navbar';
 
+export * from './popup';
+
 export * from './sidebar';
 
 export * from './subtask-item';
@@ -19,5 +21,7 @@ export * from './subtask-item';
 export * from './task-form';
 
 export * from './task-view';
+
+export * from './task-delete';
 
 export * from './text-field';
