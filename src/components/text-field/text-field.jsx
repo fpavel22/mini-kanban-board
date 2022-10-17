@@ -6,7 +6,7 @@ import { themeSliceSelector } from '../../features/themeSlice';
 import iconClose from '../../assets/icon-cross.svg';
 import './text-field.scss';
 
-export const TextField = ({ multiline, error, closable, className, onClick, ...props }) => {
+export const TextField = ({ multiline, type, error, closable, className, onClick, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
 
   const _className = cn('text-field', {
@@ -15,9 +15,11 @@ export const TextField = ({ multiline, error, closable, className, onClick, ...p
     'text-field--d-mode': darkMode
   }, className);
 
+  const _type = type ?? 'text';
+
   const field = multiline
     ? <textarea { ...props } />
-    : <input { ...props } type="text" />;
+    : <input { ...props } type={ _type } />;
 
   return (
     <div className="text-field__control">

@@ -22,7 +22,10 @@ export const TaskDelete = () => {
     <div className="task__delete">
       <h2 className="task__delete-title">Delete this task?</h2>
       <p className="task__delete-body">
-        Are you sure you want to delete the <span className="task__title">'{ selectedTask?.title }'</span> task? This action will remove the task and it cannot be reversed.
+        Are you sure you want to delete the
+        <span className="task__title">
+          '{ selectedTask?.title.substring(0, 24) }...'
+        </span> task? This action will remove the task and it cannot be reversed.
       </p>
       <div className="task__delete-btn-group">
         <Button type="danger" onClick={ deleteSelectedTask }>Delete</Button>

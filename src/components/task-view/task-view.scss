@@ -10,6 +10,12 @@
 
   .task__view-title {
     @include header-lg;
+
+    margin-right: $padding-xs-horizontal;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .task__view-options {
@@ -18,6 +24,9 @@
 
   .task__view-description {
     margin: $padding-base-horizontal 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .task__view-label {

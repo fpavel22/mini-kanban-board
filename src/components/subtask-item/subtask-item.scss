@@ -15,6 +15,9 @@
 
   .subtask__title {
     margin-left: $padding-sm-horizontal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   &.subtask__item--completed {

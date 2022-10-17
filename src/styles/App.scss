@@ -71,6 +71,40 @@ main.app {
       flex: 1;
     }
   }
+
+  .auth__form-wrapper {
+    height: calc(100vh - $navbar-height);
+    display: flex;
+    align-items: center;
+
+    .auth__form {
+      background-color: $color-white;
+      border-radius: $border-radius-base;
+      padding: $auth-form-padding;
+      margin: 0 auto;
+      width: 100%;
+      max-width: $auth-form-max-width;
+    }
+
+    .auth__form-title {
+      margin-bottom: $padding-lg-horizontal;
+      text-align: center;
+    }
+
+    .form-group {
+      display: block;
+      margin-bottom: $padding-base-horizontal;
+
+      span {
+        margin-bottom: $padding-xs-horizontal;
+        display: block;
+      }
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
 }
 
 main.app--dark {

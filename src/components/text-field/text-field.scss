@@ -47,24 +47,20 @@
       display: block;
       resize: none;
     }
-
-    &.text-field--multiline {
-      .text-field--feedback {
-        top: auto;
-        bottom: -2.4375rem;
-      }
-    }
   
     &.text-field--error {
       border-color: $danger-m-red;
+      display: flex;
+      align-items: center;
+
+      .text-field--feedback {
+        flex: 0 0 auto;
+        margin-right: $padding-sm-horizontal;
+      }
     }
   
     .text-field--feedback {
       color: $danger-m-red;
-      position: absolute;
-      top: 50%;
-      right: 1rem;
-      transform: translateY(-50%);
     }
   
     &.text-field--d-mode {

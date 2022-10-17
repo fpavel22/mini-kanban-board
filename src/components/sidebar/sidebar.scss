@@ -43,6 +43,14 @@
   
         img {
           margin-right: $padding-sm-horizontal;
+          flex: 0 0 auto;
+        }
+
+        span {
+          max-width: 80%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }

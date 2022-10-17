@@ -5,19 +5,18 @@
 .card {
   background-color: $color-white;
   padding: $card-vertical-padding $padding-sm-horizontal;
+  margin-bottom: $padding-base-horizontal;
   border-radius: $border-radius-base;
   box-shadow: 0rem .25rem .375rem rgba(54, 78, 126, 0.1);
   cursor: pointer;
-
-  // these two can probably be removed
-  max-width: 320px;
-  margin-bottom: 20px;
-  //
 
   .card__header {
     @include header-md;
 
     margin-bottom: $padding-xs-horizontal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .card__summary {
