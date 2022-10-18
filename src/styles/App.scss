@@ -73,7 +73,7 @@ main.app {
   }
 
   .auth__form-wrapper {
-    height: calc(100vh - $navbar-height);
+    min-height: 100vh;
     display: flex;
     align-items: center;
 
@@ -103,6 +103,18 @@ main.app {
 
     .btn {
       width: 100%;
+    }
+
+    .form__alt-option {
+      @include header-sm;
+
+      color: $color-black;
+      margin-top: $padding-lg-horizontal;
+
+      a {
+        color: $primary-m-purple;
+        text-decoration: underline;
+      }
     }
   }
 }

@@ -1,23 +1,38 @@
 import { useState } from 'react';
-import { Button, TextField } from "../../components";
+import { Link } from 'react-router-dom';
 
-import './register.scss';
+import { Button, TextField } from "../../components";
+import { useRegisterAccount } from '../../hooks';
 
 export const Register = () => {
-  const [ authFormState, setAuthFormState ] = useState({
-    email: '',
-    password: '',
-    username: ''
-  });
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ username, setUsername ] = useState('');
 
-  const { email, password, username } = authFormState;
+  const { loading, error, registerAccount } = useRegisterAccount();
 
-  function handleInputsChange({ target: { name, value } }) {
-    setAuthFormState((prevState) => ({ ...prevState, [ name ]: value }));
-  };
+  function handleEmailChange({ target: { value } }) {
+    setEmail(value);
+  }
 
-  function handleRegistration(event) {
+  function handlePasswordChange({ target: { value } }) {
+    setPassword(value);
+  }
+
+  function handleUsernameChange({ target: { value } }) {
+    setUsername(value);
+  }
+
+  function resetInputs() {
+    setEmail('');
+    setPassword('');
+    setUsername('');
+  }
+
+  async function handleRegistration(event) {
     event.preventDefault();
+
+    await registerAccount(email, password);
   };
 
   return (
@@ -29,22 +44,29 @@ export const Register = () => {
           <TextField type="email"
               name="email"
               value={ email }
-              onChange={ handleInputsChange } />
+              onChange={ handleEmailChange } />
         </label>
         <label className="form-group">
           <span>Password</span>
           <TextField type="password"
               name="password"
               value={ password }
-              onChange={ handleInputsChange } />
+              onChange={ handlePasswordChange } />
         </label>
         <label className="form-group">
           <span>Username</span>
           <TextField name="username"
               value={ username }
-              onChange={ handleInputsChange } />
+              onChange={ handleUsernameChange } />
         </label>
-        <Button type="primary" size="lg">Sign-up</Button>
+        { error && <p className="firebase--error">{ error }</p> }
+        <Button type="primary" size="lg" disabled={ loading }>
+          { loading ? 'Signing up...' : 'Sign-up' }
+        </Button>
+        <p className="form__alt-option">
+          Already got an account?
+          <Link to="/login">Login instead.</Link>
+        </p>
       </form>
     </div>
   );
