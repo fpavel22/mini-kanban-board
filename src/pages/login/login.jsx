@@ -1,22 +1,27 @@
 import { useState } from "react";
-import { Button, TextField } from "../../components";
+import { Link } from 'react-router-dom';
 
-import './login.scss';
+import { Button, TextField } from "../../components";
+import { useLogin } from "../../hooks";
 
 export const Login = () => {
-  const [ authFormState, setAuthFormState ] = useState({
-    email: '',
-    password: ''
-  });
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
 
-  const { email, password } = authFormState;
+  const { loading, error, login } = useLogin();
 
-  function handleInputsChange({ target: { name, value } }) {
-    setAuthFormState((prevState) => ({ ...prevState, [ name ]: value }));
+  function handleEmailChange({ target: { value } }) {
+    setEmail(value);
   };
 
-  function handleLogin(event) {
+  function handlePasswordChange({ target: { value } }) {
+    setPassword(value);
+  };
+
+  async function handleLogin(event) {
     event.preventDefault();
+
+    await login(email, password);
   }
 
   return (
@@ -28,16 +33,23 @@ export const Login = () => {
           <TextField type="email"
               name="email"
               value={ email }
-              onChange={ handleInputsChange } />
+              onChange={ handleEmailChange } />
         </label>
         <label className="form-group">
           <span>Password</span>
           <TextField type="password"
               name="password"
               value={ password }
-              onChange={ handleInputsChange } />
+              onChange={ handlePasswordChange } />
         </label>
-        <Button type="primary" size="lg">Login</Button>
+        { error && <p className="firebase--error">{ error }</p> }
+        <Button type="primary" size="lg" disabled={ loading }>
+          { loading ? 'Logging in...' : 'Login' }
+        </Button>
+        <p className="form__alt-option">
+          Don't have an account?
+          <Link to="/register">Register a new account.</Link>
+        </p>
       </form>
     </div>
   );

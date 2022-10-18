@@ -1,17 +1,24 @@
+import { useState } from 'react';
 import { useSelector } from "react-redux";
 
 import { showModalSelector } from '../../features/showModalSlice';
 import {
-  Sidebar,
   BoardContent,
   CardModal,
+  Navbar,
+  Sidebar,
   TaskForm,
   TaskView,
   TaskDelete
 } from '../../components';
 
-export const LandingPage = ({ sidebarVisible, setSidebarVisible }) => {
-  const { taskForm: { addNewTask, editTask }, taskView, taskDelete } = useSelector(showModalSelector);
+export const LandingPage = () => {
+  const [ sidebarVisible, setSidebarVisible ] = useState(true);
+  const {
+    taskForm: { addNewTask, editTask },
+    taskView,
+    taskDelete
+  } = useSelector(showModalSelector);
 
   const showCardModal = () => (
     (taskView || taskDelete || (addNewTask || editTask)) &&
@@ -28,11 +35,19 @@ export const LandingPage = ({ sidebarVisible, setSidebarVisible }) => {
           : null
   );
 
+  const sidebarProps = {
+    sidebarVisible,
+    setSidebarVisible
+  };
+
   return (
-    <div className="app__content-wrapper">
-      <Sidebar sidebarVisible={ sidebarVisible } setSidebarVisible={ setSidebarVisible } />
-      <BoardContent />
-      { showCardModal() }
-    </div>
+    <>
+      <Navbar { ...sidebarProps } />
+      <div className="app__content-wrapper">
+        <Sidebar { ...sidebarProps } />
+        <BoardContent />
+        { showCardModal() }
+      </div>
+    </>
   );
 };
