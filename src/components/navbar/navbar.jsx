@@ -2,18 +2,13 @@ import { useSelector } from "react-redux";
 import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
-import { tasksSelector } from "../../features/tasksSlice";
-import { userSelector } from "../../features/userSlice";
 import { NavbarBtnGroup } from "./navbar-btn-group";
 
 import logoDark from '../../assets/logo-dark.svg';
 import logoLight from '../../assets/logo-light.svg';
-import './navbar.scss';
 
 export const Navbar = ({ sidebarVisible, className }) => {
   const darkMode = useSelector(themeSliceSelector);
-  const { tasksList } = useSelector(tasksSelector);
-  const user = useSelector(userSelector);
 
   const _className = cn('header', {
     'header--d-mode': darkMode

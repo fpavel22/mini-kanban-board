@@ -1,4 +1,7 @@
-export const POPUP_DANGER_VALUE = 'danger';
+export const POPUP_STATES = {
+  DANGER: 'danger',
+  IMPORTANT: 'important'
+};
 
 export const SIZE = {
   LG: 'lg'
@@ -14,21 +17,6 @@ export const REDUCERS = {
 export const INITIAL_TASK_FORM = {
   addNewTask: false,
   editTask: false
-};
-
-export const FIREBASE_SIGNUP_ERRORS = {
-  EMAIL_USED: 'auth/email-already-in-use',
-  INVALID_EMAIL: 'auth/invalid-email',
-  WEAK_PASSWORD: 'auth/weak-password',
-  NOT_ALLOWED: 'auth/operation-not-allowed'
-};
-
-export const FIREBASE_LOGIN_ERRORS = {
-  INVALID_EMAIL: 'auth/invalid-email',
-  WRONG_PASSWORD: 'auth/wrong-password',
-  INTERNAL_ERROR: 'auth/internal-error',
-  USER_NOT_FOUND: 'auth/user-not-found',
-  REQUEST_LIMIT: 'auth/too-many-requests'
 };
 
 export const BOARD_CONTENT_LABELS = [
@@ -59,4 +47,15 @@ export const POPPER_PLACEMENTS = {
   bottom: 'bottom',
   bottomRight: 'bottom-end',
   bottomLeft: 'bottom-start'
+};
+
+export const FIREBASE_AUTH_ERRORS = {
+  INVALID_EMAIL: 'auth/invalid-email',
+  WRONG_PASSWORD: 'auth/wrong-password',
+  INTERNAL_ERROR: 'auth/internal-error',
+  USER_NOT_FOUND: 'auth/user-not-found',
+  REQUEST_LIMIT: 'auth/too-many-requests',
+  EMAIL_USED: 'auth/email-already-in-use',
+  WEAK_PASSWORD: 'auth/weak-password',
+  NOT_ALLOWED: 'auth/operation-not-allowed'
 };

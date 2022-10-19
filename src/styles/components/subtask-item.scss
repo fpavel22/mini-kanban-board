@@ -1,7 +1,3 @@
-@import '../../styles/colors';
-@import '../../styles/variables';
-@import '../../styles/mixins/typography';
-
 .subtask__item {
   @include header-sm;
 

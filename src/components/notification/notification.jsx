@@ -3,8 +3,6 @@ import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
 
-import './notification.scss';
-
 export const Notification = ({ className, children, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
 

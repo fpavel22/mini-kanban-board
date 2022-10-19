@@ -1,9 +1,8 @@
-@import '../../styles/variables';
-
 .board__content {
   padding: $padding-base-horizontal;
   display: flex;
   gap: $flex-row-gap $flex-column-gap;
+  flex: 1;
 
   .cards__section,
   .empty__board {

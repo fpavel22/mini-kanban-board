@@ -1,23 +1,25 @@
 import { Link } from 'react-router-dom';
+import { PageRedirect } from '../../components';
+
 import './page-not-found.scss';
 
 export const PageNotFound = () => {
   return (
-    <div className="page--not-found">
-      <div className="grid__wrapper">
-        <div className="grid-item">4</div>
-        <div className="grid-item">4</div>
-        <div className="grid-item">0</div>
-        <div className="grid-item highlighted">4</div>
-        <div className="grid-item highlighted">0</div>
-        <div className="grid-item highlighted">4</div>
-        <div className="grid-item">0</div>
-        <div className="grid-item">4</div>
-        <div className="grid-item">0</div>
+    <div className="not__found">
+      <div className="grid__nums-container">
+        <div className="grid-num">4</div>
+        <div className="grid-num">4</div>
+        <div className="grid-num">0</div>
+        <div className="grid-num highlighted">4</div>
+        <div className="grid-num highlighted">0</div>
+        <div className="grid-num highlighted">4</div>
+        <div className="grid-num">0</div>
+        <div className="grid-num">4</div>
+        <div className="grid-num">0</div>
       </div>
-      <div className="not-found__content">
-        <p>Page not found, <Link to="/">go back</Link>.</p>
-      </div>
+      <PageRedirect center={ true }>
+        <span>Page not found, <Link to="/">go back</Link>.</span>
+      </PageRedirect>
     </div>
   );
 }

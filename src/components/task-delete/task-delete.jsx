@@ -4,8 +4,6 @@ import { Button } from '../button';
 import { toggleTaskDelete } from '../../features/showModalSlice';
 import { tasksSelector, deleteTask } from '../../features/tasksSlice';
 
-import './task-delete.scss';
-
 export const TaskDelete = () => {
   const { selectedTask } = useSelector(tasksSelector);
   const dispatch = useDispatch();

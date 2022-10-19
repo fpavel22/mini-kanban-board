@@ -10,7 +10,6 @@ import { filterTasksByStatus } from '../../utils/board-content';
 import { BOARD_CONTENT_LABELS } from '../../constants';
 
 import mockData from '../../tasksList.json';
-import './board-content.scss';
 
 export const BoardContent = () => {
   const { tasksList } = useSelector(tasksSelector);

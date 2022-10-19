@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Link } from 'react-router-dom';
 
-import { Button, Notification, TextField } from "../../components";
-import { useLogin, useSignInWithGoogle } from "../../hooks";
+import { Button, Notification, PageRedirect, TextField } from "../../components";
+import { useLogin } from "../../hooks";
 
 export const Login = () => {
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
 
-  const { loading, error, login } = useLogin();
-  const { signInWithGoogle } = useSignInWithGoogle();
+  const { loading, error, loginWithEmailAndPassword, loginWithGoogle } = useLogin();
 
   function handleEmailChange({ target: { value } }) {
     setEmail(value);
@@ -22,11 +21,11 @@ export const Login = () => {
   async function handleLogin(event) {
     event.preventDefault();
 
-    await login(email, password);
+    await loginWithEmailAndPassword(email, password);
   }
 
   async function handleGoogleSignIn() {
-    await signInWithGoogle();
+    await loginWithGoogle();
   }
 
   return (
@@ -53,15 +52,11 @@ export const Login = () => {
         <Button type="primary" size="lg" disabled={ loading }>
           { loading ? 'Logging in...' : 'Login' }
         </Button>
-        <div className="form__alt-option">
-          <p>
-            Not a member? <Link to="/register">Sign up.</Link>
-          </p>
-          <p>
-            <Link to="/password-reset">Forgot password?</Link>
-          </p>
-        </div>
-        <Notification onClick={ handleGoogleSignIn }>Sign in with Google</Notification>
+        <PageRedirect>
+          <span>Not a member? <Link to="/register">Sign up.</Link></span>
+          <Link to="/password-reset">Forgot password?</Link>
+        </PageRedirect>
+        <Notification onClick={ handleGoogleSignIn }>Or sign in with Google</Notification>
       </form>
     </div>
   );

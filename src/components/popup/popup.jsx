@@ -4,9 +4,7 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
-import { POPUP_DANGER_VALUE } from '../../constants';
-
-import './popup.scss';
+import { POPUP_STATES } from '../../constants';
 
 export const Popup = forwardRef(({ options, ...props }, ref) => {
   const darkMode = useSelector(themeSliceSelector);
@@ -22,7 +20,8 @@ export const Popup = forwardRef(({ options, ...props }, ref) => {
         <ul { ...props } className={ _className } ref={ ref }>
           { _options.map(({ value, label, onClick }) => {
             const _className = cn('popup__item', {
-              'popup__item--danger': value === POPUP_DANGER_VALUE
+              'popup__item--danger': value === POPUP_STATES.DANGER,
+              'popup__item--important': value === POPUP_STATES.IMPORTANT
             });
 
             return <li key={ value } className={ _className } onClick={ onClick }>{ label }</li>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, TextField } from '../../components';
+import { Button, PageRedirect, TextField } from '../../components';
 import { usePasswordReset } from '../../hooks';
 
 export const PasswordReset = () => {
@@ -44,9 +44,9 @@ export const PasswordReset = () => {
         <Button type="primary" size="lg" disabled={ loading }>
           { loading ? 'Please wait...' : 'Send e-mail' }
         </Button>
-        <p className="form__alt-option">
+        <PageRedirect center={ true }>
           <Link to="/login">Back to login.</Link>
-        </p>
+        </PageRedirect>
       </form>
     </div>
   );

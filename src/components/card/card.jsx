@@ -5,8 +5,6 @@ import { themeSliceSelector } from '../../features/themeSlice';
 import { toggleTaskView } from '../../features/showModalSlice';
 import { selectTask } from '../../features/tasksSlice';
 
-import './card.scss';
-
 export const Card = ({ task, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
   const dispatch = useDispatch();

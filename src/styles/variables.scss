@@ -37,13 +37,9 @@ $cards-section-status-size: 1rem;
 $padding-horizontal: 2.125rem;
 $navbar-height: 6.05rem;
 
-// Pages
-// Auth
-$auth-form-max-width: 30rem;
-$auth-form-padding: $padding-lg-horizontal;
-
-// Not found
-$grid-cell-height: 6rem;
+// Popup
+$min-popup-width: 10.5rem;
+$max-popup-width: 20rem;
 
 // Sidebar
 $sidebar-slider-margin-left: .1875rem;
@@ -51,3 +47,11 @@ $sidebar-slider-indicator-size: .875rem;
 $sidebar-slider-height: 1.25rem;
 $sidebar-slider-width: 2.5rem;
 $sidebar-width: 18.75rem;
+
+// Pages
+// Auth
+$auth-form-max-width: 30rem;
+$auth-form-padding: $padding-lg-horizontal;
+
+// Not found
+$grid-cell-height: 6rem;

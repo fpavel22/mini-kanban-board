@@ -14,6 +14,8 @@ export * from './navbar';
 
 export * from './notification';
 
+export * from './page-redirect';
+
 export * from './popup';
 
 export * from './sidebar';

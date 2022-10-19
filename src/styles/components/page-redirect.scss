@@ -1,0 +1,15 @@
+.page-redirect {
+  @include body-md;
+
+  margin: $padding-sm-horizontal 0;
+
+  &:not(.page-redirect--center) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+  }
+
+  &.page-redirect--center {
+    text-align: center;
+  }
+}

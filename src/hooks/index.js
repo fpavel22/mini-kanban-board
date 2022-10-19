@@ -7,5 +7,3 @@ export * from './usePasswordReset';
 export * from './usePositionPopup';
 
 export * from './useRegisterAccount';
-
-export * from './useSignInWithGoogle';

@@ -2,8 +2,6 @@ import cn from 'classnames';
 
 import { Card } from '../card';
 
-import './cards-section.scss';
-
 export const CardsSection = ({ status, sectionTitle, tasks }) => {
   const sectionStatusClassName = cn('cards__section-status', {
     [ `cards__section-status--${ status }` ]: status

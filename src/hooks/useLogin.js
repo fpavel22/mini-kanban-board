@@ -1,37 +1,41 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 import { auth } from '../firebase/auth';
-import { FIREBASE_LOGIN_ERRORS } from '../constants';
+import { determineErrorMessage } from "../utils/hooks";
 
 export const useLogin = () => {
   const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
 
-  async function login(email, password) {
+  async function loginWithEmailAndPassword(email, password) {
     setError(null);
     setLoading(true);
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch({ code }) {
-      if (code === FIREBASE_LOGIN_ERRORS.INVALID_EMAIL) {
-        setError('The e-mail provided is invalid, try a different one.');
-      } else if (code === FIREBASE_LOGIN_ERRORS.WRONG_PASSWORD) {
-        setError('The password provided does not match with the account.');
-      } else if (code === FIREBASE_LOGIN_ERRORS.INTERNAL_ERROR) {
-        setError('Something went wrong, please try again.');
-      } else if (code === FIREBASE_LOGIN_ERRORS.USER_NOT_FOUND) {
-        setError('The email was not used to create an account yet.');
-      } else if (code === FIREBASE_LOGIN_ERRORS.REQUEST_LIMIT) {
-        setError('You reached the number of requests you can make, try again later.');
-      } else {
-        setError(code);
-      }
+    } catch(error) {
+      const errorContent = determineErrorMessage(error);
+      setError(errorContent);
     }
 
     setLoading(false);
   }
 
-  return { loading, error, login };
+  async function loginWithGoogle() {
+    setError(null);
+    setLoading(true);
+
+    const provider = new GoogleAuthProvider();
+
+    try {
+      await signInWithPopup(auth, provider);
+    } catch(error) {
+      setError(error.message);
+    }
+
+    setLoading(false);
+  }
+
+  return { loading, error, loginWithEmailAndPassword, loginWithGoogle };
 };

@@ -8,8 +8,6 @@ import { TextField } from '../text-field';
 import { toggleTaskForm, toggleTaskView } from '../../features/showModalSlice';
 import { addTask, updateTask, tasksSelector } from '../../features/tasksSlice';
 
-import './task-form.scss';
-
 const TEXTAREA_PLACEHOLDER = "e.g. It's always good to take a break. This 15 minutes break will recharge the batteries.";
 
 export const TaskForm = ({ editTask }) => {

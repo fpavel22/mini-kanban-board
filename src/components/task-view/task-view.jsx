@@ -10,7 +10,6 @@ import { usePositionPopup } from '../../hooks';
 import { POPPER_MODIFIERS } from '../../constants';
 
 import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
-import './task-view.scss';
 
 export const TaskView = () => {
   const [ popupVisible, setPopupVisible ] = useState(false);

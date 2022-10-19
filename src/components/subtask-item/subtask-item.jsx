@@ -3,8 +3,6 @@ import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
 
-import './subtask-item.scss';
-
 export const SubtaskItem = ({ completed, children, onChange }) => {
   const darkMode = useSelector(themeSliceSelector);
 

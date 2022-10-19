@@ -2,13 +2,14 @@
 @import '../../styles/variables';
 @import '../../styles/mixins/typography';
 
-.page--not-found {
+.not__found {
+  min-height: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  .grid__wrapper {
+  .grid__nums-container {
     margin-bottom: $padding-base-horizontal;
     height: 100%;
     display: grid;
@@ -16,7 +17,7 @@
     grid-auto-rows: $grid-cell-height;
     row-gap: .5rem;
 
-    .grid-item {
+    .grid-num {
       font-size: $grid-cell-height;
       display: flex;
       align-items: center;
@@ -25,9 +26,5 @@
         color: $danger-m-red;
       }
     }
-  }
-
-  .not-found__content {
-    @include header-md;
   }
 }

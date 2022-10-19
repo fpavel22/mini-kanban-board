@@ -1,9 +1,8 @@
-@import '../../styles/colors';
-@import '../../styles/variables';
-@import '../../styles/mixins/typography';
-
 .header {
   background-color: $color-white;
+  height: $navbar-height;
+  display: grid;
+  grid-template-columns: $sidebar-width 1fr;
   
   .header__logo,
   .header__informative {
@@ -42,26 +41,6 @@
         margin-left: $padding-base-horizontal;
         cursor: pointer;
       }
-
-      .sign-out__option {
-        background-color: $color-white;
-        color: $color-black;
-        border-radius: $border-radius-base;
-        font-weight: 500;
-        padding: $padding-sm-horizontal;
-        width: 10rem;
-        position: absolute;
-        right: 0;
-        bottom: -4rem;
-        z-index: $z-index-important;
-        overflow: hidden;
-        cursor: pointer;
-        box-shadow: 0rem .625rem 1.25rem rgba(54, 78, 126, 0.25);
-
-        &:hover {
-          background-color: $lightest-gray;
-        }
-      }
     }
   }
 
@@ -75,17 +54,5 @@
     .header__informative {
       border-color: $color-black-50;
     }
-
-    .header__btn-group {
-      .sign-out__option {
-        background-color: $color-black-25;
-        color: $color-white;
-
-        &:hover {
-          background-color: $color-black-30;
-        }
-      }
-    }
-    
   }
 }

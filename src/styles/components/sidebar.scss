@@ -1,15 +1,19 @@
-@import '../../styles/colors';
-@import '../../styles/variables';
-
 .sidebar {
   background-color: $color-white;
   border-right: 1px solid $light-gray;
+  width: $sidebar-width;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transform-origin: left;
   z-index: $z-index-medium;
+  transition: width 100ms ease, transform 100ms ease;
+
+  &.sidebar--hidden {
+    width: 0;
+    transform: scaleX(0);
+  }
 
   .sidebar__navigation {
     margin-top: $padding-base-horizontal;

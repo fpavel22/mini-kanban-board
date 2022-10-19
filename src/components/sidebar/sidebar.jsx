@@ -7,7 +7,6 @@ import { SidebarNavigation } from "./sidebar-navigation";
 import { SidebarToggle } from "./sidebar-toggle";
 
 import iconShowSidebar from "../../assets/icon-show-sidebar.svg";
-import "./sidebar.scss";
 
 export const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
   const darkMode = useSelector(themeSliceSelector);

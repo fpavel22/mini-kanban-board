@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { onAuthStateChanged } from 'firebase/auth';
 
-import { changeUserAuth } from '../features/userSlice';
+import { login, logout } from '../features/userSlice';
 import { auth } from '../firebase/auth';
 
 export const useAuthStateChange = () => {
@@ -11,19 +11,17 @@ export const useAuthStateChange = () => {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (userData) => {
-      const user = userData ? {
-        displayName: userData.displayName,
-        email: userData.email,
-        uid: userData.uid
-      } : null;
+      if (userData) {
+        const { displayName, email, uid } = userData;
+        dispatch(login({ displayName, email, uid }));
+      } else {
+        dispatch(logout());
+      }
 
-      dispatch(changeUserAuth(user));
       setAuthIsReady(true);
     });
 
-    return () => {
-      unsub();
-    }
+    return unsub;
   }, []);
 
   return { authIsReady };

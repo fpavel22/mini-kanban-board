@@ -7,8 +7,6 @@ import { themeSliceSelector } from './features/themeSlice';
 import { userSelector } from './features/userSlice';
 import { useAuthStateChange } from './hooks';
 
-import './styles/App.scss';
-
 function App() {
   const darkMode = useSelector(themeSliceSelector);
   const user = useSelector(userSelector);
@@ -24,9 +22,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={ user ? <LandingPage /> : <Navigate to="/login" /> } />
-            <Route path="/login" element={ user ? <Navigate to="/" /> : <Login /> } />
-            <Route path="/register" element={ user ? <Navigate to="/" /> : <Register /> } />
-            <Route path="/password-reset" element={ user ? <Navigate to="/" /> : <PasswordReset /> } />
+            <Route path="login" element={ user ? <Navigate to="/" /> : <Login /> } />
+            <Route path="register" element={ user ? <Navigate to="/" /> : <Register /> } />
+            <Route path="password-reset" element={ user ? <Navigate to="/" /> : <PasswordReset /> } />
             <Route path="*" element={ <PageNotFound /> } />
           </Routes>
         </BrowserRouter>
