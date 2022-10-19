@@ -1,3 +1,5 @@
+export const POPUP_DANGER_VALUE = 'danger';
+
 export const SIZE = {
   LG: 'lg'
 };
@@ -14,6 +16,21 @@ export const INITIAL_TASK_FORM = {
   editTask: false
 };
 
+export const FIREBASE_SIGNUP_ERRORS = {
+  EMAIL_USED: 'auth/email-already-in-use',
+  INVALID_EMAIL: 'auth/invalid-email',
+  WEAK_PASSWORD: 'auth/weak-password',
+  NOT_ALLOWED: 'auth/operation-not-allowed'
+};
+
+export const FIREBASE_LOGIN_ERRORS = {
+  INVALID_EMAIL: 'auth/invalid-email',
+  WRONG_PASSWORD: 'auth/wrong-password',
+  INTERNAL_ERROR: 'auth/internal-error',
+  USER_NOT_FOUND: 'auth/user-not-found',
+  REQUEST_LIMIT: 'auth/too-many-requests'
+};
+
 export const BOARD_CONTENT_LABELS = [
   { status: 'to_do', sectionTitle: 'To do' },
   { status: 'in_progress', sectionTitle: 'In progress' },
@@ -26,12 +43,20 @@ export const DROPDOWN_OPTIONS = [
   { value: 'done', label: 'Done' }
 ];
 
-export const POPUP__OPTION__VALUES = {
-  edit: 'edit',
-  delete: 'delete'
-}
-
-export const POPUP_OPTIONS = [
-  { value: POPUP__OPTION__VALUES.edit, label: 'Edit Task' },
-  { value: POPUP__OPTION__VALUES.delete, label: 'Delete Task' }
+export const POPPER_MODIFIERS = [
+  {
+    name: 'offset',
+    options: {
+      offset: [ 0, 10 ]
+    }
+  }
 ];
+
+export const POPPER_PLACEMENTS = {
+  top: 'top',
+  topLeft: 'top-start',
+  topRight: 'top-end',
+  bottom: 'bottom',
+  bottomRight: 'bottom-end',
+  bottomLeft: 'bottom-start'
+};

@@ -1,37 +1,44 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 import { auth } from '../firebase/auth';
-import { FIREBASE_LOGIN_ERRORS } from '../constants';
+import { FIREBASE_LOGIN_ERRORS } from "../constants";
 
-export const useLogin = () => {
+export const usePasswordReset = () => {
   const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
+  const [ success, setSuccess ] = useState(null);
 
-  async function login(email, password) {
-    setError(null);
+  async function passwordReset(email) {
     setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    if (email.includes('@gmail')) {
+      setError('Cannot recover Google accounts password');
+      setLoading(false);
+      return;
+    }
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch({ code }) {
+      await sendPasswordResetEmail(auth, email);
+      setSuccess(true);
+    } catch(error) {
+      const { code } = error;
+
       if (code === FIREBASE_LOGIN_ERRORS.INVALID_EMAIL) {
         setError('The e-mail provided is invalid, try a different one.');
-      } else if (code === FIREBASE_LOGIN_ERRORS.WRONG_PASSWORD) {
-        setError('The password provided does not match with the account.');
-      } else if (code === FIREBASE_LOGIN_ERRORS.INTERNAL_ERROR) {
-        setError('Something went wrong, please try again.');
       } else if (code === FIREBASE_LOGIN_ERRORS.USER_NOT_FOUND) {
         setError('The email was not used to create an account yet.');
       } else if (code === FIREBASE_LOGIN_ERRORS.REQUEST_LIMIT) {
         setError('You reached the number of requests you can make, try again later.');
       } else {
-        setError(code);
+        setError(error.message);
       }
     }
 
     setLoading(false);
   }
 
-  return { loading, error, login };
-};
+  return { loading, error, success, passwordReset };
+}

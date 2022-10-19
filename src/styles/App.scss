@@ -24,6 +24,7 @@ body {
 main.app {
   background-color: $lightest-gray;
   color: $middle-gray;
+  min-height: 100vh;
 
   *::-webkit-scrollbar {
     width: .5rem;
@@ -72,8 +73,12 @@ main.app {
     }
   }
 
-  .auth__form-wrapper {
+  .auth__form-wrapper,
+  .page--not-found {
     min-height: 100vh;
+  }
+
+  .auth__form-wrapper {
     display: flex;
     align-items: center;
 
@@ -84,6 +89,23 @@ main.app {
       margin: 0 auto;
       width: 100%;
       max-width: $auth-form-max-width;
+    }
+
+    .firebase--error,
+    .firebase--success {
+      border-radius: $border-radius-base;
+      padding: $padding-sm-horizontal;
+      margin-bottom: $padding-sm-horizontal;
+    }
+
+    .firebase--error {
+      background-color: $danger-l-red;
+      color: $color-black;
+    }
+
+    .firebase--success {
+      background-color: $success-l-green;
+      color: $color-white;
     }
 
     .auth__form-title {
@@ -106,15 +128,14 @@ main.app {
     }
 
     .form__alt-option {
-      @include header-sm;
+      @include body-md;
+      
+      margin-top: $padding-base-horizontal;
+      text-align: center;
+    }
 
-      color: $color-black;
-      margin-top: $padding-lg-horizontal;
-
-      a {
-        color: $primary-m-purple;
-        text-decoration: underline;
-      }
+    .notification {
+      margin-top: $padding-base-horizontal;
     }
   }
 }
@@ -137,8 +158,7 @@ main.app--dark {
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
+  color: $primary-m-purple;
 }
 
 ul {

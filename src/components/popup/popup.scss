@@ -14,7 +14,7 @@
     background-color: $color-black-25;
 
     .popup__item {
-      &:not(.popup__item--delete) {
+      &:not(.popup__item--danger) {
         color: $color-white;
       }
 
@@ -33,7 +33,7 @@
     }
   }
 
-  .popup__item--delete {
+  .popup__item--danger {
     color: $danger-m-red;
   }
 }

@@ -12,6 +12,10 @@
   height: $btn-height;
   cursor: pointer;
 
+  &:disabled {
+    cursor: not-allowed;
+  }
+
   &.btn--lg {
     @include header-md;
 
@@ -23,6 +27,10 @@
 
     &:hover {
       background-color: $primary-l-purple;
+    }
+
+    &:disabled {
+      background-color: lighten($primary-l-purple, 4%);
     }
   }
 

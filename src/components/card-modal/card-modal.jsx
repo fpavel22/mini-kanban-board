@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
 import { hideAllContent } from '../../features/showModalSlice';
+
 import './card-modal.scss';
 
 export const CardModal = ({ children, ...props }) => {

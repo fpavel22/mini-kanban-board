@@ -1,0 +1,25 @@
+@import '../../styles/colors';
+@import '../../styles/variables';
+
+.notification {
+  background-color: $color-black-50;
+  color: $lightest-gray;
+  margin: $padding-xs-horizontal 0;
+  padding: $padding-xs-horizontal 0;
+  border-radius: $border-radius-xs;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-black-30;
+  }
+
+  &.notification--d-mode {
+    background-color: $lightest-gray;
+    color: $color-black-50;
+
+    &:hover {
+      background-color: $light-gray;
+    }
+  }
+}

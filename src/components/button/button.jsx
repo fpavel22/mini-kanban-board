@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
 import { SIZE } from '../../constants';
+
 import './button.scss';
 
 export const Button = ({ type, size, className, children, ...props }) => {

@@ -12,7 +12,6 @@ export const useAuthStateChange = () => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (userData) => {
       const user = userData ? {
-        accessToken: userData.accessToken,
         displayName: userData.displayName,
         email: userData.email,
         uid: userData.uid

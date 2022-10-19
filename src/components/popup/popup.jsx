@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
+import { POPUP_DANGER_VALUE } from '../../constants';
+
 import './popup.scss';
 
 export const Popup = forwardRef(({ options, ...props }, ref) => {
@@ -14,25 +16,17 @@ export const Popup = forwardRef(({ options, ...props }, ref) => {
     'popup__body--d-mode': darkMode
   });
 
-  const renderPopupItems = (
-    <>
-      { _options.map(({ value, label, onClick }) => {
-        const _className = cn('popup__item', {
-          'popup__item--delete': value === 'delete'
-        });
-
-        return (
-          <li key={ value } className={ _className } onClick={ onClick }>{ label }</li>
-        );
-      }) }
-    </>
-  );
-
   return (
     <>
       { createPortal(
         <ul { ...props } className={ _className } ref={ ref }>
-          { renderPopupItems }
+          { _options.map(({ value, label, onClick }) => {
+            const _className = cn('popup__item', {
+              'popup__item--danger': value === POPUP_DANGER_VALUE
+            });
+
+            return <li key={ value } className={ _className } onClick={ onClick }>{ label }</li>
+          }) }
         </ul>,
       document.body
       ) }

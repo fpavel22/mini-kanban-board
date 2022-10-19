@@ -1,4 +1,5 @@
 import cn from 'classnames';
+
 import { Card } from '../card';
 
 import './cards-section.scss';

@@ -32,6 +32,37 @@
 
       padding-left: $padding-base-horizontal;
     }
+
+    .header__btn-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .header__btn--options {
+        margin-left: $padding-base-horizontal;
+        cursor: pointer;
+      }
+
+      .sign-out__option {
+        background-color: $color-white;
+        color: $color-black;
+        border-radius: $border-radius-base;
+        font-weight: 500;
+        padding: $padding-sm-horizontal;
+        width: 10rem;
+        position: absolute;
+        right: 0;
+        bottom: -4rem;
+        z-index: $z-index-important;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0rem .625rem 1.25rem rgba(54, 78, 126, 0.25);
+
+        &:hover {
+          background-color: $lightest-gray;
+        }
+      }
+    }
   }
 
   &.header--d-mode {
@@ -44,5 +75,17 @@
     .header__informative {
       border-color: $color-black-50;
     }
+
+    .header__btn-group {
+      .sign-out__option {
+        background-color: $color-black-25;
+        color: $color-white;
+
+        &:hover {
+          background-color: $color-black-30;
+        }
+      }
+    }
+    
   }
 }

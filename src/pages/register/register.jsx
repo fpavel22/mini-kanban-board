@@ -39,10 +39,12 @@ export const Register = () => {
     <div className="auth__form-wrapper">
       <form className="auth__form register" onSubmit={ handleRegistration }>
         <h2 className="auth__form-title">Sign-up a new account</h2>
+        { error && <p className="firebase--error">{ error }</p> }
         <label className="form-group">
           <span>E-mail</span>
           <TextField type="email"
               name="email"
+              required
               value={ email }
               onChange={ handleEmailChange } />
         </label>
@@ -50,6 +52,7 @@ export const Register = () => {
           <span>Password</span>
           <TextField type="password"
               name="password"
+              required
               value={ password }
               onChange={ handlePasswordChange } />
         </label>
@@ -59,14 +62,10 @@ export const Register = () => {
               value={ username }
               onChange={ handleUsernameChange } />
         </label>
-        { error && <p className="firebase--error">{ error }</p> }
         <Button type="primary" size="lg" disabled={ loading }>
           { loading ? 'Signing up...' : 'Sign-up' }
         </Button>
-        <p className="form__alt-option">
-          Already got an account?
-          <Link to="/login">Login instead.</Link>
-        </p>
+        <p className="form__alt-option">Already got an account? <Link to="/login">Log in.</Link></p>
       </form>
     </div>
   );

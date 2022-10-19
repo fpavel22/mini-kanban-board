@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { toggleTaskForm } from '../../features/showModalSlice';
-import { tasksSelector, getAllTasks } from '../../features/tasksSlice';
 import { Button } from '../button';
 import { CardsSection } from '../cards-section';
+import { toggleTaskForm } from '../../features/showModalSlice';
+import { tasksSelector, getAllTasks } from '../../features/tasksSlice';
 
-import { BOARD_CONTENT_LABELS } from '../../constants';
 import { filterTasksByStatus } from '../../utils/board-content';
+import { BOARD_CONTENT_LABELS } from '../../constants';
 
 import mockData from '../../tasksList.json';
 import './board-content.scss';

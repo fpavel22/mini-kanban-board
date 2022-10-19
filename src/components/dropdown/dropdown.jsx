@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
 import { DROPDOWN_OPTIONS } from '../../constants';
+
 import './dropdown.scss';
 
 export const Dropdown = ({ options, ...props }) => {

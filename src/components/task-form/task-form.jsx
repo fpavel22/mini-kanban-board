@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
+import { Button } from '../button';
+import { Dropdown } from '../dropdown';
+import { TextField } from '../text-field';
 import { toggleTaskForm, toggleTaskView } from '../../features/showModalSlice';
 import { addTask, updateTask, tasksSelector } from '../../features/tasksSlice';
-import { Button } from '../button';
-import { TextField } from '../text-field';
-import { Dropdown } from '../dropdown';
 
 import './task-form.scss';
 

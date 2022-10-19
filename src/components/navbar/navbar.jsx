@@ -1,13 +1,10 @@
-import { useSelector, useDispatch } from "react-redux";
-import { signOut } from "firebase/auth";
+import { useSelector } from "react-redux";
 import cn from 'classnames';
 
-import { Button } from '../button';
 import { themeSliceSelector } from '../../features/themeSlice';
 import { tasksSelector } from "../../features/tasksSlice";
-import { toggleTaskForm } from '../../features/showModalSlice';
-import { userSelector } from '../../features/userSlice';
-import { auth } from '../../firebase/auth';
+import { userSelector } from "../../features/userSlice";
+import { NavbarBtnGroup } from "./navbar-btn-group";
 
 import logoDark from '../../assets/logo-dark.svg';
 import logoLight from '../../assets/logo-light.svg';
@@ -18,8 +15,6 @@ export const Navbar = ({ sidebarVisible, className }) => {
   const { tasksList } = useSelector(tasksSelector);
   const user = useSelector(userSelector);
 
-  const dispatch = useDispatch();
-
   const _className = cn('header', {
     'header--d-mode': darkMode
   }, className);
@@ -28,14 +23,6 @@ export const Navbar = ({ sidebarVisible, className }) => {
     'header__logo--hidden-sidebar': !sidebarVisible
   });
 
-  function handleAddTask() {
-    dispatch(toggleTaskForm({ addNewTask: true, editTask: false }));
-  }
-
-  function handleSignout() {
-    signOut(auth);
-  }
-
   return (
     <header className={ _className }>
       <div className={ headerLogoClassName }>
@@ -43,11 +30,7 @@ export const Navbar = ({ sidebarVisible, className }) => {
       </div>
       <div className="header__informative">
         <h2 className="header__informative-title">Platform Launch</h2>
-        <div className="header__btn-group">
-          { tasksList.length > 0 &&
-          <Button type="primary" size="lg" onClick={ handleAddTask }>+ Add New Task</Button> }
-          { user && <Button type="secondary" onClick={ handleSignout }>Sign out</Button> }
-        </div>
+        <NavbarBtnGroup />
       </div>
     </header>
   );
