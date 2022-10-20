@@ -1,4 +1,8 @@
+export * from './useAddDocument';
+
 export * from './useAuthStateChange';
+
+export * from './useGetDocuments';
 
 export * from './useLogin';
 

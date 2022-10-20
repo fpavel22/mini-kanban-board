@@ -1,19 +1,21 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import { Button } from '../button';
 import { CardsSection } from '../cards-section';
 import { toggleTaskForm } from '../../features/showModalSlice';
 import { tasksSelector, getAllTasks } from '../../features/tasksSlice';
-
+import { useGetDocuments } from '../../hooks';
 import { filterTasksByStatus } from '../../utils/board-content';
-import { BOARD_CONTENT_LABELS } from '../../constants';
-
-import mockData from '../../tasksList.json';
+import { FIREBASE_QUERY, FIREBASE_COLLECTIONS, BOARD_CONTENT_LABELS } from '../../constants';
 
 export const BoardContent = () => {
   const { tasksList } = useSelector(tasksSelector);
   const dispatch = useDispatch();
+  const { boardId } = useParams();
+
+  const { loading, error, getCollectionDocs } = useGetDocuments(FIREBASE_COLLECTIONS.TASKS);
 
   function handleAddTask() {
     dispatch(toggleTaskForm({ addNewTask: true, editTask: false }));
@@ -36,12 +38,23 @@ export const BoardContent = () => {
   );
 
   useEffect(() => {
-    dispatch(getAllTasks(mockData));
-  }, []);
+    async function getTasks() {
+      if (boardId) {
+        const results = await getCollectionDocs(FIREBASE_QUERY.PAGE_ID, boardId);
+        dispatch(getAllTasks(results));
+      } else {
+        dispatch(getAllTasks([]));
+      }
+    }
+
+    getTasks();
+  }, [ boardId ]);
 
   return (
     <div className="board__content">
-      { tasksList.length > 0 ? renderCardSections() : renderEmptyBoard() }
+      { loading
+        ? <p>Loading...</p>
+        : tasksList.length > 0 ? renderCardSections() : renderEmptyBoard() }
     </div>
   );
 };

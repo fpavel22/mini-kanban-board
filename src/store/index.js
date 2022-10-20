@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { pagesReducer } from '../features/pagesSlice';
+import { boardsReducer } from '../features/boardsSlice';
 import { themeReducer } from '../features/themeSlice';
 import { showModalReducer } from '../features/showModalSlice';
 import { tasksReducer } from '../features/tasksSlice';
@@ -8,7 +8,7 @@ import { REDUCERS } from '../constants';
 
 export const store = configureStore({
   reducer: {
-    [ REDUCERS.PAGES]: pagesReducer,
+    [ REDUCERS.BOARDS]: boardsReducer,
     [ REDUCERS.THEME ]: themeReducer,
     [ REDUCERS.SHOW_MODAL ]: showModalReducer,
     [ REDUCERS.TASKS ]: tasksReducer,

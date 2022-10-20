@@ -7,10 +7,20 @@ export const SIZE = {
   LG: 'lg'
 };
 
+export const FIREBASE_COLLECTIONS = {
+  BOARDS: 'boards',
+  TASKS: 'tasks'
+};
+
+export const FIREBASE_QUERY = {
+  CREATED_BY: 'createdBy',
+  PAGE_ID: 'pageId'
+}
+
 export const REDUCERS = {
   THEME: 'theme',
   SHOW_MODAL: 'show_modal',
-  PAGES: 'pages',
+  BOARDS: 'boards',
   TASKS: 'tasks',
   USER: 'user'
 };

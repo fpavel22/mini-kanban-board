@@ -11,28 +11,32 @@ import {
   TaskView,
   TaskDelete
 } from '../../components';
+import { BoardForm } from '../../components/board-form/board-form';
 
 export const LandingPage = () => {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);
   const {
+    boardForm,
     taskForm: { addNewTask, editTask },
     taskView,
     taskDelete
   } = useSelector(showModalSelector);
 
   const showCardModal = () => (
-    (taskView || taskDelete || (addNewTask || editTask)) &&
+    (boardForm || taskView || taskDelete || (addNewTask || editTask)) &&
       <CardModal>{ renderCardModalContent() }</CardModal>
   );
 
   const renderCardModalContent = () => (
-    taskView
-      ? <TaskView />
-      : taskDelete
-        ? <TaskDelete />
-        : (addNewTask || editTask)
-          ? <TaskForm editTask={ editTask } />
-          : null
+    boardForm
+      ? <BoardForm />
+      : taskView
+        ? <TaskView />
+        : taskDelete
+          ? <TaskDelete />
+          : (addNewTask || editTask)
+            ? <TaskForm editTask={ editTask } />
+            : null
   );
 
   const sidebarProps = {

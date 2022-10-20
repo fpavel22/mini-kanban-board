@@ -13,6 +13,7 @@ export const useAuthStateChange = () => {
     const unsub = onAuthStateChanged(auth, (userData) => {
       if (userData) {
         const { displayName, email, uid, emailVerified } = userData;
+
         dispatch(login({ displayName, email, uid, emailVerified }));
       } else {
         dispatch(logout());
