@@ -10,6 +10,7 @@ export const SIZE = {
 export const REDUCERS = {
   THEME: 'theme',
   SHOW_MODAL: 'show_modal',
+  PAGES: 'pages',
   TASKS: 'tasks',
   USER: 'user'
 };

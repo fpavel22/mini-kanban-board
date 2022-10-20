@@ -14,13 +14,11 @@ export const usePasswordReset = () => {
     setError(null);
     setSuccess(null);
 
-    if (email.includes('@gmail')) {
-      setError('Cannot recover Google accounts password');
-      setLoading(false);
-      return;
-    }
-
     try {
+      if (email.includes('@gmail')) {
+        throw new Error('Cannot recover Google accounts passwords.');
+      }
+
       await sendPasswordResetEmail(auth, email);
       setSuccess(true);
     } catch(error) {
