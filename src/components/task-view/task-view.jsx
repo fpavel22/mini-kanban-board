@@ -67,9 +67,9 @@ export const TaskView = () => {
   );
 
   return (
-    <div className="task__view">
+    <div className="form task__view">
       <div className="task__view-header">
-        <h2 className="task__view-title">
+        <h2 className="form__title">
           { selectedTask.title }
         </h2>
         <img src={ iconEllipsis }

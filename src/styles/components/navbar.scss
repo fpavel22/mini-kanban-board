@@ -1,8 +1,11 @@
 .header {
   background-color: $color-white;
   height: $navbar-height;
+  position: sticky;
+  top: 0;
   display: grid;
   grid-template-columns: $sidebar-width 1fr;
+  z-index: $z-index-important;
   
   .header__logo,
   .header__informative {

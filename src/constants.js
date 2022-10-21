@@ -1,3 +1,5 @@
+export const TEXTAREA_PLACEHOLDER = "e.g. It's always good to take a break. This 15 minutes break will recharge the batteries.";
+
 export const POPUP_STATES = {
   DANGER: 'danger',
   IMPORTANT: 'important'

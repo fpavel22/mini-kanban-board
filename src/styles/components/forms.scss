@@ -1,0 +1,19 @@
+.form {
+  .form__title {
+    @include header-lg;
+  }
+
+  .form__group {
+    margin: $padding-base-horizontal 0;
+  }
+
+  .form__group-title {
+    color: $middle-gray;
+    margin-bottom: $padding-xs-horizontal;
+  }
+
+  .btn {
+    font-weight: inherit;
+    width: 100%;
+  }
+}

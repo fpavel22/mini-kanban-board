@@ -6,13 +6,8 @@
   }
 
   .task__view-title {
-    @include header-lg;
-
     margin-right: $padding-xs-horizontal;
     max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .task__view-options {

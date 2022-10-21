@@ -9,9 +9,7 @@ import { TextField } from '../text-field';
 import { toggleTaskForm, toggleTaskView } from '../../features/showModalSlice';
 import { addTask, updateTask, tasksSelector } from '../../features/tasksSlice';
 import { useSetDocument } from '../../hooks';
-import { FIREBASE_COLLECTIONS } from '../../constants';
-
-const TEXTAREA_PLACEHOLDER = "e.g. It's always good to take a break. This 15 minutes break will recharge the batteries.";
+import { TEXTAREA_PLACEHOLDER, FIREBASE_COLLECTIONS } from '../../constants';
 
 export const TaskForm = ({ editTask }) => {
   const { selectedTask } = useSelector(tasksSelector);
@@ -109,20 +107,20 @@ export const TaskForm = ({ editTask }) => {
   }
 
   return (
-    <form className="task__form" onSubmit={ handleFormSubmit }>
+    <form className="form task__form" onSubmit={ handleFormSubmit }>
       { editTask &&
         <span className="task__form--go-back" onClick={ handleGoBack }>&#x2190; Go back</span> }
-      <h2 className="task__form-title">{ editTask ? "Edit" : "Add New" } Task</h2>
-      <div className="task__form-group">
-        <div className="task__form-group--title">Title</div>
+      <h2 className="form__title">{ editTask ? "Edit" : "Add New" } Task</h2>
+      <div className="form__group">
+        <p className="form__group-title">Title</p>
         <TextField placeholder="e.g. Make coffee"
             name="title"
             value={ title }
             error={ errors.title }
             onChange={ handleFormFieldsChange } />
       </div>
-      <div className="task__form-group">
-        <div className="task__form-group--title">Description</div>
+      <div className="form__group">
+        <p className="form__group-title">Description</p>
         <TextField multiline={ true }
             placeholder={ TEXTAREA_PLACEHOLDER }
             name="description"
@@ -130,8 +128,8 @@ export const TaskForm = ({ editTask }) => {
             error={ errors.description }
             onChange={ handleFormFieldsChange } />
       </div>
-      <div className="task__form-group task__form-group--subtasks">
-        <div className="task__form-group--title">Subtasks</div>
+      <div className="form__group task__form-group--subtasks">
+        <p className="form__group-title">Subtasks</p>
         { subtasks.map(({ id, value }) => (
           <TextField key={ id }
               closable={ true }
@@ -141,18 +139,17 @@ export const TaskForm = ({ editTask }) => {
               onClick={ () => removeSubtask(id) } />
         )) }
       </div>
-      <div className="task__form-group">
+      <div className="form__group">
         <Button type="secondary" onClick={ addNewSubtask }>+ Add New Task</Button>
       </div>
-      <div className="task__form-group">
-        <div className="task__form-group--title">Status</div>
+      <div className="form__group">
+        <p className="form__group-title">Status</p>
         <Dropdown name="status" value={ status } onChange={ handleFormFieldsChange } />
       </div>
-      <div className="task__form-group">
-        <Button type="primary" disabled={ loading }>
-          { editTask ? "Save changes" : "Create task" }
-        </Button>
-      </div>
+      <Button type="primary" disabled={ loading }>
+        { editTask && (loading ? "Saving..." : "Save changes") }
+        { !editTask && (loading ? "Creating..." : "Create task") }
+      </Button>
     </form>
   );
 };

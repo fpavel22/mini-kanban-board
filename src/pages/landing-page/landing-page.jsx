@@ -49,7 +49,7 @@ export const LandingPage = () => {
       <Navbar { ...sidebarProps } />
       <div className="app__content-wrapper">
         <Sidebar { ...sidebarProps } />
-        <BoardContent />
+        <BoardContent { ...sidebarProps } />
         { showCardModal() }
       </div>
     </>
