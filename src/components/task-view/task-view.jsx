@@ -6,8 +6,8 @@ import { Popup } from '../popup';
 import { SubtaskItem } from '../subtask-item';
 import { tasksSelector, updateTask } from '../../features/tasksSlice';
 import { toggleTaskForm, toggleTaskDelete } from '../../features/showModalSlice';
-import { usePositionPopup } from '../../hooks';
-import { POPPER_MODIFIERS } from '../../constants';
+import { useSetDocument, usePositionPopup } from '../../hooks';
+import { POPPER_MODIFIERS, FIREBASE_COLLECTIONS } from '../../constants';
 
 import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
 
@@ -15,8 +15,10 @@ export const TaskView = () => {
   const [ popupVisible, setPopupVisible ] = useState(false);
 
   const { selectedTask } = useSelector(tasksSelector);
-  const { popperStyles, setParentRef, setReferenceRef } = usePositionPopup(POPPER_MODIFIERS);
   const dispatch = useDispatch();
+
+  const { loading, setDocument } = useSetDocument(FIREBASE_COLLECTIONS.TASKS);
+  const { popperStyles, setParentRef, setReferenceRef } = usePositionPopup(POPPER_MODIFIERS);
 
   const { subtasks } = selectedTask;
   const subtasksCount = subtasks.length;
@@ -35,7 +37,7 @@ export const TaskView = () => {
     dispatch(toggleTaskDelete(true));
   }
 
-  function handleSubtaskStatus({ target: { checked } }, subtaskId) {
+  async function handleSubtaskStatus({ target: { checked } }, subtaskId) {
     const updatedSubtasks = selectedTask.subtasks.map((subtask) => subtask.id === subtaskId
       ? { ...subtask, completed: checked }
       : subtask
@@ -46,6 +48,7 @@ export const TaskView = () => {
       subtasks: updatedSubtasks
     };
 
+    await setDocument(selectedTask.id, task);
     dispatch(updateTask(task));
   }
 
@@ -55,8 +58,9 @@ export const TaskView = () => {
         <SubtaskItem key={ id }
             subtaskId={ id }
             completed={ completed }
+            loading={ loading }
             onChange={ (event) => handleSubtaskStatus(event, id) }>
-          { value }
+          { loading ? 'Loading...' : value }
         </SubtaskItem>
       )) }
     </div>

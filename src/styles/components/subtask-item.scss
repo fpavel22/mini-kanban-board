@@ -24,6 +24,12 @@
     color: $color-black;
   }
 
+  &.subtask__item--loading {
+    color: $secondary-m-purple;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
   &.subtask__item--d-mode {
     background-color: $color-black-25;
 

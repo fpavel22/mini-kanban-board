@@ -1,23 +1,26 @@
 import { useState } from 'react';
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 import { firestore } from '../firebase/firestore';
 
-export const useAddDocument = (collectionName) => {
+export const useSetDocument = (collectionName) => {
   const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
 
-  async function addNewDoc(data) {
+  async function setDocument(docId, data) {
     setLoading(true);
     setError(null);
 
     try {
-      await addDoc(collection(firestore, collectionName), data);
+      const docResult = doc(firestore, collectionName, docId);
+
+      await setDoc(docResult, data);
     } catch(error) {
       setError(error.message);
     }
 
     setLoading(false);
   }
-  return { loading, error, addNewDoc };
+
+  return { loading, error, setDocument };
 }

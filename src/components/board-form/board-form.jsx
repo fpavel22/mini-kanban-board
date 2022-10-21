@@ -7,14 +7,14 @@ import { TextField } from '../text-field';
 import { addBoard } from '../../features/boardsSlice';
 import { toggleBoardForm } from '../../features/showModalSlice';
 import { userSelector } from '../../features/userSlice';
-import { useAddDocument } from '../../hooks';
+import { useSetDocument } from '../../hooks';
+import { FIREBASE_COLLECTIONS } from '../../constants';
 
 export const BoardForm = () => {
   const [ boardName, setBoardName ] = useState('');
   const user = useSelector(userSelector);
   const dispatch = useDispatch();
-
-  const { loading, error, addNewDoc } = useAddDocument('boards');
+  const { loading, setDocument } = useSetDocument(FIREBASE_COLLECTIONS.BOARDS);
 
   function handleChange({ target: { value } }) {
     setBoardName(value);
@@ -23,13 +23,15 @@ export const BoardForm = () => {
   async function addNewBoard(event) {
     event.preventDefault();
 
+    const id = uuidv4();
     const newBoard = {
+      id,
       createdBy: user.uid,
-      path: uuidv4(),
+      path: id,
       pageName: boardName
     };
 
-    await addNewDoc(newBoard);
+    await setDocument(id, newBoard);
     dispatch(addBoard(newBoard));
     dispatch(toggleBoardForm(false));
   };
@@ -43,7 +45,9 @@ export const BoardForm = () => {
             value={ boardName }
             onChange={ handleChange } />
       </div>
-      <Button type="primary" size="lg">Create board</Button>
+      <Button type="primary" size="lg" disabled={ loading }>
+        { loading ? 'Creating board...': 'Create board' }
+      </Button>
     </form>
   );
 }

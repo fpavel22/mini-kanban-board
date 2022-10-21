@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Button } from '../button';
@@ -7,6 +8,8 @@ import { Dropdown } from '../dropdown';
 import { TextField } from '../text-field';
 import { toggleTaskForm, toggleTaskView } from '../../features/showModalSlice';
 import { addTask, updateTask, tasksSelector } from '../../features/tasksSlice';
+import { useSetDocument } from '../../hooks';
+import { FIREBASE_COLLECTIONS } from '../../constants';
 
 const TEXTAREA_PLACEHOLDER = "e.g. It's always good to take a break. This 15 minutes break will recharge the batteries.";
 
@@ -27,6 +30,8 @@ export const TaskForm = ({ editTask }) => {
   });
 
   const dispatch = useDispatch();
+  const { boardId } = useParams();
+  const { loading, setDocument } = useSetDocument(FIREBASE_COLLECTIONS.TASKS);
   
   const { title, description, subtasks, status } = formFieldsState;
 
@@ -69,7 +74,7 @@ export const TaskForm = ({ editTask }) => {
     setFormFieldsState((prevState) => ({ ...prevState, subtasks: updatedSubtasks }));
   }
 
-  function handleFormSubmit(event) {
+  async function handleFormSubmit(event) {
     event.preventDefault();
 
     const isTitleValid = Boolean(title);
@@ -77,14 +82,18 @@ export const TaskForm = ({ editTask }) => {
     const emptySubtasks = subtasks.filter(({ value }) => !value);
 
     if (isTitleValid && isDescriptionValid && emptySubtasks.length === 0) {
+      const id = editTask ? selectedTask.id : uuidv4();
+
       const task = {
-        id: editTask ? selectedTask.id : uuidv4(),
+        id,
+        pageId: boardId,
         title,
         description,
         subtasks,
         status
       };
-  
+
+      await setDocument(id, task);
       dispatch(editTask ? updateTask(task) : addTask(task));
       dispatch(toggleTaskForm({ addNewTask: false, editTask: false }));
     } else {
@@ -140,7 +149,9 @@ export const TaskForm = ({ editTask }) => {
         <Dropdown name="status" value={ status } onChange={ handleFormFieldsChange } />
       </div>
       <div className="task__form-group">
-        <Button type="primary">{ editTask ? "Save changes" : "Create task" }</Button>
+        <Button type="primary" disabled={ loading }>
+          { editTask ? "Save changes" : "Create task" }
+        </Button>
       </div>
     </form>
   );
