@@ -44,6 +44,11 @@
           background-color: $primary-m-purple;
           color: $color-white;
         }
+
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
   
         img {
           margin-right: $padding-sm-horizontal;
