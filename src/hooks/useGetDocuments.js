@@ -8,9 +8,6 @@ export const useGetDocuments = (collectionName) => {
   const [ error, setError ] = useState(null);
 
   async function getCollectionDocs(queryField, queryValue) {
-    setLoading(true);
-    setError(null);
-
     const _query = query(collection(firestore, collectionName), where(queryField, '==', queryValue));
 
     try {
@@ -20,13 +17,11 @@ export const useGetDocuments = (collectionName) => {
       docResults.forEach((doc) => {
         results.push(doc.data());
       });
-      
-      setLoading(false);
+
       return results;
     } catch(error) {
-      setError(error.message);
+      return error;
     }
-    setLoading(false);
   }
 
   return { loading, error, getCollectionDocs };

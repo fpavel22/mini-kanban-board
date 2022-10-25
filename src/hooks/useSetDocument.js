@@ -8,18 +8,14 @@ export const useSetDocument = (collectionName) => {
   const [ error, setError ] = useState(null);
 
   async function setDocument(docId, data) {
-    setLoading(true);
-    setError(null);
-
     try {
       const docResult = doc(firestore, collectionName, docId);
 
       await setDoc(docResult, data);
+      return data;
     } catch(error) {
-      setError(error.message);
+      return error;
     }
-
-    setLoading(false);
   }
 
   return { loading, error, setDocument };

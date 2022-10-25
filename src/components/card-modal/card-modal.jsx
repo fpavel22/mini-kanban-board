@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
+import { hideAllContent } from '../../features/modalSlice';
 import { themeSliceSelector } from '../../features/themeSlice';
-import { hideAllContent } from '../../features/showModalSlice';
 
 export const CardModal = ({ children, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);

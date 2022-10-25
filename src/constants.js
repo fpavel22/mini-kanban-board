@@ -9,16 +9,6 @@ export const SIZE = {
   LG: 'lg'
 };
 
-export const FIREBASE_COLLECTIONS = {
-  BOARDS: 'boards',
-  TASKS: 'tasks'
-};
-
-export const FIREBASE_QUERY = {
-  CREATED_BY: 'createdBy',
-  PAGE_ID: 'pageId'
-}
-
 export const REDUCERS = {
   THEME: 'theme',
   SHOW_MODAL: 'show_modal',
@@ -27,9 +17,11 @@ export const REDUCERS = {
   USER: 'user'
 };
 
-export const INITIAL_TASK_FORM = {
-  addNewTask: false,
-  editTask: false
+export const THUNK_STATUS = {
+  IDLE: 'idle',
+  LOADING: 'loading',
+  SUCCEEDED: 'succeeded',
+  FAILED: 'failed'
 };
 
 export const BOARD_CONTENT_LABELS = [
@@ -60,6 +52,16 @@ export const POPPER_PLACEMENTS = {
   bottom: 'bottom',
   bottomRight: 'bottom-end',
   bottomLeft: 'bottom-start'
+};
+
+export const FIREBASE_COLLECTIONS = {
+  BOARDS: 'boards',
+  TASKS: 'tasks'
+};
+
+export const FIREBASE_QUERY = {
+  CREATED_BY: 'createdBy',
+  PAGE_ID: 'pageId'
 };
 
 export const FIREBASE_AUTH_ERRORS = {

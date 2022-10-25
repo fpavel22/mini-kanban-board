@@ -4,17 +4,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Dropdown } from '../dropdown';
 import { Popup } from '../popup';
 import { SubtaskItem } from '../subtask-item';
-import { tasksSelector, updateTask } from '../../features/tasksSlice';
-import { toggleTaskForm, toggleTaskDelete } from '../../features/showModalSlice';
+import { toggleTaskForm, toggleTaskDelete } from '../../features/modalSlice';
+import { tasksSliceSelectors, setTask } from '../../features/tasksSlice';
 import { useSetDocument, usePositionPopup } from '../../hooks';
-import { POPPER_MODIFIERS, FIREBASE_COLLECTIONS } from '../../constants';
+import { POPPER_MODIFIERS, FIREBASE_COLLECTIONS, THUNK_STATUS } from '../../constants';
 
 import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
 
 export const TaskView = () => {
+  const [ updateSubtasksState, setUpdateSubtasksState ] = useState(THUNK_STATUS.IDLE);
   const [ popupVisible, setPopupVisible ] = useState(false);
 
-  const { selectedTask } = useSelector(tasksSelector);
+  const { selectedTaskSelector } = tasksSliceSelectors;
+
+  const selectedTask = useSelector(selectedTaskSelector);
   const dispatch = useDispatch();
 
   const { loading, setDocument } = useSetDocument(FIREBASE_COLLECTIONS.TASKS);
@@ -43,13 +46,23 @@ export const TaskView = () => {
       : subtask
     );
 
-    const task = {
-      ...selectedTask,
-      subtasks: updatedSubtasks
-    };
+    try {
+      setUpdateSubtasksState(THUNK_STATUS.LOADING);
 
-    await setDocument(selectedTask.id, task);
-    dispatch(updateTask(task));
+      const thunkArgs = {
+        setDocument,
+        taskDetails: {
+          ...selectedTask,
+          subtasks: updatedSubtasks
+        }
+      }
+  
+      await dispatch(setTask(thunkArgs));
+    } catch(error) {
+      setUpdateSubtasksState(THUNK_STATUS.FAILED)
+    } finally {
+      setUpdateSubtasksState(THUNK_STATUS.IDLE);
+    }
   }
 
   const renderSubtasksList = (
@@ -58,9 +71,9 @@ export const TaskView = () => {
         <SubtaskItem key={ id }
             subtaskId={ id }
             completed={ completed }
-            loading={ loading }
+            loading={ updateSubtasksState === THUNK_STATUS.LOADING }
             onChange={ (event) => handleSubtaskStatus(event, id) }>
-          { loading ? 'Loading...' : value }
+          { value }
         </SubtaskItem>
       )) }
     </div>

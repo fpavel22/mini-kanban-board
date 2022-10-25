@@ -1,21 +1,38 @@
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Button } from '../button';
-import { toggleTaskDelete } from '../../features/showModalSlice';
-import { tasksSelector, deleteTask } from '../../features/tasksSlice';
+import { toggleTaskDelete } from '../../features/modalSlice';
+import { tasksSliceSelectors, deleteTask } from '../../features/tasksSlice';
 import { useDeleteDocument } from '../../hooks';
-import { FIREBASE_COLLECTIONS } from '../../constants';
+import { FIREBASE_COLLECTIONS, THUNK_STATUS } from '../../constants';
+import { useState } from 'react';
 
 export const TaskDelete = () => {
-  const { selectedTask } = useSelector(tasksSelector);
+  const [ deleteTaskStatus, setDeleteTaskStatus ] = useState(THUNK_STATUS.IDLE);
+
+  const { selectedTaskSelector } = tasksSliceSelectors;
+
+  const selectedTask = useSelector(selectedTaskSelector);
   const dispatch = useDispatch();
   
-  const { loading, deleteDocument } = useDeleteDocument(FIREBASE_COLLECTIONS.TASKS);
+  const { deleteDocument } = useDeleteDocument(FIREBASE_COLLECTIONS.TASKS);
 
   async function deleteSelectedTask() {
-    await deleteDocument(selectedTask.id);
-    dispatch(deleteTask(selectedTask.id));
-    dispatch(toggleTaskDelete(false));
+    try {
+      setDeleteTaskStatus(THUNK_STATUS.LOADING);
+
+      const thunkArgs = {
+        deleteDocument,
+        id: selectedTask.id
+      }
+
+      await dispatch(deleteTask(thunkArgs));
+    } catch(error) {
+      setDeleteTaskStatus(THUNK_STATUS.FAILED)
+    } finally {
+      setDeleteTaskStatus(THUNK_STATUS.IDLE);
+      dispatch(toggleTaskDelete(false));
+    }    
   }
   
   function cancelAction() {
@@ -32,8 +49,8 @@ export const TaskDelete = () => {
         </span> task? This action will remove the task and it cannot be reversed.
       </p>
       <div className="task__delete-btn-group">
-        <Button type="danger" disabled={ loading } onClick={ deleteSelectedTask }>
-          { loading ? 'Deleting task...' : 'Delete' }
+        <Button type="danger" disabled={ deleteTaskStatus === THUNK_STATUS.LOADING } onClick={ deleteSelectedTask }>
+          { deleteTaskStatus === THUNK_STATUS.LOADING ? 'Deleting task...' : 'Delete' }
         </Button>
         <Button type="secondary" onClick={ cancelAction }>Cancel</Button>
       </div>

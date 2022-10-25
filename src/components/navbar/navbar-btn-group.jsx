@@ -4,9 +4,10 @@ import { signOut } from "firebase/auth";
 
 import { Button } from "../button";
 import { Popup } from '../popup';
+import { resetBoards } from '../../features/boardsSlice';
+import { toggleTaskForm } from "../../features/modalSlice";
+import { tasksSliceSelectors } from "../../features/tasksSlice";
 import { enableLightTheme } from "../../features/themeSlice";
-import { toggleTaskForm } from "../../features/showModalSlice";
-import { tasksSelector } from "../../features/tasksSlice";
 import { userSelector } from "../../features/userSlice";
 import { auth } from '../../firebase/auth';
 import { usePositionPopup } from '../../hooks';
@@ -15,8 +16,11 @@ import { POPPER_MODIFIERS, POPPER_PLACEMENTS } from '../../constants';
 import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
 
 export const NavbarBtnGroup = () => {
+  const { tasksSelector } = tasksSliceSelectors;
+
   const [ showMenu, setShowMenu ] = useState(false);
-  const { tasksList } = useSelector(tasksSelector);
+
+  const tasks = useSelector(tasksSelector);
   const user = useSelector(userSelector);
 
   const {
@@ -43,11 +47,12 @@ export const NavbarBtnGroup = () => {
   function handleSignout() {
     signOut(auth);
     dispatch(enableLightTheme());
+    dispatch(resetBoards());
   }
 
   return (
     <div className="header__btn-group">
-      { tasksList.length > 0 && (
+      { tasks.length > 0 && (
         <Button type="primary"
             size="lg"
             onClick={ handleAddTask }>

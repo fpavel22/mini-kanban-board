@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 
-import { showModalSelector } from '../../features/showModalSlice';
+import { modalSelector, isModalVisible } from '../../features/modalSlice';
 import {
   BoardContent,
+  BoardForm,
   CardModal,
   Navbar,
   Sidebar,
@@ -11,7 +12,7 @@ import {
   TaskView,
   TaskDelete
 } from '../../components';
-import { BoardForm } from '../../components/board-form/board-form';
+import { applyPageOverflow } from '../../utils/utils';
 
 export const LandingPage = () => {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);
@@ -20,14 +21,11 @@ export const LandingPage = () => {
     taskForm: { addNewTask, editTask },
     taskView,
     taskDelete
-  } = useSelector(showModalSelector);
+  } = useSelector(modalSelector);
 
-  const showCardModal = () => (
-    (boardForm || taskView || taskDelete || (addNewTask || editTask)) &&
-      <CardModal>{ renderCardModalContent() }</CardModal>
-  );
+  const _isModalVisible = useSelector(isModalVisible);
 
-  const renderCardModalContent = () => (
+  const renderCardModalContent = (
     boardForm
       ? <BoardForm />
       : taskView
@@ -44,13 +42,17 @@ export const LandingPage = () => {
     setSidebarVisible
   };
 
+  useEffect(() => {
+    applyPageOverflow(_isModalVisible);
+  }, [ _isModalVisible ]);
+
   return (
     <>
       <Navbar { ...sidebarProps } />
       <div className="app__content-wrapper">
         <Sidebar { ...sidebarProps } />
         <BoardContent { ...sidebarProps } />
-        { showCardModal() }
+        { _isModalVisible && <CardModal>{ renderCardModalContent }</CardModal> }
       </div>
     </>
   );

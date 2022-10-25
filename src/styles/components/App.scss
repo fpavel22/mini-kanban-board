@@ -1,3 +1,7 @@
+.modal--visible {
+  overflow: hidden;
+}
+
 main.app {
   background-color: $lightest-gray;
   color: $middle-gray;

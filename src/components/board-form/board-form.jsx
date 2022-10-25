@@ -1,59 +1,68 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Button } from '../button';
 import { TextField } from '../text-field';
-import { addBoard } from '../../features/boardsSlice';
-import { toggleBoardForm } from '../../features/showModalSlice';
+import { boardsSliceSelectors, addBoard } from '../../features/boardsSlice';
+import { toggleBoardForm } from '../../features/modalSlice';
 import { userSelector } from '../../features/userSlice';
 import { useSetDocument } from '../../hooks';
-import { FIREBASE_COLLECTIONS } from '../../constants';
+import { FIREBASE_COLLECTIONS, THUNK_STATUS } from '../../constants';
 
 export const BoardForm = () => {
   const [ boardName, setBoardName ] = useState('');
-  const [ submitError, setSubmitError ] = useState(null);
+  const [ localStatus, setLocalStatus ] = useState(THUNK_STATUS.IDLE);
 
   const user = useSelector(userSelector);
   const dispatch = useDispatch();
-  const { loading, setDocument } = useSetDocument(FIREBASE_COLLECTIONS.BOARDS);
+
+  const { setDocument } = useSetDocument(FIREBASE_COLLECTIONS.BOARDS);
 
   function handleChange({ target: { value } }) {
     setBoardName(value);
   }
 
-  async function addNewBoard(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    if (!boardName) {
-      setSubmitError(true);
-    } else {
-      const id = uuidv4();
-      const newBoard = {
-        id,
-        createdBy: user.uid,
-        path: id,
-        pageName: boardName
-      };
+    if (boardName) {
+      try {
+        setLocalStatus(THUNK_STATUS.LOADING);
+        const thunkArgs = {
+          setDocument,
+          boardData: {
+            pageName: boardName,
+            createdBy: user.uid
+          }
+        };
   
-      await setDocument(id, newBoard);
-      dispatch(addBoard(newBoard));
-      dispatch(toggleBoardForm(false));
+        await dispatch(addBoard(thunkArgs));
+      } catch(error) {
+        setLocalStatus(THUNK_STATUS.FAILED);
+      } finally {
+        setLocalStatus(THUNK_STATUS.IDLE);
+
+        dispatch(toggleBoardForm(false));
+        setBoardName('');
+      }
+    } else {
+      setLocalStatus(THUNK_STATUS.FAILED);
     }
   };
 
   return (
-    <form className="form" onSubmit={ addNewBoard }>
+    <form className="form" onSubmit={ handleSubmit }>
       <h2 className="form__title">Create new board</h2>
       <div className="form__group">
         <TextField placeholder="Board name"
             type="text"
-            error={ submitError }
+            error={ localStatus === THUNK_STATUS.FAILED }
             value={ boardName }
             onChange={ handleChange } />
       </div>
-      <Button type="primary" disabled={ loading }>
-        { loading ? 'Creating board...': 'Create board' }
+      <Button type="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
+        { localStatus === THUNK_STATUS.LOADING ? 'Creating board...': 'Create board' }
       </Button>
     </form>
   );

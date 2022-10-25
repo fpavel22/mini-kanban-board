@@ -5,23 +5,29 @@ import cn from 'classnames';
 
 import { Button } from '../button';
 import { CardsSection } from '../cards-section';
-import { toggleTaskForm } from '../../features/showModalSlice';
-import { tasksSelector, getAllTasks } from '../../features/tasksSlice';
-import { boardsSelector } from '../../features/boardsSlice';
+import { boardsSliceSelectors } from '../../features/boardsSlice';
+import { toggleTaskForm } from '../../features/modalSlice';
+import { fetchTasks, tasksSliceSelectors } from '../../features/tasksSlice';
 import { useGetDocuments } from '../../hooks';
 import { filterTasksByStatus } from '../../utils/board-content';
-import { FIREBASE_QUERY, FIREBASE_COLLECTIONS, BOARD_CONTENT_LABELS } from '../../constants';
+import { FIREBASE_COLLECTIONS, BOARD_CONTENT_LABELS, THUNK_STATUS } from '../../constants';
 
 export const BoardContent = ({ sidebarVisible }) => {
-  const { tasksList } = useSelector(tasksSelector);
+  const { boardsSelector } = boardsSliceSelectors;
+  const { tasksSelector, statusSelector, errorSelector } = tasksSliceSelectors;
+
+  const tasks = useSelector(tasksSelector);
+  const tasksStatus = useSelector(statusSelector);
+  const tasksError = useSelector(errorSelector);
+
   const boards = useSelector(boardsSelector);
   const dispatch = useDispatch();
   const { boardId } = useParams();
 
-  const { loading, getCollectionDocs } = useGetDocuments(FIREBASE_COLLECTIONS.TASKS);
+  const { getCollectionDocs } = useGetDocuments(FIREBASE_COLLECTIONS.TASKS);
 
   const isBoardCreated = boards.length > 0;
-  const isBoardEmpty = tasksList.length === 0;
+  const isBoardEmpty = tasks.length === 0;
 
   const _className = cn("board__content", {
     "board__content--expanded": !sidebarVisible,
@@ -37,7 +43,7 @@ export const BoardContent = ({ sidebarVisible }) => {
       <CardsSection key={ status }
           status={ status }
           sectionTitle={ sectionTitle }
-          tasks={ filterTasksByStatus(tasksList, status) } />
+          tasks={ filterTasksByStatus(tasks, status) } />
     ))
   );
 
@@ -52,23 +58,21 @@ export const BoardContent = ({ sidebarVisible }) => {
   );
 
   useEffect(() => {
-    async function getTasks() {
-      if (boardId) {
-        const results = await getCollectionDocs(FIREBASE_QUERY.PAGE_ID, boardId);
-        dispatch(getAllTasks(results));
-      } else {
-        dispatch(getAllTasks([]));
-      }
-    }
+    if (boardId) {
+      const thunkArgs = {
+        boardId,
+        getCollectionDocs
+      };
 
-    getTasks();
+      dispatch(fetchTasks(thunkArgs));
+    }
   }, [ boardId ]);
 
   return (
     <div className={ _className }>
-      { loading
+      { tasksStatus === THUNK_STATUS.LOADING
         ? <p>Loading...</p>
-        : tasksList.length > 0 ? renderCardSections() : renderEmptyBoard() }
+        : tasks.length > 0 ? renderCardSections() : renderEmptyBoard() }
     </div>
   );
 };

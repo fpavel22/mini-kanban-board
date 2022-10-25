@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
-import { themeSliceSelector } from '../../features/themeSlice';
-import { toggleTaskView } from '../../features/showModalSlice';
+import { toggleTaskView } from '../../features/modalSlice';
 import { selectTask } from '../../features/tasksSlice';
+import { themeSliceSelector } from '../../features/themeSlice';
 
 export const Card = ({ task, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);

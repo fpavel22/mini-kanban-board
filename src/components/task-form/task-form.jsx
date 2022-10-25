@@ -6,13 +6,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { Button } from '../button';
 import { Dropdown } from '../dropdown';
 import { TextField } from '../text-field';
-import { toggleTaskForm, toggleTaskView } from '../../features/showModalSlice';
-import { addTask, updateTask, tasksSelector } from '../../features/tasksSlice';
+import { toggleTaskForm, toggleTaskView } from '../../features/modalSlice';
+import { tasksSliceSelectors, setTask } from '../../features/tasksSlice';
 import { useSetDocument } from '../../hooks';
-import { TEXTAREA_PLACEHOLDER, FIREBASE_COLLECTIONS } from '../../constants';
+import { TEXTAREA_PLACEHOLDER, FIREBASE_COLLECTIONS, THUNK_STATUS } from '../../constants';
 
 export const TaskForm = ({ editTask }) => {
-  const { selectedTask } = useSelector(tasksSelector);
+  const [ taskStatus, setTaskStatus ] = useState(THUNK_STATUS.IDLE);
+  const { selectedTaskSelector } = tasksSliceSelectors;
+
+  const selectedTask = useSelector(selectedTaskSelector);
 
   const [ formFieldsState, setFormFieldsState ] = useState({
     title: editTask ? selectedTask.title : '',
@@ -29,7 +32,7 @@ export const TaskForm = ({ editTask }) => {
 
   const dispatch = useDispatch();
   const { boardId } = useParams();
-  const { loading, setDocument } = useSetDocument(FIREBASE_COLLECTIONS.TASKS);
+  const { setDocument } = useSetDocument(FIREBASE_COLLECTIONS.TASKS);
   
   const { title, description, subtasks, status } = formFieldsState;
 
@@ -80,19 +83,26 @@ export const TaskForm = ({ editTask }) => {
     const emptySubtasks = subtasks.filter(({ value }) => !value);
 
     if (isTitleValid && isDescriptionValid && emptySubtasks.length === 0) {
-      const id = editTask ? selectedTask.id : uuidv4();
+      try {
+        const thunkArgs = {
+          taskDetails: {
+            id: editTask ? selectedTask.id : null,
+            pageId: boardId,
+            title,
+            description,
+            subtasks,
+            status
+          },
+          setDocument
+        }
+        setTaskStatus(THUNK_STATUS.LOADING);
 
-      const task = {
-        id,
-        pageId: boardId,
-        title,
-        description,
-        subtasks,
-        status
-      };
-
-      await setDocument(id, task);
-      dispatch(editTask ? updateTask(task) : addTask(task));
+        await dispatch(setTask(thunkArgs));
+      } catch(error) {
+        setTaskStatus(THUNK_STATUS.FAILED);
+      } finally {
+        setTaskStatus(THUNK_STATUS.IDLE);
+      }
       dispatch(toggleTaskForm({ addNewTask: false, editTask: false }));
     } else {
       const errorSubtasksIds = emptySubtasks.map(({ id }) => id);
@@ -146,9 +156,9 @@ export const TaskForm = ({ editTask }) => {
         <p className="form__group-title">Status</p>
         <Dropdown name="status" value={ status } onChange={ handleFormFieldsChange } />
       </div>
-      <Button type="primary" disabled={ loading }>
-        { editTask && (loading ? "Saving..." : "Save changes") }
-        { !editTask && (loading ? "Creating..." : "Create task") }
+      <Button type="primary" disabled={ taskStatus === THUNK_STATUS.LOADING }>
+        { editTask && (taskStatus === THUNK_STATUS.LOADING ? "Saving..." : "Save changes") }
+        { !editTask && (taskStatus === THUNK_STATUS.LOADING ? "Creating..." : "Create task") }
       </Button>
     </form>
   );
