@@ -5,74 +5,63 @@ import cn from 'classnames';
 
 import { Button } from '../button';
 import { CardsSection } from '../cards-section';
-import { boardsSliceSelectors } from '../../features/boardsSlice';
-import { toggleTaskForm } from '../../features/modalSlice';
-import { fetchTasks, tasksSliceSelectors } from '../../features/tasksSlice';
-import { useGetDocuments } from '../../hooks';
+import { allBoardsSelector } from '../../features/boardsSlice';
+import { allTasksSelector, tasksStatusSelector, fetchTasks } from '../../features/tasksSlice';
 import { filterTasksByStatus } from '../../utils/board-content';
-import { FIREBASE_COLLECTIONS, BOARD_CONTENT_LABELS, THUNK_STATUS } from '../../constants';
+import { BOARD_CONTENT_LABELS, THUNK_STATUS } from '../../constants';
 
 export const BoardContent = ({ sidebarVisible }) => {
-  const { boardsSelector } = boardsSliceSelectors;
-  const { tasksSelector, statusSelector, errorSelector } = tasksSliceSelectors;
-
-  const tasks = useSelector(tasksSelector);
-  const tasksStatus = useSelector(statusSelector);
-  const tasksError = useSelector(errorSelector);
-
-  const boards = useSelector(boardsSelector);
+  const boards = useSelector(allBoardsSelector);
+  const tasks = useSelector(allTasksSelector);
+  const tasksFetchStatus = useSelector(tasksStatusSelector);
+  
   const dispatch = useDispatch();
   const { boardId } = useParams();
 
-  const { getCollectionDocs } = useGetDocuments(FIREBASE_COLLECTIONS.TASKS);
-
-  const isBoardCreated = boards.length > 0;
-  const isBoardEmpty = tasks.length === 0;
+  const boardsEmpty = boards.length === 0;
+  const tasksEmpty = tasks.length === 0;
 
   const _className = cn("board__content", {
     "board__content--expanded": !sidebarVisible,
-    "board__content--empty": isBoardEmpty
+    "board__content--empty": tasksEmpty
   });
 
-  function handleAddTask() {
-    dispatch(toggleTaskForm({ addNewTask: true, editTask: false }));
-  }
-  
-  const renderCardSections = () => (
-    BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => (
+  const renderEmptyBoard = (
+    <div className="empty__board">
+      <p>
+        { boardsEmpty
+          ? 'You haven\'t created a board yet. Create a new board first to be able to add tasks.'
+          : 'This board is empty. Create a new task to get started.'
+        }
+        { !boardsEmpty && <Button type="primary" onClick={ handleAddTask }>+ Add New Task</Button> }
+      </p>
+    </div>
+  );
+
+  const renderCardSections = (
+    BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => {
       <CardsSection key={ status }
           status={ status }
           sectionTitle={ sectionTitle }
           tasks={ filterTasksByStatus(tasks, status) } />
-    ))
+    })
   );
 
-  const renderEmptyBoard = () => (
-    <div className="empty__board">
-      <p>{ isBoardCreated
-        ? 'This board is empty. Create a new task to get started.'
-        : 'You haven\'t created a board yet. Create a new board first to be able to add tasks.' }</p>
-      { isBoardCreated && <Button type="primary" onClick={ handleAddTask }>+ Add New Task</Button> }
-      
-    </div>
-  );
+  function handleAddTask() {
+    console.log('implement new modal slice');
+  };
 
   useEffect(() => {
     if (boardId) {
-      const thunkArgs = {
-        boardId,
-        getCollectionDocs
-      };
-
-      dispatch(fetchTasks(thunkArgs));
+      dispatch(fetchTasks(boardId));
     }
   }, [ boardId ]);
 
   return (
     <div className={ _className }>
-      { tasksStatus === THUNK_STATUS.LOADING
-        ? <p>Loading...</p>
-        : tasks.length > 0 ? renderCardSections() : renderEmptyBoard() }
+      { tasksFetchStatus === THUNK_STATUS.LOADING
+        ? <p>Loading tasks...</p>
+        : tasksEmpty ? renderEmptyBoard : renderCardSections }
     </div>
   );
 };

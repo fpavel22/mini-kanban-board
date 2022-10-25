@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import cn from 'classnames';
 
 import { NavbarBtnGroup } from "./navbar-btn-group";
-import { boardsSliceSelectors } from "../../features/boardsSlice";
+import { allBoardsSelector, boardsStatusSelector } from "../../features/boardsSlice";
 import { themeSliceSelector } from '../../features/themeSlice';
 
 import logoDark from '../../assets/logo-dark.svg';
@@ -12,11 +12,10 @@ import logoLight from '../../assets/logo-light.svg';
 import { THUNK_STATUS } from '../../constants';
 
 export const Navbar = ({ sidebarVisible, className }) => {
-  const { boardsSelector, statusSelector } = boardsSliceSelectors;
-
   const darkMode = useSelector(themeSliceSelector);
-  const boards = useSelector(boardsSelector);
-  const boardsStatus = useSelector(statusSelector);
+  const boards = useSelector(allBoardsSelector);
+  const boardsStatus = useSelector(boardsStatusSelector);
+
   const { boardId } = useParams();
 
   const _className = cn('header', {

@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
-import { FIREBASE_QUERY, REDUCERS, THUNK_STATUS } from '../../constants';
+
+import { getCollectionDocs, setDocument, deleteDocument } from '../../utils/firebase';
+import { REDUCERS, THUNK_STATUS, FIREBASE_COLLECTIONS, FIREBASE_QUERY } from '../../constants';
 
 const initialState = {
   tasks: [],
@@ -8,30 +10,36 @@ const initialState = {
   selectedTask: null
 };
 
-export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, async (thunkArgs) => {
-  const { boardId, getCollectionDocs } = thunkArgs;
+export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, async (id) => {
+  const response = await getCollectionDocs(
+    FIREBASE_COLLECTIONS.TASKS,
+    FIREBASE_QUERY.PAGE_ID,
+    id
+  );
 
-  const response = await getCollectionDocs(FIREBASE_QUERY.PAGE_ID, boardId);
   return response;
 });
 
-export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (thunkArgs) => {
-  const { taskDetails, setDocument } = thunkArgs;
-  const id = taskDetails.id ?? nanoid();
+export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (task) => {
+  const taskId = task.id ?? nanoid();
 
-  const task = {
-    ...taskDetails,
-    id
+  const taskData = {
+    ...task,
+    id: taskId
   };
 
-  const response = await setDocument(id, task);
+  const response = await setDocument(
+    FIREBASE_COLLECTIONS.TASKS,
+    taskId,
+    taskData
+  );
+
   return response;
 });
 
-export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, async (thunkArgs) => {
-  const { deleteDocument, id } = thunkArgs;
+export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, async (id) => {
+  const response = await deleteDocument(FIREBASE_COLLECTIONS.TASKS, id);
 
-  const response = await deleteDocument(id);
   return response;
 });
 
@@ -41,6 +49,10 @@ const tasksSlice = createSlice({
   reducers: {
     selectTask: (state, action) => {
       state.selectedTask = action.payload;
+    },
+    resetTasks: (state) => {
+      state.tasks = [];
+      state.selectedTask = null;
     }
   },
   extraReducers: (builder) => {
@@ -54,12 +66,12 @@ const tasksSlice = createSlice({
         state.tasks = action.payload;
       })
       .addCase(fetchTasks.rejected, (state, action) => {
+        state.status = THUNK_STATUS.FAILED;
+
         state.error = action.error.message;
       })
       .addCase(setTask.fulfilled, (state, action) => {
-        const { id: payloadId } = action.payload;
-
-        const taskIndex = state.tasks.findIndex(({ id }) => id === payloadId);
+        const taskIndex = state.tasks.findIndex(({ id }) => id === action.payload.id);
 
         if (taskIndex >= 0) {
           state.tasks[ taskIndex ] = action.payload;
@@ -78,13 +90,11 @@ const tasksSlice = createSlice({
   }
 });
 
-export const { selectTask } = tasksSlice.actions;
+export const { selectTask, resetTasks } = tasksSlice.actions;
 
-export const tasksSliceSelectors = {
-  tasksSelector: (state) => state[ REDUCERS.TASKS ].tasks,
-  statusSelector: (state) => state[ REDUCERS.TASKS ].status,
-  errorSelector: (state) => state[ REDUCERS.TASKS ].error,
-  selectedTaskSelector: (state) => state[ REDUCERS.TASKS ].selectedTask
-};
+export const allTasksSelector = (state) => state[ REDUCERS.TASKS ].tasks;
+export const tasksStatusSelector = (state) => state[ REDUCERS.TASKS ].status;
+export const tasksErrorSelector = (state) => state[ REDUCERS.TASKS ].error;
+export const selectedTaskSelector = (state) => state[ REDUCERS.TASKS ].selectedTask;
 
 export const tasksReducer = tasksSlice.reducer;

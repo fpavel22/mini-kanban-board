@@ -6,7 +6,7 @@ import { Button } from "../button";
 import { Popup } from '../popup';
 import { resetBoards } from '../../features/boardsSlice';
 import { toggleTaskForm } from "../../features/modalSlice";
-import { tasksSliceSelectors } from "../../features/tasksSlice";
+import { allTasksSelector, resetTasks } from "../../features/tasksSlice";
 import { enableLightTheme } from "../../features/themeSlice";
 import { userSelector } from "../../features/userSlice";
 import { auth } from '../../firebase/auth';
@@ -16,20 +16,18 @@ import { POPPER_MODIFIERS, POPPER_PLACEMENTS } from '../../constants';
 import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
 
 export const NavbarBtnGroup = () => {
-  const { tasksSelector } = tasksSliceSelectors;
-
   const [ showMenu, setShowMenu ] = useState(false);
 
-  const tasks = useSelector(tasksSelector);
+  const tasks = useSelector(allTasksSelector);
   const user = useSelector(userSelector);
+
+  const dispatch = useDispatch();
 
   const {
     popperStyles,
     setParentRef,
     setReferenceRef
   } = usePositionPopup(POPPER_MODIFIERS, POPPER_PLACEMENTS.bottomRight);
-
-  const dispatch = useDispatch();
 
   const popupOptions = [
     { value: 'important', label: `Logged in as ${ user.email }` },
@@ -46,8 +44,10 @@ export const NavbarBtnGroup = () => {
 
   function handleSignout() {
     signOut(auth);
-    dispatch(enableLightTheme());
-    dispatch(resetBoards());
+    console.log('handle sign out properly');
+    // dispatch(enableLightTheme());
+    // dispatch(resetBoards());
+    // dispatch(resetTasks());
   }
 
   return (
