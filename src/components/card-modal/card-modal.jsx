@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
-import { hideAllContent } from '../../features/modalSlice';
+import { closeModal } from '../../features/modalSlice';
 import { themeSliceSelector } from '../../features/themeSlice';
 
 export const CardModal = ({ children, ...props }) => {
@@ -16,7 +16,7 @@ export const CardModal = ({ children, ...props }) => {
     const classNameList = className.split(' ');
 
     if (classNameList.includes('card__modal')) {
-      dispatch(hideAllContent());
+      dispatch(closeModal());
     }
   }
 

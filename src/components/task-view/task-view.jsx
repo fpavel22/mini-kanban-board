@@ -5,8 +5,9 @@ import { Dropdown } from '../dropdown';
 import { Popup } from '../popup';
 import { SubtaskItem } from '../subtask-item';
 import { setTask, selectedTaskSelector } from '../../features/tasksSlice';
+import { openModal } from '../../features/modalSlice';
 import { usePositionPopup } from '../../hooks';
-import { POPPER_MODIFIERS, THUNK_STATUS } from '../../constants';
+import { MODAL_CONTENT, POPPER_MODIFIERS, THUNK_STATUS } from '../../constants';
 
 import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
 
@@ -46,11 +47,11 @@ export const TaskView = () => {
   }
 
   function showEditDialog() {
-    console.log('toggle edit modal');
+    dispatch(openModal(MODAL_CONTENT.TASK_FORM_EDIT));
   }
-
+  
   function showDeleteDialog() {
-    console.log('toggle delete modal');
+    dispatch(openModal(MODAL_CONTENT.TASK_DELETE));
   }
 
   async function handleSubtaskStatus(event, id) {

@@ -9,9 +9,9 @@ import {
   boardsErrorSelector,
   activeBoardSelector
 } from '../../features/boardsSlice';
-import { toggleBoardForm } from '../../features/modalSlice';
+import { openModal } from '../../features/modalSlice';
 import { userSelector } from '../../features/userSlice';
-import { THUNK_STATUS } from '../../constants';
+import { MODAL_CONTENT, THUNK_STATUS } from '../../constants';
 
 import iconBoard from '../../assets/icon-board.svg';
 
@@ -30,7 +30,7 @@ export const SidebarNavigation = () => {
   const boardsCount = boards.length;
 
   function showBoardForm() {
-    console.log('show create board modal');
+    dispatch(openModal(MODAL_CONTENT.BOARD_FORM));
   };
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export const SidebarNavigation = () => {
     <div className="sidebar__navigation">
       <p className="sidebar__navigation-title">
         { boardsStatus === THUNK_STATUS.FAILED
-          ? 'Could not load the boards.'
+          ? boardsError
           : boardsStatus === THUNK_STATUS.LOADING
             ? 'Loading...'
             : `All Boards (${ boardsCount })` }

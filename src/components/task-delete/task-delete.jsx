@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Button } from '../button';
+import { closeModal } from '../../features/modalSlice';
 import { selectedTaskSelector, deleteTask } from '../../features/tasksSlice';
 import { THUNK_STATUS } from '../../constants';
 
@@ -19,8 +20,7 @@ export const TaskDelete = () => {
       setLocalStatus(THUNK_STATUS.FAILED);
     } finally {
       setLocalStatus(THUNK_STATUS.IDLE);
-
-      //hide modal
+      dispatch(closeModal());
     }
   }
 

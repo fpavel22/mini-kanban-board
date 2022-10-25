@@ -5,13 +5,13 @@ import { signOut } from "firebase/auth";
 import { Button } from "../button";
 import { Popup } from '../popup';
 import { resetBoards } from '../../features/boardsSlice';
-import { toggleTaskForm } from "../../features/modalSlice";
+import { toggleTaskForm, openModal } from "../../features/modalSlice";
 import { allTasksSelector, resetTasks } from "../../features/tasksSlice";
 import { enableLightTheme } from "../../features/themeSlice";
 import { userSelector } from "../../features/userSlice";
 import { auth } from '../../firebase/auth';
 import { usePositionPopup } from '../../hooks';
-import { POPPER_MODIFIERS, POPPER_PLACEMENTS } from '../../constants';
+import { POPPER_MODIFIERS, POPPER_PLACEMENTS, MODAL_CONTENT } from '../../constants';
 
 import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
 
@@ -35,7 +35,7 @@ export const NavbarBtnGroup = () => {
   ];
 
   function handleAddTask() {
-    dispatch(toggleTaskForm({ addNewTask: true, editTask: false }));
+    dispatch(openModal(MODAL_CONTENT.TASK_FORM_ADD));
   }
 
   function showOptionsMenu() {

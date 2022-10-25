@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 
-import { modalSelector, isModalVisible } from '../../features/modalSlice';
+import { modalOpenSelector, modalContentSelector } from '../../features/modalSlice';
 import {
   BoardContent,
   BoardForm,
@@ -13,29 +13,28 @@ import {
   TaskDelete
 } from '../../components';
 import { applyPageOverflow } from '../../utils/utils';
+import { MODAL_CONTENT } from '../../constants';
 
 export const LandingPage = () => {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);
-  const {
-    boardForm,
-    taskForm: { addNewTask, editTask },
-    taskView,
-    taskDelete
-  } = useSelector(modalSelector);
 
-  const _isModalVisible = useSelector(isModalVisible);
+  const modalOpen = useSelector(modalOpenSelector);
+  const modalContent = useSelector(modalContentSelector);
 
-  const renderCardModalContent = (
-    boardForm
-      ? <BoardForm />
-      : taskView
-        ? <TaskView />
-        : taskDelete
-          ? <TaskDelete />
-          : (addNewTask || editTask)
-            ? <TaskForm editTask={ editTask } />
-            : null
-  );
+  const renderCardModalContent = () => {
+    switch (modalContent) {
+      case MODAL_CONTENT.BOARD_FORM:
+        return <BoardForm />;
+      case MODAL_CONTENT.TASK_DELETE:
+        return <TaskDelete />;
+      case MODAL_CONTENT.TASK_FORM_ADD:
+        return <TaskForm />;
+      case MODAL_CONTENT.TASK_FORM_EDIT:
+        return <TaskForm editing={ true } />
+      case MODAL_CONTENT.TASK_VIEW:
+        return <TaskView />;
+    }
+  }
 
   const sidebarProps = {
     sidebarVisible,
@@ -43,8 +42,8 @@ export const LandingPage = () => {
   };
 
   useEffect(() => {
-    applyPageOverflow(_isModalVisible);
-  }, [ _isModalVisible ]);
+    applyPageOverflow(modalOpen);
+  }, [ modalOpen ]);
 
   return (
     <>
@@ -52,7 +51,7 @@ export const LandingPage = () => {
       <div className="app__content-wrapper">
         <Sidebar { ...sidebarProps } />
         <BoardContent { ...sidebarProps } />
-        { _isModalVisible && <CardModal>{ renderCardModalContent }</CardModal> }
+        { modalOpen && <CardModal>{ renderCardModalContent() }</CardModal> }
       </div>
     </>
   );

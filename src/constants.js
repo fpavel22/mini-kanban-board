@@ -24,6 +24,14 @@ export const THUNK_STATUS = {
   FAILED: 'failed'
 };
 
+export const MODAL_CONTENT = {
+  BOARD_FORM: 'board-form',
+  TASK_VIEW: 'task-view',
+  TASK_FORM_ADD: 'task-form-add',
+  TASK_FORM_EDIT: 'task-form-edit',
+  TASK_DELETE: 'task-delete',
+};
+
 export const BOARD_CONTENT_LABELS = [
   { status: 'to_do', sectionTitle: 'To do' },
   { status: 'in_progress', sectionTitle: 'In progress' },

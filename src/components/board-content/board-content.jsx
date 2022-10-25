@@ -6,9 +6,10 @@ import cn from 'classnames';
 import { Button } from '../button';
 import { CardsSection } from '../cards-section';
 import { allBoardsSelector } from '../../features/boardsSlice';
+import { openModal } from '../../features/modalSlice';
 import { allTasksSelector, tasksStatusSelector, fetchTasks } from '../../features/tasksSlice';
 import { filterTasksByStatus } from '../../utils/board-content';
-import { BOARD_CONTENT_LABELS, THUNK_STATUS } from '../../constants';
+import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '../../constants';
 
 export const BoardContent = ({ sidebarVisible }) => {
   const boards = useSelector(allBoardsSelector);
@@ -39,16 +40,16 @@ export const BoardContent = ({ sidebarVisible }) => {
   );
 
   const renderCardSections = (
-    BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => {
+    BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => (
       <CardsSection key={ status }
           status={ status }
           sectionTitle={ sectionTitle }
           tasks={ filterTasksByStatus(tasks, status) } />
-    })
+    ))
   );
 
   function handleAddTask() {
-    console.log('implement new modal slice');
+    dispatch(openModal(MODAL_CONTENT.TASK_FORM_ADD));
   };
 
   useEffect(() => {

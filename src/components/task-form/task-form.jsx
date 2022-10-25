@@ -1,21 +1,24 @@
 import { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 
 import { Button } from '../button';
 import { Dropdown } from '../dropdown';
 import { TextField } from '../text-field';
-import { setTask } from "../../features/tasksSlice";
+import { closeModal } from '../../features/modalSlice';
+import { setTask, selectedTaskSelector } from "../../features/tasksSlice";
 import { THUNK_STATUS } from "../../constants";
 
-export const TaskForm = () => {
+export const TaskForm = ({ editing }) => {
+  const selectedTask = useSelector(selectedTaskSelector);
+
   const [ localStatus, setLocalStatus ] = useState(THUNK_STATUS.IDLE);
   const [ fieldsValue, setFieldsValue ] = useState({
-    title: '',
-    description: '',
-    subtasks: [],
-    status: 'to_do'
+    title: editing ? selectedTask.title : '',
+    description: editing ? selectedTask.description : '',
+    subtasks: editing ? selectedTask.subtasks : [],
+    status: editing ? selectedTask.status : 'to_do'
   });
 
   const [ fieldsError, setFieldsError ] = useState({
@@ -67,7 +70,7 @@ export const TaskForm = () => {
   }
 
   function removeSubtask(id) {
-    const updatedSubtasks = updatedSubtasks = subtasks.filter(({ id: taskId }) => taskId !== id);
+    const updatedSubtasks = subtasks.filter(({ id: taskId }) => taskId !== id);
 
     setFieldsValue((prevState) => ({
       ...prevState,
@@ -78,11 +81,14 @@ export const TaskForm = () => {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if ([ title, description, subtasks.length ].every(Boolean)) {
+    const emptySubtasks = subtasks.filter(({ value }) => !value)
+
+    if ([ title, description, emptySubtasks.length === 0 ].every(Boolean)) {
       try {
         setLocalStatus(THUNK_STATUS.LOADING);
 
         const taskDetails = {
+          id: editing ? selectedTask.id : null,
           pageId: boardId,
           title,
           description,
@@ -95,17 +101,16 @@ export const TaskForm = () => {
         setLocalStatus(THUNK_STATUS.FAILED);
       } finally {
         setLocalStatus(THUNK_STATUS.IDLE);
-        // hide modal here
+        dispatch(closeModal());
       }
     } else {
-      const emptySubtasks = subtasks.filter(({ value }) => !value)
-      const errorSubtasksIds = emptySubtasks.map(({ id }) => id);
+      const subtasksIds = emptySubtasks.map(({ id }) => id);
 
       setFieldsError((prevState) => ({
         ...prevState,
-        title: !title,
-        description: !description,
-        subtasks: errorSubtasksIds
+        titleError: !title,
+        descriptionError: !description,
+        subtasksError: subtasksIds
       }));
     }
   }
@@ -136,7 +141,7 @@ export const TaskForm = () => {
           <TextField key={ id }
               closable={ true }
               value={ value }
-              error={ subtasksError.includes(id) }
+              error={ subtasksError?.includes(id) }
               onClick={ () => removeSubtask(id) }
               onChange={ (event) => changeSubtaskValue(event, id) } />
         )) }
@@ -149,7 +154,9 @@ export const TaskForm = () => {
         <Dropdown name="status" value={ status } onChange={ handleFormFieldsChange } />
       </div>
       <Button type="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
-        Create task
+        { localStatus === THUNK_STATUS.LOADING
+          ? 'Please wait...'
+          : `${ editing ? 'Save' : 'Create' } Task` }
       </Button>
     </form>
   );
