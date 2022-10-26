@@ -10,11 +10,17 @@ const initialState = {
   selectedTask: null
 };
 
-export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, async (id) => {
+export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, async (ids) => {
+  const { boardId, userId } = ids;
+
+  if (!boardId || !userId) {
+    return [];
+  }
+
   const response = await getCollectionDocs(
     FIREBASE_COLLECTIONS.TASKS,
-    FIREBASE_QUERY.PAGE_ID,
-    id
+    boardId,
+    userId
   );
 
   return response;
@@ -49,10 +55,6 @@ const tasksSlice = createSlice({
   reducers: {
     selectTask: (state, action) => {
       state.selectedTask = action.payload;
-    },
-    resetTasks: (state) => {
-      state.tasks = [];
-      state.selectedTask = null;
     }
   },
   extraReducers: (builder) => {
@@ -90,7 +92,7 @@ const tasksSlice = createSlice({
   }
 });
 
-export const { selectTask, resetTasks } = tasksSlice.actions;
+export const { selectTask } = tasksSlice.actions;
 
 export const allTasksSelector = (state) => state[ REDUCERS.TASKS ].tasks;
 export const tasksStatusSelector = (state) => state[ REDUCERS.TASKS ].status;

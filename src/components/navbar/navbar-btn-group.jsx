@@ -5,7 +5,7 @@ import { signOut } from "firebase/auth";
 import { Button } from "../button";
 import { Popup } from '../popup';
 import { resetBoards } from '../../features/boardsSlice';
-import { toggleTaskForm, openModal } from "../../features/modalSlice";
+import { openModal } from "../../features/modalSlice";
 import { allTasksSelector, resetTasks } from "../../features/tasksSlice";
 import { enableLightTheme } from "../../features/themeSlice";
 import { userSelector } from "../../features/userSlice";
@@ -44,10 +44,7 @@ export const NavbarBtnGroup = () => {
 
   function handleSignout() {
     signOut(auth);
-    console.log('handle sign out properly');
-    // dispatch(enableLightTheme());
-    // dispatch(resetBoards());
-    // dispatch(resetTasks());
+    dispatch(enableLightTheme());
   }
 
   return (

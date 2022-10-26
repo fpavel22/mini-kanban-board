@@ -11,9 +11,12 @@ const initialState = {
 };
 
 export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserBoards`, async (id) => {
+  if (!id) {
+    return [];
+  }
+
   const response = await getCollectionDocs(
     FIREBASE_COLLECTIONS.BOARDS,
-    FIREBASE_QUERY.CREATED_BY,
     id
   );
 
@@ -41,9 +44,6 @@ export const addBoard = createAsyncThunk(`${ REDUCERS.BOARDS }/addBoard`, async 
 const boardsSlice = createSlice({
   name: REDUCERS.BOARDS,
   initialState,
-  reducers: {
-    resetBoards: () => initialState
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserBoards.pending, (state) => {
@@ -71,8 +71,6 @@ const boardsSlice = createSlice({
       });
   }
 });
-
-export const { resetBoards } = boardsSlice.actions;
 
 export const allBoardsSelector = (state) => state[ REDUCERS.BOARDS ].boards;
 export const boardsStatusSelector = (state) => state[ REDUCERS.BOARDS ].status;

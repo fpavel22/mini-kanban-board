@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '../button';
 import { TextField } from '../text-field';
 import { addBoard } from '../../features/boardsSlice';
+import { closeModal } from '../../features/modalSlice';
 import { userSelector } from '../../features/userSlice';
 
 import { THUNK_STATUS } from '../../constants';
@@ -37,9 +38,8 @@ export const BoardForm = () => {
         setLocalStatus(THUNK_STATUS.FAILED);
       } finally {
         setLocalStatus(THUNK_STATUS.IDLE);
+        dispatch(closeModal());
         setBoardName('');
-
-        // toggle modal
       }
     }
   };

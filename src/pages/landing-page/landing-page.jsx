@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from "react-redux";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
 
 import { modalOpenSelector, modalContentSelector } from '../../features/modalSlice';
 import {
@@ -12,14 +13,25 @@ import {
   TaskView,
   TaskDelete
 } from '../../components';
+import { allBoardsSelector, boardsStatusSelector } from '../../features/boardsSlice';
+import { fetchTasks } from '../../features/tasksSlice';
+import { userSelector } from '../../features/userSlice';
 import { applyPageOverflow } from '../../utils/utils';
-import { MODAL_CONTENT } from '../../constants';
+import { MODAL_CONTENT, THUNK_STATUS } from '../../constants';
 
 export const LandingPage = () => {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);
 
+  const boards = useSelector(allBoardsSelector);
+  const boardsFetchStatus = useSelector(boardsStatusSelector);
+  const user = useSelector(userSelector);
   const modalOpen = useSelector(modalOpenSelector);
   const modalContent = useSelector(modalContentSelector);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+  const { boardId } = useParams();
 
   const renderCardModalContent = () => {
     switch (modalContent) {
@@ -33,6 +45,8 @@ export const LandingPage = () => {
         return <TaskForm editing={ true } />
       case MODAL_CONTENT.TASK_VIEW:
         return <TaskView />;
+      default:
+        return null;
     }
   }
 
@@ -44,6 +58,31 @@ export const LandingPage = () => {
   useEffect(() => {
     applyPageOverflow(modalOpen);
   }, [ modalOpen ]);
+
+  useEffect(() => {
+    if (boardsFetchStatus === THUNK_STATUS.SUCCEEDED) {
+      const userBoards = boards.map(({ path }) => path);
+
+      if (!userBoards.includes(boardId)) {
+        if (boards.length > 0) {
+          const [ board ] = boards;
+          
+          navigate(`/boards/${ board.path }`);
+        } else {
+          navigate('/');
+        }
+      }
+    }
+  }, [ boards ]);
+
+  useEffect(() => {
+    const ids = {
+      boardId,
+      userId: user.uid
+    };
+
+    dispatch(fetchTasks(ids));
+  }, [ boardId ]);
 
   return (
     <>

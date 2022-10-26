@@ -25,7 +25,7 @@ export const TaskDelete = () => {
   }
 
   function cancelAction() {
-    console.log('hide modal');
+    dispatch(closeModal());
   }
 
   return (
