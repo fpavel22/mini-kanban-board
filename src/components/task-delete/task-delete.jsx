@@ -1,25 +1,31 @@
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Button } from '../button';
-import { toggleTaskDelete } from '../../features/showModalSlice';
-import { tasksSelector, deleteTask } from '../../features/tasksSlice';
-import { useDeleteDocument } from '../../hooks';
-import { FIREBASE_COLLECTIONS } from '../../constants';
+import { closeModal } from '../../features/modalSlice';
+import { selectedTaskSelector, deleteTask } from '../../features/tasksSlice';
+import { THUNK_STATUS } from '../../constants';
 
 export const TaskDelete = () => {
-  const { selectedTask } = useSelector(tasksSelector);
+  const [ localStatus, setLocalStatus ] = useState(THUNK_STATUS.IDLE);
+
+  const selectedTask = useSelector(selectedTaskSelector);
   const dispatch = useDispatch();
-  
-  const { loading, deleteDocument } = useDeleteDocument(FIREBASE_COLLECTIONS.TASKS);
 
   async function deleteSelectedTask() {
-    await deleteDocument(selectedTask.id);
-    dispatch(deleteTask(selectedTask.id));
-    dispatch(toggleTaskDelete(false));
+    try {
+      setLocalStatus(THUNK_STATUS.LOADING);
+      await dispatch(deleteTask(selectedTask.id));
+    } catch(error) {
+      setLocalStatus(THUNK_STATUS.FAILED);
+    } finally {
+      setLocalStatus(THUNK_STATUS.IDLE);
+      dispatch(closeModal());
+    }
   }
-  
+
   function cancelAction() {
-    dispatch(toggleTaskDelete(false));
+    dispatch(closeModal());
   }
 
   return (
@@ -32,11 +38,11 @@ export const TaskDelete = () => {
         </span> task? This action will remove the task and it cannot be reversed.
       </p>
       <div className="task__delete-btn-group">
-        <Button type="danger" disabled={ loading } onClick={ deleteSelectedTask }>
-          { loading ? 'Deleting task...' : 'Delete' }
+        <Button variety="danger" onClick={ deleteSelectedTask }>
+          { localStatus === THUNK_STATUS.LOADING ? 'Deleting task...' : 'Delete' }
         </Button>
-        <Button type="secondary" onClick={ cancelAction }>Cancel</Button>
+        <Button variety="secondary" onClick={ cancelAction }>Cancel</Button>
       </div>
     </div>
-  );
+  )
 }

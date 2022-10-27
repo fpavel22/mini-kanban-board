@@ -1,5 +1,7 @@
 export * from './board-content';
 
+export * from './board-form';
+
 export * from './button';
 
 export * from './card';

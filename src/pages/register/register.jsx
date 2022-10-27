@@ -45,7 +45,7 @@ export const Register = () => {
               value={ password }
               onChange={ handlePasswordChange } />
         </label>
-        <Button type="primary" size="lg" disabled={ loading }>
+        <Button variety="primary" size="lg" disabled={ loading }>
           { loading ? 'Signing up...' : 'Sign-up' }
         </Button>
         <PageRedirect center={ true }>

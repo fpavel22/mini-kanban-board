@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
-import { themeSliceSelector } from '../../features/themeSlice';
-import { toggleTaskView } from '../../features/showModalSlice';
+import { openModal } from '../../features/modalSlice';
 import { selectTask } from '../../features/tasksSlice';
+import { themeSliceSelector } from '../../features/themeSlice';
+import { MODAL_CONTENT } from '../../constants';
 
 export const Card = ({ task, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
@@ -19,7 +20,7 @@ export const Card = ({ task, ...props }) => {
 
   function showTaskDetails() {
     dispatch(selectTask(task));
-    dispatch(toggleTaskView(true));
+    dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
   }
 
   return (

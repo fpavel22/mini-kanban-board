@@ -1,12 +1,21 @@
 .board__content {
+  margin-left: $sidebar-width;
   padding: $padding-base-horizontal;
-  display: flex;
-  gap: $flex-row-gap $flex-column-gap;
-  flex: 1;
+  min-height: inherit;
+  display: grid;
+  grid-template-columns: repeat(3, calc($sidebar-width - $padding-base-horizontal));
+  grid-gap: $flex-row-gap $flex-column-gap;
+  transition: margin $transition-time ease;
+  overflow: auto;
 
-  .cards__section,
-  .empty__board {
-    flex: 1 1 auto;
+  &.board__content--expanded {
+    margin-left: 0;
+  }
+
+  &.board__content--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .empty__board {
@@ -15,6 +24,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    grid-column: 1 / -1;
 
     p {
       margin-bottom: $padding-sm-horizontal;

@@ -1,158 +1,174 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 
 import { Button } from '../button';
 import { Dropdown } from '../dropdown';
 import { TextField } from '../text-field';
-import { toggleTaskForm, toggleTaskView } from '../../features/showModalSlice';
-import { addTask, updateTask, tasksSelector } from '../../features/tasksSlice';
-import { useSetDocument } from '../../hooks';
-import { FIREBASE_COLLECTIONS } from '../../constants';
+import { closeModal, openModal } from '../../features/modalSlice';
+import { setTask, selectedTaskSelector } from "../../features/tasksSlice";
+import { userSelector } from "../../features/userSlice";
+import { MODAL_CONTENT, THUNK_STATUS } from "../../constants";
 
-const TEXTAREA_PLACEHOLDER = "e.g. It's always good to take a break. This 15 minutes break will recharge the batteries.";
+export const TaskForm = ({ editing }) => {
+  const selectedTask = useSelector(selectedTaskSelector);
 
-export const TaskForm = ({ editTask }) => {
-  const { selectedTask } = useSelector(tasksSelector);
-
-  const [ formFieldsState, setFormFieldsState ] = useState({
-    title: editTask ? selectedTask.title : '',
-    description: editTask ? selectedTask.description : '',
-    subtasks: editTask ? selectedTask.subtasks : [],
-    status: editTask ? selectedTask.status : 'to_do'
+  const [ localStatus, setLocalStatus ] = useState(THUNK_STATUS.IDLE);
+  const [ fieldsValue, setFieldsValue ] = useState({
+    title: editing ? selectedTask.title : '',
+    description: editing ? selectedTask.description : '',
+    subtasks: editing ? selectedTask.subtasks : [],
+    status: editing ? selectedTask.status : 'to_do'
   });
 
-  const [ errors, setErrors ] = useState({
-    title: false,
-    description: false,
-    subtasks: []
+  const [ fieldsError, setFieldsError ] = useState({
+    titleError: null,
+    descriptionError: null,
+    subtasksError: null
   });
 
+  const user = useSelector(userSelector);
   const dispatch = useDispatch();
   const { boardId } = useParams();
-  const { loading, setDocument } = useSetDocument(FIREBASE_COLLECTIONS.TASKS);
-  
-  const { title, description, subtasks, status } = formFieldsState;
 
-  function handleGoBack() {
-    dispatch(toggleTaskView(true));
+  const { title, description, subtasks, status } = fieldsValue;
+  const { titleError, descriptionError, subtasksError } = fieldsError;
+
+  function goBack() {
+    dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
   }
 
-  function handleFormFieldsChange({ target: { name, value } }) {
-    setFormFieldsState((prevState) => ({ ...prevState, [ name ]: value }));
+  function handleFormFieldsChange({ target }) {
+    const { name, value } = target;
+
+    setFieldsValue((prevState) => ({ ...prevState, [ name ]: value }));
   }
 
-  function addNewSubtask(event) {
-    event.preventDefault();
-
-    const newSubtask = {
+  function addSubtask() {
+    const subtask = {
       id: uuidv4(),
-      value: '',
-      completed: false
-    };
+      completed: false,
+      value: ''
+    }
 
-    setFormFieldsState((prevState) => ({
+    setFieldsValue((prevState) => ({
       ...prevState,
-      subtasks: [ ...prevState.subtasks, newSubtask ]
+      subtasks: [ ...prevState.subtasks, subtask ]
     }));
   }
 
-  function removeSubtask(fieldId) {
-    const updatedSubtasks = subtasks.filter(({ id }) => id !== fieldId);
+  function changeSubtaskValue(id) {
+    return (event) => {
+      const { target: { value } } = event;
 
-    setFormFieldsState((prevState) => ({
-      ...prevState,
-      subtasks: updatedSubtasks
-    }));
+      const updatedSubtasks = subtasks.map((subtask) =>
+        subtask.id === id
+          ? { ...subtask, value }
+          : subtask
+      );
+
+      setFieldsValue((prevState) => ({
+        ...prevState,
+        subtasks: updatedSubtasks
+      }));
+    }
   }
 
-  function handleSubtaskValueChange({ target: { value } }, fieldId) {
-    const updatedSubtasks = subtasks.map((subtask) =>
-      subtask.id === fieldId ? { ...subtask, value } : subtask);
-
-    setFormFieldsState((prevState) => ({ ...prevState, subtasks: updatedSubtasks }));
+  function removeSubtask(id) {
+    return () => {
+      const updatedSubtasks = subtasks.filter(({ id: taskId }) => taskId !== id);
+  
+      setFieldsValue((prevState) => ({
+        ...prevState,
+        subtasks: updatedSubtasks
+      }));
+    }
   }
 
-  async function handleFormSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    const isTitleValid = Boolean(title);
-    const isDescriptionValid = Boolean(description);
-    const emptySubtasks = subtasks.filter(({ value }) => !value);
+    const emptySubtasks = subtasks.filter(({ value }) => !value)
 
-    if (isTitleValid && isDescriptionValid && emptySubtasks.length === 0) {
-      const id = editTask ? selectedTask.id : uuidv4();
+    if ([ title, description, emptySubtasks.length === 0 ].every(Boolean)) {
+      try {
+        setLocalStatus(THUNK_STATUS.LOADING);
 
-      const task = {
-        id,
-        pageId: boardId,
-        title,
-        description,
-        subtasks,
-        status
-      };
+        const taskDetails = {
+          id: editing ? selectedTask.id : null,
+          pageId: boardId,
+          createdBy: editing ? selectedTask.createdBy : user.uid,
+          title,
+          description,
+          subtasks,
+          status
+        };
 
-      await setDocument(id, task);
-      dispatch(editTask ? updateTask(task) : addTask(task));
-      dispatch(toggleTaskForm({ addNewTask: false, editTask: false }));
+        await dispatch(setTask(taskDetails));
+      } catch(error) {
+        setLocalStatus(THUNK_STATUS.FAILED);
+      } finally {
+        setLocalStatus(THUNK_STATUS.IDLE);
+        dispatch(closeModal());
+      }
     } else {
-      const errorSubtasksIds = emptySubtasks.map(({ id }) => id);
+      const subtasksIds = emptySubtasks.map(({ id }) => id);
 
-      setErrors((prevState) => ({
+      setFieldsError((prevState) => ({
         ...prevState,
-        title: !isTitleValid,
-        description: !isDescriptionValid,
-        subtasks: errorSubtasksIds
+        titleError: !title,
+        descriptionError: !description,
+        subtasksError: subtasksIds
       }));
     }
   }
 
   return (
-    <form className="task__form" onSubmit={ handleFormSubmit }>
-      { editTask &&
-        <span className="task__form--go-back" onClick={ handleGoBack }>&#x2190; Go back</span> }
-      <h2 className="task__form-title">{ editTask ? "Edit" : "Add New" } Task</h2>
-      <div className="task__form-group">
-        <div className="task__form-group--title">Title</div>
+    <form className="form task__form" onSubmit={ handleSubmit }>
+      { editing &&
+        <span className="task__form--go-back" onClick={ goBack }>&#x2190; Go back</span> }
+      <h2 className="form__title">Add New Task</h2>
+      <div className="form__group">
+        <p className="form__group-title">Title</p>
         <TextField placeholder="e.g. Make coffee"
             name="title"
             value={ title }
-            error={ errors.title }
+            error={ titleError }
             onChange={ handleFormFieldsChange } />
       </div>
-      <div className="task__form-group">
-        <div className="task__form-group--title">Description</div>
-        <TextField multiline={ true }
-            placeholder={ TEXTAREA_PLACEHOLDER }
+      <div className="form__group">
+        <p className="form__group-title">Description</p>
+        <TextField placeholder="e.g. Make coffee"
             name="description"
+            multiline={ true }
             value={ description }
-            error={ errors.description }
+            error={ descriptionError }
             onChange={ handleFormFieldsChange } />
       </div>
-      <div className="task__form-group task__form-group--subtasks">
-        <div className="task__form-group--title">Subtasks</div>
+      <div className="form__group task__form-group--subtasks">
+        <p className="form__group-title">Subtasks</p>
         { subtasks.map(({ id, value }) => (
           <TextField key={ id }
               closable={ true }
               value={ value }
-              error={ errors.subtasks.includes(id) }
-              onChange={ (event) => handleSubtaskValueChange(event, id) }
-              onClick={ () => removeSubtask(id) } />
+              error={ subtasksError?.includes(id) }
+              onClick={ removeSubtask(id) }
+              onChange={ changeSubtaskValue(id) } />
         )) }
       </div>
-      <div className="task__form-group">
-        <Button type="secondary" onClick={ addNewSubtask }>+ Add New Task</Button>
+      <div className="form__group">
+        <Button variety="secondary" type="button" onClick={ addSubtask }>+ Add Subtask</Button>
       </div>
-      <div className="task__form-group">
-        <div className="task__form-group--title">Status</div>
+      <div className="form__group">
+        <p className="form__group-title">Status</p>
         <Dropdown name="status" value={ status } onChange={ handleFormFieldsChange } />
       </div>
-      <div className="task__form-group">
-        <Button type="primary" disabled={ loading }>
-          { editTask ? "Save changes" : "Create task" }
-        </Button>
-      </div>
+      <Button variety="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
+        { localStatus === THUNK_STATUS.LOADING
+          ? 'Please wait...'
+          : `${ editing ? 'Save' : 'Create' } Task` }
+      </Button>
     </form>
   );
-};
+}

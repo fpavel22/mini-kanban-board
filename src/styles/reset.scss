@@ -1,12 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600&display=swap');
 
 @import 'colors';
+@import 'variables';
 @import './mixins/typography';
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: $scrollbar-width;
+
+  &-track {
+    background-color: transparent;
+  }
+
+  &-thumb {
+    background-color: $scrollbar-bg-color;
+    border-radius: $scrollbar-width;
+    border: $scrollbar-border solid transparent;
+    background-clip: content-box;
+
+    &:hover {
+      background-color: $scrollbar-bg-color-hover;
+    }
+  }
 }
 
 html {

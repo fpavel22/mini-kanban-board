@@ -1,53 +1,62 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 
 import { Button } from '../button';
 import { TextField } from '../text-field';
 import { addBoard } from '../../features/boardsSlice';
-import { toggleBoardForm } from '../../features/showModalSlice';
+import { closeModal } from '../../features/modalSlice';
 import { userSelector } from '../../features/userSlice';
-import { useSetDocument } from '../../hooks';
-import { FIREBASE_COLLECTIONS } from '../../constants';
+
+import { THUNK_STATUS } from '../../constants';
 
 export const BoardForm = () => {
   const [ boardName, setBoardName ] = useState('');
+  const [ localStatus, setLocalStatus ] = useState(THUNK_STATUS.IDLE);
+
   const user = useSelector(userSelector);
+
   const dispatch = useDispatch();
-  const { loading, setDocument } = useSetDocument(FIREBASE_COLLECTIONS.BOARDS);
 
   function handleChange({ target: { value } }) {
     setBoardName(value);
   }
 
-  async function addNewBoard(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    const id = uuidv4();
-    const newBoard = {
-      id,
-      createdBy: user.uid,
-      path: id,
-      pageName: boardName
-    };
+    if (boardName) {
+      try {
+        setLocalStatus(THUNK_STATUS.LOADING);
 
-    await setDocument(id, newBoard);
-    dispatch(addBoard(newBoard));
-    dispatch(toggleBoardForm(false));
+        const boardData = {
+          pageName: boardName,
+          createdBy: user.uid
+        };
+  
+        await dispatch(addBoard(boardData));
+      } catch(error) {
+        setLocalStatus(THUNK_STATUS.FAILED);
+      } finally {
+        setLocalStatus(THUNK_STATUS.IDLE);
+        dispatch(closeModal());
+        setBoardName('');
+      }
+    }
   };
 
   return (
-    <form onSubmit={ addNewBoard }>
-      <h2>Create new board</h2>
-      <div className="form-group">
+    <form className="form board-form" onSubmit={ handleSubmit }>
+      <h2 className="form__title">Create new board</h2>
+      <div className="form__group">
         <TextField placeholder="Board name"
             type="text"
             value={ boardName }
+            error={ localStatus === THUNK_STATUS.FAILED }
             onChange={ handleChange } />
       </div>
-      <Button type="primary" size="lg" disabled={ loading }>
-        { loading ? 'Creating board...': 'Create board' }
+      <Button variety="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
+        { localStatus === THUNK_STATUS.LOADING ? 'Creating board...': 'Create board' }
       </Button>
     </form>
-  );
+  )
 }

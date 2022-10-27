@@ -41,7 +41,7 @@ export const PasswordReset = () => {
               value={ email }
               onChange={ handleEmailChange } />
         </label>
-        <Button type="primary" size="lg" disabled={ loading }>
+        <Button variety="primary" size="lg" disabled={ loading }>
           { loading ? 'Please wait...' : 'Send' }
         </Button>
         <PageRedirect center={ true }>

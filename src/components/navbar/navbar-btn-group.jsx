@@ -1,23 +1,27 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { mergeRefs } from "react-merge-refs";
 import { signOut } from "firebase/auth";
 
 import { Button } from "../button";
 import { Popup } from '../popup';
+import { openModal } from "../../features/modalSlice";
+import { allTasksSelector } from "../../features/tasksSlice";
 import { enableLightTheme } from "../../features/themeSlice";
-import { toggleTaskForm } from "../../features/showModalSlice";
-import { tasksSelector } from "../../features/tasksSlice";
 import { userSelector } from "../../features/userSlice";
 import { auth } from '../../firebase/auth';
-import { usePositionPopup } from '../../hooks';
-import { POPPER_MODIFIERS, POPPER_PLACEMENTS } from '../../constants';
+import { useHandleClickOutside, usePositionPopup } from '../../hooks';
+import { POPPER_MODIFIERS, POPPER_PLACEMENTS, MODAL_CONTENT } from '../../constants';
 
 import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
 
 export const NavbarBtnGroup = () => {
   const [ showMenu, setShowMenu ] = useState(false);
-  const { tasksList } = useSelector(tasksSelector);
+
+  const tasks = useSelector(allTasksSelector);
   const user = useSelector(userSelector);
+
+  const dispatch = useDispatch();
 
   const {
     popperStyles,
@@ -25,15 +29,19 @@ export const NavbarBtnGroup = () => {
     setReferenceRef
   } = usePositionPopup(POPPER_MODIFIERS, POPPER_PLACEMENTS.bottomRight);
 
-  const dispatch = useDispatch();
+  const { parentRef, popupRef } = useHandleClickOutside(showMenu, hidePopup);
 
   const popupOptions = [
     { value: 'important', label: `Logged in as ${ user.email }` },
     { value: 'danger', label: 'Sign out', onClick: handleSignout }
   ];
 
+  function hidePopup() {
+    setShowMenu(false);
+  }
+
   function handleAddTask() {
-    dispatch(toggleTaskForm({ addNewTask: true, editTask: false }));
+    dispatch(openModal(MODAL_CONTENT.TASK_FORM_ADD));
   }
 
   function showOptionsMenu() {
@@ -47,8 +55,8 @@ export const NavbarBtnGroup = () => {
 
   return (
     <div className="header__btn-group">
-      { tasksList.length > 0 && (
-        <Button type="primary"
+      { tasks.length > 0 && (
+        <Button variety="primary"
             size="lg"
             onClick={ handleAddTask }>
           + Add New Task
@@ -57,9 +65,13 @@ export const NavbarBtnGroup = () => {
       <img src={ iconEllipsis }
           className="header__btn--options"
           alt="Options icon"
-          ref={ setParentRef }
+          ref={ mergeRefs([ parentRef, setParentRef ]) }
           onClick={ showOptionsMenu } />
-      { showMenu && <Popup options={ popupOptions } style={ popperStyles } ref={ setReferenceRef } /> }
+      { showMenu && (
+          <Popup options={ popupOptions }
+              style={ popperStyles }
+              ref={ mergeRefs([ popupRef, setReferenceRef ]) } />
+      ) }
     </div>
   )
 };

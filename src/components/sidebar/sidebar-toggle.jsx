@@ -1,13 +1,19 @@
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { enableDarkTheme, enableLightTheme } from '../../features/themeSlice';
+import { userSelector } from '../../features/userSlice';
+import { useConsumeContext } from '../../hooks';
+import { saveToLocalStorage } from '../../utils/utils';
 
 import iconDarkTheme from '../../assets/icon-dark-theme.svg';
 import iconLightTheme from '../../assets/icon-light-theme.svg';
 import iconHideSidebar from '../../assets/icon-hide-sidebar.svg';
 
-export const SidebarToggle = ({ darkMode, setSidebarVisible }) => {
+export const SidebarToggle = ({ darkMode }) => {
+  const user = useSelector(userSelector);
   const dispatch = useDispatch();
+  const { sidebarVisible, setSidebarVisible } = useConsumeContext();
 
   function toggleTheme() {
     dispatch(darkMode ? enableLightTheme() : enableDarkTheme());
@@ -16,6 +22,10 @@ export const SidebarToggle = ({ darkMode, setSidebarVisible }) => {
   function hideSidebar() {
     setSidebarVisible(false);
   }
+
+  useEffect(() => {
+    saveToLocalStorage(user.uid, darkMode, sidebarVisible);
+  }, [ darkMode, sidebarVisible ]);
 
   return (
     <div className="sidebar__toggle">

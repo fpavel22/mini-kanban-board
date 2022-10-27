@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 import { auth } from '../firebase/auth';
-import { determineErrorMessage } from '../utils/hooks';
+import { isEmailGmail } from '../utils/utils';
+import { determineErrorMessage } from '../utils/firebase';
+import { FIREBASE_INTERNAL_ERRORS } from '../constants';
 
 export const useRegisterAccount = () => {
   const [ loading, setLoading ] = useState(false);
@@ -13,8 +15,8 @@ export const useRegisterAccount = () => {
     setLoading(true);
 
     try {
-      if (email.includes('@gmail')) {
-        throw new Error('Cannot register with a Google account. Login instead.');
+      if (isEmailGmail(email)) {
+        throw new Error(FIREBASE_INTERNAL_ERRORS.REGISTER_GOOGLE);
       }
 
       const response = await createUserWithEmailAndPassword(auth, email, password);

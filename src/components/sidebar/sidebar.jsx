@@ -5,11 +5,13 @@ import { themeSliceSelector } from "../../features/themeSlice";
 import { Button } from "../button";
 import { SidebarNavigation } from "./sidebar-navigation";
 import { SidebarToggle } from "./sidebar-toggle";
+import { useConsumeContext } from '../../hooks';
 
 import iconShowSidebar from "../../assets/icon-show-sidebar.svg";
 
-export const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
+export const Sidebar = () => {
   const darkMode = useSelector(themeSliceSelector);
+  const { sidebarVisible, setSidebarVisible } = useConsumeContext();
 
   const _className = cn("sidebar", {
     "sidebar--d-mode": darkMode,
@@ -28,10 +30,10 @@ export const Sidebar = ({ sidebarVisible, setSidebarVisible }) => {
     <>
       <aside className={ _className }>
         <SidebarNavigation />
-        <SidebarToggle darkMode={ darkMode } setSidebarVisible={ setSidebarVisible } />
+        <SidebarToggle darkMode={ darkMode } />
       </aside>
       <Button className={ showSidebarBtnClassName }
-          type="primary"
+          variety="primary"
           size="lg"
           onClick={ showSidebar }>
         <img src={ iconShowSidebar } alt="Show sidebar icon" />

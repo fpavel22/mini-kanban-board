@@ -1,9 +1,11 @@
-import { useState } from 'react';
-import { useSelector } from "react-redux";
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
 
-import { showModalSelector } from '../../features/showModalSlice';
+import { modalOpenSelector, modalContentSelector } from '../../features/modalSlice';
 import {
   BoardContent,
+  BoardForm,
   CardModal,
   Navbar,
   Sidebar,
@@ -11,46 +13,77 @@ import {
   TaskView,
   TaskDelete
 } from '../../components';
-import { BoardForm } from '../../components/board-form/board-form';
+import { allBoardsSelector, boardsStatusSelector } from '../../features/boardsSlice';
+import { fetchTasks } from '../../features/tasksSlice';
+import { userSelector } from '../../features/userSlice';
+import { applyPageOverflow } from '../../utils/utils';
+import { MODAL_CONTENT, THUNK_STATUS } from '../../constants';
 
-export const LandingPage = () => {
-  const [ sidebarVisible, setSidebarVisible ] = useState(true);
-  const {
-    boardForm,
-    taskForm: { addNewTask, editTask },
-    taskView,
-    taskDelete
-  } = useSelector(showModalSelector);
+export const LandingPage = ({ sidebarProps }) => {
+  const boards = useSelector(allBoardsSelector);
+  const boardsFetchStatus = useSelector(boardsStatusSelector);
+  const user = useSelector(userSelector);
+  const modalOpen = useSelector(modalOpenSelector);
+  const modalContent = useSelector(modalContentSelector);
 
-  const showCardModal = () => (
-    (boardForm || taskView || taskDelete || (addNewTask || editTask)) &&
-      <CardModal>{ renderCardModalContent() }</CardModal>
-  );
+  const dispatch = useDispatch();
 
-  const renderCardModalContent = () => (
-    boardForm
-      ? <BoardForm />
-      : taskView
-        ? <TaskView />
-        : taskDelete
-          ? <TaskDelete />
-          : (addNewTask || editTask)
-            ? <TaskForm editTask={ editTask } />
-            : null
-  );
+  const navigate = useNavigate();
+  const { boardId } = useParams();
 
-  const sidebarProps = {
-    sidebarVisible,
-    setSidebarVisible
-  };
+  const renderCardModalContent = () => {
+    switch (modalContent) {
+      case MODAL_CONTENT.BOARD_FORM:
+        return <BoardForm />;
+      case MODAL_CONTENT.TASK_DELETE:
+        return <TaskDelete />;
+      case MODAL_CONTENT.TASK_FORM_ADD:
+        return <TaskForm />;
+      case MODAL_CONTENT.TASK_FORM_EDIT:
+        return <TaskForm editing={ true } />
+      case MODAL_CONTENT.TASK_VIEW:
+        return <TaskView />;
+      default:
+        return null;
+    }
+  }
+
+  useEffect(() => {
+    applyPageOverflow(modalOpen);
+  }, [ modalOpen ]);
+
+  useEffect(() => {
+    if (boardsFetchStatus === THUNK_STATUS.SUCCEEDED) {
+      const userBoards = boards.map(({ path }) => path);
+
+      if (!userBoards.includes(boardId)) {
+        if (boards.length > 0) {
+          const [ board ] = boards;
+          
+          navigate(`/boards/${ board.path }`);
+        } else {
+          navigate('/');
+        }
+      }
+    }
+  }, [ boards ]);
+
+  useEffect(() => {
+    const ids = {
+      boardId,
+      userId: user.uid
+    };
+
+    dispatch(fetchTasks(ids));
+  }, [ boardId ]);
 
   return (
     <>
       <Navbar { ...sidebarProps } />
       <div className="app__content-wrapper">
         <Sidebar { ...sidebarProps } />
-        <BoardContent />
-        { showCardModal() }
+        <BoardContent { ...sidebarProps } />
+        { modalOpen && <CardModal>{ renderCardModalContent() }</CardModal> }
       </div>
     </>
   );

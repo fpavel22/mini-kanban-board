@@ -17,9 +17,11 @@ export const determineErrorMessage = (error) => {
     case FIREBASE_AUTH_ERRORS.EMAIL_USED:
       return "The email is already used, try a different one.";
     case FIREBASE_AUTH_ERRORS.WEAK_PASSWORD:
-      return "The password must be at least 6 characters long.";
+      return "Your password must be at least 6 characters long.";
     case FIREBASE_AUTH_ERRORS.NOT_ALLOWED:
       return "This operation is not allowed at the moment, try again later.";
+    case FIREBASE_AUTH_ERRORS.POPUP_CLOSED:
+      return "Login popup closed, you have not been logged in.";
     default:
       return message;
   }
