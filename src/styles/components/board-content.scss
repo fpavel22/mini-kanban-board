@@ -1,14 +1,15 @@
 .board__content {
-  padding: $padding-base-horizontal $padding-base-horizontal $padding-base-horizontal calc($sidebar-width + $padding-base-horizontal);
+  margin-left: $sidebar-width;
+  padding: $padding-base-horizontal;
   min-height: inherit;
   display: grid;
   grid-template-columns: repeat(3, calc($sidebar-width - $padding-base-horizontal));
   grid-gap: $flex-row-gap $flex-column-gap;
-  transition: padding $transition-time ease;
+  transition: margin $transition-time ease;
   overflow: auto;
 
   &.board__content--expanded {
-    padding-left: $padding-base-horizontal;
+    margin-left: 0;
   }
 
   &.board__content--empty {

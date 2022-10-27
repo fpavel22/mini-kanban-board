@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -19,9 +19,7 @@ import { userSelector } from '../../features/userSlice';
 import { applyPageOverflow } from '../../utils/utils';
 import { MODAL_CONTENT, THUNK_STATUS } from '../../constants';
 
-export const LandingPage = () => {
-  const [ sidebarVisible, setSidebarVisible ] = useState(true);
-
+export const LandingPage = ({ sidebarProps }) => {
   const boards = useSelector(allBoardsSelector);
   const boardsFetchStatus = useSelector(boardsStatusSelector);
   const user = useSelector(userSelector);
@@ -49,11 +47,6 @@ export const LandingPage = () => {
         return null;
     }
   }
-
-  const sidebarProps = {
-    sidebarVisible,
-    setSidebarVisible
-  };
 
   useEffect(() => {
     applyPageOverflow(modalOpen);

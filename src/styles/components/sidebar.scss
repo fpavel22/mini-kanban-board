@@ -19,8 +19,10 @@
   }
 
   .sidebar__navigation {
-    margin-top: $padding-base-horizontal;
-    margin-right: $padding-base-horizontal;
+    margin: $padding-base-horizontal 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     .sidebar__navigation-title {
       padding-left: $padding-lg-horizontal;
@@ -30,40 +32,51 @@
     }
   
     .sidebar__navigation-items {
+      padding-right: $padding-base-horizontal;
       display: flex;
       flex-direction: column;
-  
-      li {
-        border-top-right-radius: $btn-border-radius;
-        border-bottom-right-radius: $btn-border-radius;
-        padding-left: $padding-lg-horizontal;
-        height: $btn-lg-height;
-        width: 100%;
+      overflow: auto;
+    }
+
+    .sidebar__navigation-item,
+    .sidebar__create {
+      border-top-right-radius: $btn-border-radius;
+      border-bottom-right-radius: $btn-border-radius;
+      padding-left: $padding-lg-horizontal;
+      height: $btn-lg-height;
+      min-height: $btn-lg-height;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      img {
+        margin-right: $padding-sm-horizontal;
+        flex: 0;
+      }
+    }
+
+    .sidebar__navigation-item {
+      a {
+        color: inherit;
         display: flex;
         align-items: center;
-        cursor: pointer;
-  
-        &.active {
-          background-color: $primary-m-purple;
-          color: $color-white;
-        }
+        flex: 1;
+        text-decoration: none;
+      }
 
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-  
-        img {
-          margin-right: $padding-sm-horizontal;
-          flex: 0 0 auto;
-        }
+      span {
+        padding-right: $padding-xs-horizontal;
+        width: 0;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
 
-        span {
-          max-width: 80%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
+      &.sidebar__navigation-item--active {
+        background-color: $primary-m-purple;
+        color: $color-white;
       }
     }
   

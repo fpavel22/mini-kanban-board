@@ -2,7 +2,9 @@ import { useState } from "react";
 import { sendPasswordResetEmail } from 'firebase/auth';
 
 import { auth } from '../firebase/auth';
-import { determineErrorMessage } from "../utils/hooks";
+import { isEmailGmail } from '../utils/utils';
+import { determineErrorMessage } from "../utils/firebase";
+import { FIREBASE_INTERNAL_ERRORS } from "../constants";
 
 export const usePasswordReset = () => {
   const [ loading, setLoading ] = useState(false);
@@ -15,8 +17,8 @@ export const usePasswordReset = () => {
     setSuccess(null);
 
     try {
-      if (email.includes('@gmail')) {
-        throw new Error('Cannot recover Google accounts passwords.');
+      if (isEmailGmail(email)) {
+        throw new Error(FIREBASE_INTERNAL_ERRORS.RECOVER_GOOGLE);
       }
 
       await sendPasswordResetEmail(auth, email);

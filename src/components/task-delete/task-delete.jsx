@@ -38,10 +38,10 @@ export const TaskDelete = () => {
         </span> task? This action will remove the task and it cannot be reversed.
       </p>
       <div className="task__delete-btn-group">
-        <Button type="danger" onClick={ deleteSelectedTask }>
+        <Button variety="danger" onClick={ deleteSelectedTask }>
           { localStatus === THUNK_STATUS.LOADING ? 'Deleting task...' : 'Delete' }
         </Button>
-        <Button type="secondary" onClick={ cancelAction }>Cancel</Button>
+        <Button variety="secondary" onClick={ cancelAction }>Cancel</Button>
       </div>
     </div>
   )

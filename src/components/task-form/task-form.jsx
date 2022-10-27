@@ -45,9 +45,7 @@ export const TaskForm = ({ editing }) => {
     setFieldsValue((prevState) => ({ ...prevState, [ name ]: value }));
   }
 
-  function addSubtask(event) {
-    event.preventDefault();
-
+  function addSubtask() {
     const subtask = {
       id: uuidv4(),
       completed: false,
@@ -60,28 +58,32 @@ export const TaskForm = ({ editing }) => {
     }));
   }
 
-  function changeSubtaskValue(event, id) {
-    const { target: { value } } = event;
+  function changeSubtaskValue(id) {
+    return (event) => {
+      const { target: { value } } = event;
 
-    const updatedSubtasks = subtasks.map((subtask) =>
-      subtask.id === id
-        ? { ...subtask, value }
-        : subtask
-    );
+      const updatedSubtasks = subtasks.map((subtask) =>
+        subtask.id === id
+          ? { ...subtask, value }
+          : subtask
+      );
 
-    setFieldsValue((prevState) => ({
-      ...prevState,
-      subtasks: updatedSubtasks
-    }));
+      setFieldsValue((prevState) => ({
+        ...prevState,
+        subtasks: updatedSubtasks
+      }));
+    }
   }
 
   function removeSubtask(id) {
-    const updatedSubtasks = subtasks.filter(({ id: taskId }) => taskId !== id);
-
-    setFieldsValue((prevState) => ({
-      ...prevState,
-      subtasks: updatedSubtasks
-    }));
+    return () => {
+      const updatedSubtasks = subtasks.filter(({ id: taskId }) => taskId !== id);
+  
+      setFieldsValue((prevState) => ({
+        ...prevState,
+        subtasks: updatedSubtasks
+      }));
+    }
   }
 
   async function handleSubmit(event) {
@@ -151,18 +153,18 @@ export const TaskForm = ({ editing }) => {
               closable={ true }
               value={ value }
               error={ subtasksError?.includes(id) }
-              onClick={ () => removeSubtask(id) }
-              onChange={ (event) => changeSubtaskValue(event, id) } />
+              onClick={ removeSubtask(id) }
+              onChange={ changeSubtaskValue(id) } />
         )) }
       </div>
       <div className="form__group">
-        <Button type="secondary" onClick={ addSubtask }>+ Add Subtask</Button>
+        <Button variety="secondary" type="button" onClick={ addSubtask }>+ Add Subtask</Button>
       </div>
       <div className="form__group">
         <p className="form__group-title">Status</p>
         <Dropdown name="status" value={ status } onChange={ handleFormFieldsChange } />
       </div>
-      <Button type="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
+      <Button variety="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
         { localStatus === THUNK_STATUS.LOADING
           ? 'Please wait...'
           : `${ editing ? 'Save' : 'Create' } Task` }

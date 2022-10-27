@@ -1,12 +1,17 @@
-export const TEXTAREA_PLACEHOLDER = "e.g. It's always good to take a break. This 15 minutes break will recharge the batteries.";
+export const TEXTAREA_PLACEHOLDER = 'e.g. It\'s always good to take a break. This 15 minutes break will recharge the batteries.';
+
+export const SIZE = {
+  LG: 'lg'
+};
 
 export const POPUP_STATES = {
   DANGER: 'danger',
   IMPORTANT: 'important'
 };
 
-export const SIZE = {
-  LG: 'lg'
+export const KEYCODES = {
+  ENTER: 13,
+  ESCAPE: 27
 };
 
 export const REDUCERS = {
@@ -80,5 +85,12 @@ export const FIREBASE_AUTH_ERRORS = {
   REQUEST_LIMIT: 'auth/too-many-requests',
   EMAIL_USED: 'auth/email-already-in-use',
   WEAK_PASSWORD: 'auth/weak-password',
-  NOT_ALLOWED: 'auth/operation-not-allowed'
+  NOT_ALLOWED: 'auth/operation-not-allowed',
+  POPUP_CLOSED: 'auth/popup-closed-by-user'
+};
+
+export const FIREBASE_INTERNAL_ERRORS = {
+  REGISTER_GOOGLE: 'Can\'t register with a Google account. Use the \'login with Google\' method to log in instead.',
+  LOGIN_GOOGLE: 'Use the \'login with Google\' method below to log in with a Google account.',
+  RECOVER_GOOGLE: 'Can\'t recover the password of a Google account.'
 };

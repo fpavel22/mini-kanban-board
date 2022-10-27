@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
 
+import { SidebarNavigationItem } from './sidebar-navigation-item';
 import { allBoardsSelector, boardsStatusSelector, boardsErrorSelector } from '../../features/boardsSlice';
 import { openModal } from '../../features/modalSlice';
 import { MODAL_CONTENT, THUNK_STATUS } from '../../constants';
@@ -13,7 +13,6 @@ export const SidebarNavigation = () => {
   const boardsError = useSelector(boardsErrorSelector);
 
   const dispatch = useDispatch();
-  const { boardId } = useParams();
 
   function showBoardForm() {
     dispatch(openModal(MODAL_CONTENT.BOARD_FORM));
@@ -29,19 +28,13 @@ export const SidebarNavigation = () => {
             : `All Boards (${ boards.length })` }
       </p>
       <ul className="sidebar__navigation-items">
-        { boardsStatus !== THUNK_STATUS.LOADING && boards.map(({ path, pageName }) => (
-          <li key={ path } className={ path === boardId ? 'active' : null }>
-            <Link to={ `/boards/${ path }` }>
-              <img src={ iconBoard } alt="Board icon" />
-              <span>{ pageName }</span>
-            </Link>
-          </li>
-        )) }
-        <li className="sidebar__create" onClick={ showBoardForm }>
-          <img src={ iconBoard } alt="Icon board" />
-          <span>+ Create new Board</span>
-        </li>
+        { boardsStatus !== THUNK_STATUS.LOADING && boards.map(({ path, pageName }) =>
+          <SidebarNavigationItem key={ path } path={ path } pageName={ pageName } /> ) }
       </ul>
+      <div className="sidebar__create" onClick={ showBoardForm }>
+        <img src={ iconBoard } alt="Icon board" />
+        <span>+ Create new Board</span>
+      </div>
     </div>
   );
 };

@@ -7,14 +7,17 @@ import { allBoardsSelector, boardsStatusSelector } from '../../features/boardsSl
 import { openModal } from '../../features/modalSlice';
 import { allTasksSelector, tasksStatusSelector } from '../../features/tasksSlice';
 import { filterTasksByStatus } from '../../utils/board-content';
+import { useConsumeContext } from '../../hooks';
 import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '../../constants';
 
-export const BoardContent = ({ sidebarVisible }) => {
+export const BoardContent = () => {
   const boards = useSelector(allBoardsSelector);
   const tasks = useSelector(allTasksSelector);
 
   const boardsFetchStatus = useSelector(boardsStatusSelector);
   const tasksFetchStatus = useSelector(tasksStatusSelector);
+
+  const { sidebarVisible } = useConsumeContext();
   
   const dispatch = useDispatch();
 
@@ -34,7 +37,7 @@ export const BoardContent = ({ sidebarVisible }) => {
           : 'This board is empty. Create a new task to get started.'
         }
       </p>
-      { !boardsEmpty && <Button type="primary" onClick={ handleAddTask }>+ Add New Task</Button> }
+      { !boardsEmpty && <Button variety="primary" onClick={ handleAddTask }>+ Add New Task</Button> }
     </div>
   );
 

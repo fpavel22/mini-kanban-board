@@ -6,15 +6,18 @@ import cn from 'classnames';
 import { NavbarBtnGroup } from "./navbar-btn-group";
 import { allBoardsSelector, boardsStatusSelector } from "../../features/boardsSlice";
 import { themeSliceSelector } from '../../features/themeSlice';
+import { useConsumeContext } from '../../hooks';
+import { THUNK_STATUS } from '../../constants';
 
 import logoDark from '../../assets/logo-dark.svg';
 import logoLight from '../../assets/logo-light.svg';
-import { THUNK_STATUS } from '../../constants';
 
-export const Navbar = ({ sidebarVisible, className }) => {
+export const Navbar = ({ className }) => {
   const darkMode = useSelector(themeSliceSelector);
   const boards = useSelector(allBoardsSelector);
   const boardsStatus = useSelector(boardsStatusSelector);
+
+  const { sidebarVisible } = useConsumeContext();
 
   const { boardId } = useParams();
 

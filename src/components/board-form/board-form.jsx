@@ -54,7 +54,7 @@ export const BoardForm = () => {
             error={ localStatus === THUNK_STATUS.FAILED }
             onChange={ handleChange } />
       </div>
-      <Button type="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
+      <Button variety="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
         { localStatus === THUNK_STATUS.LOADING ? 'Creating board...': 'Create board' }
       </Button>
     </form>

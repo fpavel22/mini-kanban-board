@@ -49,14 +49,14 @@ export const Login = () => {
               value={ password }
               onChange={ handlePasswordChange } />
         </label>
-        <Button type="primary" size="lg" disabled={ loading }>
+        <Button variety="primary" size="lg" disabled={ loading }>
           { loading ? 'Logging in...' : 'Login' }
         </Button>
         <PageRedirect>
           <span>Not a member? <Link to="/register">Sign up.</Link></span>
           <Link to="/password-reset">Forgot password?</Link>
         </PageRedirect>
-        <Notification onClick={ handleGoogleSignIn }>Or sign in with Google</Notification>
+        <Notification onClick={ handleGoogleSignIn }>Or login with Google</Notification>
       </form>
     </div>
   );

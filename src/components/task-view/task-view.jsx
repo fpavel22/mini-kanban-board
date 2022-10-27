@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { mergeRefs } from "react-merge-refs";
 
 import { Dropdown } from '../dropdown';
 import { Popup } from '../popup';
 import { SubtaskItem } from '../subtask-item';
 import { setTask, selectedTaskSelector } from '../../features/tasksSlice';
 import { openModal } from '../../features/modalSlice';
-import { usePositionPopup } from '../../hooks';
+import { useHandleClickOutside, usePositionPopup } from '../../hooks';
 import { MODAL_CONTENT, POPPER_MODIFIERS, THUNK_STATUS } from '../../constants';
 
 import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
@@ -19,6 +20,8 @@ export const TaskView = () => {
   const dispatch = useDispatch();
 
   const { popperStyles, setParentRef, setReferenceRef } = usePositionPopup(POPPER_MODIFIERS);
+
+  const { parentRef, popupRef } = useHandleClickOutside(popupVisible, hidePopup);
 
   const subtasksCompleted = selectedTask.subtasks.filter(({ completed }) => completed).length;
   const subtasksTotal = selectedTask.subtasks.length;
@@ -35,6 +38,7 @@ export const TaskView = () => {
             subtaskId={ id }
             completed={ completed }
             loading={ localState === THUNK_STATUS.LOADING }
+            title={ value }
             onChange={ (event) => handleSubtaskStatus(event, id) }>
           { value }
         </SubtaskItem>
@@ -42,7 +46,11 @@ export const TaskView = () => {
     </>
   );
 
-  function togglePopupVisibility() {
+  function hidePopup() {
+    setPopupVisible(false);
+  }
+
+  function togglePopup() {
     setPopupVisible((prevState) => !prevState);
   }
 
@@ -87,8 +95,8 @@ export const TaskView = () => {
         <img src={ iconEllipsis  }
             className="task__view-options"
             alt="Task view options icon"
-            ref={ setParentRef }
-            onClick={ togglePopupVisibility } />
+            ref={ mergeRefs([ parentRef, setParentRef ]) }
+            onClick={ togglePopup } />
       </div>
       <p className="task__view-description">
         { selectedTask.description }
@@ -105,7 +113,11 @@ export const TaskView = () => {
         <h5 className="task__view-label">Current status</h5>
         <Dropdown value={ selectedTask.status } disabled={ true } />
       </div>
-      { popupVisible && <Popup options={ popupOptions } style={ popperStyles } ref={ setReferenceRef } /> }
+      { popupVisible && (
+          <Popup options={ popupOptions }
+              style={ popperStyles }
+              ref={ mergeRefs([ popupRef, setReferenceRef ]) } />
+      ) }
     </div>
   );
 }

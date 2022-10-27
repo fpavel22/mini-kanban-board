@@ -1,18 +1,19 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
-import { LandingPage, Login, Register, PageNotFound, PasswordReset } from './pages';
-import { fetchUserBoards } from './features/boardsSlice';
-import { themeSliceSelector } from './features/themeSlice';
+import { routes } from './routes';
+import { fetchUserBoards, resetUserBoards } from './features/boardsSlice';
+import { themeSliceSelector, enableDarkTheme, enableLightTheme } from './features/themeSlice';
 import { userSelector } from './features/userSlice';
-import { useAuthStateChange } from './hooks';
-import { fetchTasks } from './features/tasksSlice';
+import { useAuthStateChange, useConsumeContext } from './hooks';
+import { loadFromLocalStorage } from './utils/utils';
 
 function App() {
   const darkMode = useSelector(themeSliceSelector);
   const user = useSelector(userSelector);
+  const { setSidebarVisible } = useConsumeContext();
 
   const dispatch = useDispatch();
   const { authIsReady } = useAuthStateChange();
@@ -22,11 +23,21 @@ function App() {
   });
 
   useEffect(() => {
-    dispatch(fetchUserBoards(null));
+    dispatch(resetUserBoards());
   }, []);
 
   useEffect(() => {
     dispatch(fetchUserBoards(user?.uid));
+    const localPreferences = loadFromLocalStorage(user?.uid);
+
+    if (localPreferences) {
+      const { userId, darkMode, sidebarVisible } = localPreferences;
+
+      if (userId === user.uid) {
+        dispatch(darkMode ? enableDarkTheme() : enableLightTheme());
+        setSidebarVisible(sidebarVisible);
+      }
+    }
   }, [ user ]);
 
   return (
@@ -34,12 +45,11 @@ function App() {
       { authIsReady && (
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={ user ? <LandingPage /> : <Navigate to="/login" /> } />
-            <Route path="/boards/:boardId" element={ user ? <LandingPage /> : <Navigate to="/login" /> } />
-            <Route path="login" element={ user ? <Navigate to="/" /> : <Login /> } />
-            <Route path="register" element={ user ? <Navigate to="/" /> : <Register /> } />
-            <Route path="password-reset" element={ user ? <Navigate to="/" /> : <PasswordReset /> } />
-            <Route path="*" element={ <PageNotFound /> } />
+            { routes.map(({ path, element, redirect }) => (
+              <Route key={ path }
+                  path={ path }
+                  element={ path === '*' ? element : user ? element : redirect } />
+            )) }
           </Routes>
         </BrowserRouter>
       ) }

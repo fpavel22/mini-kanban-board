@@ -22,7 +22,7 @@ export const CardModal = ({ children, ...props }) => {
   }
 
   return (
-    <div { ...props } className={ _className } ref={ modalRef } onClick={ handleClickOutside }>
+    <div { ...props } className={ _className } ref={ modalRef } onMouseDown={ handleClickOutside }>
       <div className="card__modal-content">
         { children }
       </div>
