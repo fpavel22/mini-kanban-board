@@ -10,5 +10,5 @@ export const Notification = ({ className, children, ...props }) => {
     'notification--d-mode': darkMode
   }, className);
 
-  return <div { ...props } className={ _className }>{ children }</div>
-}
+  return <div { ...props } className={ _className }>{ children }</div>;
+};

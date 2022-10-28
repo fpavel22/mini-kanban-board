@@ -1,21 +1,21 @@
-import { useSelector } from "react-redux";
-import cn from "classnames";
+import { useSelector } from 'react-redux';
+import cn from 'classnames';
 
-import { themeSliceSelector } from "../../features/themeSlice";
-import { Button } from "../button";
-import { SidebarNavigation } from "./sidebar-navigation";
-import { SidebarToggle } from "./sidebar-toggle";
+import { themeSliceSelector } from '../../features/themeSlice';
+import { Button } from '../button';
+import { SidebarNavigation } from './sidebar-navigation';
+import { SidebarToggle } from './sidebar-toggle';
 import { useConsumeContext } from '../../hooks';
 
-import iconShowSidebar from "../../assets/icon-show-sidebar.svg";
+import iconShowSidebar from '../../assets/icon-show-sidebar.svg';
 
 export const Sidebar = () => {
   const darkMode = useSelector(themeSliceSelector);
   const { sidebarVisible, setSidebarVisible } = useConsumeContext();
 
-  const _className = cn("sidebar", {
-    "sidebar--d-mode": darkMode,
-    "sidebar--hidden": !sidebarVisible,
+  const _className = cn('sidebar', {
+    'sidebar--d-mode': darkMode,
+    'sidebar--hidden': !sidebarVisible,
   });
 
   const showSidebarBtnClassName = cn('btn--show-sidebar', {
@@ -32,10 +32,12 @@ export const Sidebar = () => {
         <SidebarNavigation />
         <SidebarToggle darkMode={ darkMode } />
       </aside>
-      <Button className={ showSidebarBtnClassName }
-          variety="primary"
-          size="lg"
-          onClick={ showSidebar }>
+      <Button
+        className={ showSidebarBtnClassName }
+        variety="primary"
+        size="lg"
+        onClick={ showSidebar }
+      >
         <img src={ iconShowSidebar } alt="Show sidebar icon" />
       </Button>
     </>

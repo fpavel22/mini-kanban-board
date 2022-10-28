@@ -1,6 +1,6 @@
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc } from 'firebase/firestore';
 
-import { firestore } from "../../firebase/firestore";
+import { firestore } from '../../firebase/firestore';
 
 export const deleteDocument = async (collectionName, id) => {
   try {
@@ -8,7 +8,7 @@ export const deleteDocument = async (collectionName, id) => {
 
     await deleteDoc(docQuery);
     return id;
-  } catch(error) {
+  } catch (error) {
     return error;
   }
-}
+};

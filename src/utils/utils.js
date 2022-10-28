@@ -4,9 +4,7 @@ export const applyPageOverflow = (isModalVisible) => {
   documentElement.classList.toggle('modal--visible', isModalVisible);
 };
 
-export const isEmailGmail = (email) => {
-  return email.match(/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/i);
-};
+export const isEmailGmail = (email) => email.match(/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/i);
 
 export const saveToLocalStorage = (userId, darkMode, sidebarVisible) => {
   const setup = {
@@ -24,7 +22,7 @@ export const loadFromLocalStorage = (userId) => {
   if (userId) {
     const setup = localStorage.getItem(userId);
     const parsed = JSON.parse(setup);
-  
+
     return parsed;
   }
 };

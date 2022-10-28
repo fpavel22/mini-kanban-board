@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { REDUCERS } from "../../constants";
+import { createSlice } from '@reduxjs/toolkit';
+import { REDUCERS } from '../../constants';
 
 const initialState = {
   user: null
-}
+};
 
 const userSlice = createSlice({
   name: REDUCERS.USER,

@@ -18,4 +18,4 @@ export const SidebarNavigationItem = ({ path, pageName }) => {
       </Link>
     </li>
   );
-}
+};

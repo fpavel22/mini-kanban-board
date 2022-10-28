@@ -1,5 +1,10 @@
 import { Navigate } from 'react-router-dom';
-import { LandingPage, Login, Register, PasswordReset, PageNotFound } from '../pages';
+import {
+  LandingPage,
+  Login,
+  Register,
+  PasswordReset
+} from '../pages';
 
 export const routes = [
   {
@@ -26,9 +31,5 @@ export const routes = [
     path: 'password-reset',
     element: <Navigate to="/" />,
     redirect: <PasswordReset />
-  },
-  {
-    path: '*',
-    element: <PageNotFound />
   }
 ];

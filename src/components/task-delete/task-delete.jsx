@@ -12,20 +12,22 @@ export const TaskDelete = () => {
   const selectedTask = useSelector(selectedTaskSelector);
   const dispatch = useDispatch();
 
+  const subtaskTitle = `${ selectedTask?.title.substring(0, 24) }...`;
+
+  function cancelAction() {
+    dispatch(closeModal());
+  }
+
   async function deleteSelectedTask() {
     try {
       setLocalStatus(THUNK_STATUS.LOADING);
       await dispatch(deleteTask(selectedTask.id));
-    } catch(error) {
+    } catch (error) {
       setLocalStatus(THUNK_STATUS.FAILED);
     } finally {
       setLocalStatus(THUNK_STATUS.IDLE);
       dispatch(closeModal());
     }
-  }
-
-  function cancelAction() {
-    dispatch(closeModal());
   }
 
   return (
@@ -34,8 +36,9 @@ export const TaskDelete = () => {
       <p className="task__delete-body">
         Are you sure you want to delete the
         <span className="task__title">
-          '{ selectedTask?.title.substring(0, 24) }...'
-        </span> task? This action will remove the task and it cannot be reversed.
+          { subtaskTitle }
+        </span>
+        task? This action will remove the task and it cannot be reversed.
       </p>
       <div className="task__delete-btn-group">
         <Button variety="danger" onClick={ deleteSelectedTask }>
@@ -44,5 +47,5 @@ export const TaskDelete = () => {
         <Button variety="secondary" onClick={ cancelAction }>Cancel</Button>
       </div>
     </div>
-  )
-}
+  );
+};

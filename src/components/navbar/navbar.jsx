@@ -1,10 +1,9 @@
-import { useMemo } from 'react';
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import cn from 'classnames';
 
-import { NavbarBtnGroup } from "./navbar-btn-group";
-import { allBoardsSelector, boardsStatusSelector } from "../../features/boardsSlice";
+import { NavbarBtnGroup } from './navbar-btn-group';
+import { allBoardsSelector, boardsStatusSelector } from '../../features/boardsSlice';
 import { themeSliceSelector } from '../../features/themeSlice';
 import { useConsumeContext } from '../../hooks';
 import { THUNK_STATUS } from '../../constants';
@@ -32,16 +31,13 @@ export const Navbar = ({ className }) => {
   const pageTitle = () => {
     switch (boardsStatus) {
       case THUNK_STATUS.LOADING:
-      return 'Loading...';
+        return 'Loading...';
       case THUNK_STATUS.SUCCEEDED:
-        const currentBoard = boards.filter(({ id }) => id === boardId);
-        const [ activeBoard ] = currentBoard;
-
-        return activeBoard?.pageName;
+        return boards.filter(({ id }) => id === boardId)[ 0 ]?.pageName;
       default:
-        return ''
+        return '';
     }
-  }
+  };
 
   return (
     <header className={ _className }>

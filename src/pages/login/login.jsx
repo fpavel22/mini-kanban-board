@@ -1,22 +1,32 @@
-import { useState } from "react";
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, Notification, PageRedirect, TextField } from "../../components";
-import { useLogin } from "../../hooks";
+import {
+  Button,
+  Notification,
+  PageRedirect,
+  TextField
+} from '../../components';
+import { useLogin } from '../../hooks';
 
 export const Login = () => {
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
 
-  const { loading, error, loginWithEmailAndPassword, loginWithGoogle } = useLogin();
+  const {
+    loading,
+    error,
+    loginWithEmailAndPassword,
+    loginWithGoogle
+  } = useLogin();
 
   function handleEmailChange({ target: { value } }) {
     setEmail(value);
-  };
+  }
 
   function handlePasswordChange({ target: { value } }) {
     setPassword(value);
-  };
+  }
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -35,25 +45,32 @@ export const Login = () => {
         { error && <p className="firebase--error">{ error }</p> }
         <label className="form-group">
           <span>E-mail</span>
-          <TextField type="email"
-              name="email"
-              required
-              value={ email }
-              onChange={ handleEmailChange } />
+          <TextField
+            type="email"
+            name="email"
+            required
+            value={ email }
+            onChange={ handleEmailChange }
+          />
         </label>
         <label className="form-group">
           <span>Password</span>
-          <TextField type="password"
-              name="password"
-              required
-              value={ password }
-              onChange={ handlePasswordChange } />
+          <TextField
+            type="password"
+            name="password"
+            required
+            value={ password }
+            onChange={ handlePasswordChange }
+          />
         </label>
         <Button variety="primary" size="lg" disabled={ loading }>
           { loading ? 'Logging in...' : 'Login' }
         </Button>
         <PageRedirect>
-          <span>Not a member? <Link to="/register">Sign up.</Link></span>
+          <span>
+            Not a member?
+            <Link to="/register">Sign up.</Link>
+          </span>
           <Link to="/password-reset">Forgot password?</Link>
         </PageRedirect>
         <Notification onClick={ handleGoogleSignIn }>Or login with Google</Notification>

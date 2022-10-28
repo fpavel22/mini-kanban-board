@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 
 import { modalOpenSelector, modalContentSelector } from '../../features/modalSlice';
 import {
@@ -40,13 +40,13 @@ export const LandingPage = ({ sidebarProps }) => {
       case MODAL_CONTENT.TASK_FORM_ADD:
         return <TaskForm />;
       case MODAL_CONTENT.TASK_FORM_EDIT:
-        return <TaskForm editing={ true } />
+        return <TaskForm editing />;
       case MODAL_CONTENT.TASK_VIEW:
         return <TaskView />;
       default:
         return null;
     }
-  }
+  };
 
   useEffect(() => {
     applyPageOverflow(modalOpen);
@@ -59,7 +59,7 @@ export const LandingPage = ({ sidebarProps }) => {
       if (!userBoards.includes(boardId)) {
         if (boards.length > 0) {
           const [ board ] = boards;
-          
+
           navigate(`/boards/${ board.path }`);
         } else {
           navigate('/');

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 
 import { auth } from '../firebase/auth';
 import { isEmailGmail } from '../utils/utils';
-import { determineErrorMessage } from "../utils/firebase";
-import { FIREBASE_INTERNAL_ERRORS } from "../constants";
+import { determineErrorMessage } from '../utils/firebase';
+import { FIREBASE_INTERNAL_ERRORS } from '../constants';
 
 export const usePasswordReset = () => {
   const [ loading, setLoading ] = useState(false);
@@ -23,13 +23,18 @@ export const usePasswordReset = () => {
 
       await sendPasswordResetEmail(auth, email);
       setSuccess(true);
-    } catch(error) {
-      const errorContent = determineErrorMessage(error);
+    } catch (err) {
+      const errorContent = determineErrorMessage(err);
       setError(errorContent);
     }
 
     setLoading(false);
   }
 
-  return { loading, error, success, passwordReset };
-}
+  return {
+    loading,
+    error,
+    success,
+    passwordReset
+  };
+};
