@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
 
 import { getCollectionDocs, setDocument, deleteDocument } from '../../utils/firebase';
-import { REDUCERS, THUNK_STATUS, FIREBASE_COLLECTIONS, FIREBASE_QUERY } from '../../constants';
+import {
+  REDUCERS,
+  THUNK_STATUS,
+  FIREBASE_COLLECTIONS
+} from '../../constants';
 
 const initialState = {
   tasks: [],

@@ -18,7 +18,7 @@ export const useHandleClickOutside = (open, callback) => {
 
     return () => {
       window.removeEventListener('click', hidePopup);
-    }
+    };
   }, [ open, parentRef, popupRef ]);
 
   return { parentRef, popupRef };

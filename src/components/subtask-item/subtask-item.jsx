@@ -3,7 +3,13 @@ import cn from 'classnames';
 
 import { themeSliceSelector } from '../../features/themeSlice';
 
-export const SubtaskItem = ({ completed, loading, title, children, onChange }) => {
+export const SubtaskItem = ({
+  completed,
+  loading,
+  title,
+  children,
+  onChange
+}) => {
   const darkMode = useSelector(themeSliceSelector);
 
   const _className = cn('subtask__item', {
@@ -14,10 +20,12 @@ export const SubtaskItem = ({ completed, loading, title, children, onChange }) =
 
   return (
     <label className={ _className }>
-      <input type="checkbox"
-          checked={ completed }
-          disabled={ loading }
-          onChange={ onChange } />
+      <input
+        type="checkbox"
+        checked={ completed }
+        disabled={ loading }
+        onChange={ onChange }
+      />
       <span className="subtask__title">{ children }</span>
       <span className="subtask__tooltip">{ title }</span>
     </label>

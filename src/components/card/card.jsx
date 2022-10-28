@@ -29,8 +29,7 @@ export const Card = ({ task, ...props }) => {
       <p className="card__summary">
         { subtasksCount
           ? `${ tasksCompleted } of ${ subtasksCount } subtasks completed`
-          : 'No subtasks added'
-        }
+          : 'No subtasks added' }
       </p>
     </div>
   );

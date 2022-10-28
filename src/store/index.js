@@ -10,7 +10,7 @@ import { REDUCERS } from '../constants';
 
 export const store = configureStore({
   reducer: {
-    [ REDUCERS.BOARDS]: boardsReducer,
+    [ REDUCERS.BOARDS ]: boardsReducer,
     [ REDUCERS.SHOW_MODAL ]: modalReducer,
     [ REDUCERS.TASKS ]: tasksReducer,
     [ REDUCERS.THEME ]: themeReducer,

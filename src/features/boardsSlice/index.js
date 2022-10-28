@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
 
-import { getCollectionDocs, setDocument } from "../../utils/firebase";
-import { REDUCERS, THUNK_STATUS, FIREBASE_COLLECTIONS, FIREBASE_QUERY } from '../../constants';
+import { getCollectionDocs, setDocument } from '../../utils/firebase';
+import { REDUCERS, THUNK_STATUS, FIREBASE_COLLECTIONS } from '../../constants';
 
 const initialState = {
   boards: [],
@@ -50,7 +50,7 @@ const boardsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserBoards.pending, (state) => {
-        state.status = THUNK_STATUS.LOADING
+        state.status = THUNK_STATUS.LOADING;
       })
       .addCase(fetchUserBoards.fulfilled, (state, action) => {
         state.status = THUNK_STATUS.SUCCEEDED;

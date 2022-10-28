@@ -21,8 +21,8 @@ export const useRegisterAccount = () => {
 
       const response = await createUserWithEmailAndPassword(auth, email, password);
       await sendEmailVerification(response.user);
-    } catch(error) {
-      const errorContent = determineErrorMessage(error);
+    } catch (err) {
+      const errorContent = determineErrorMessage(err);
       setError(errorContent);
     }
 
@@ -30,4 +30,4 @@ export const useRegisterAccount = () => {
   }
 
   return { loading, error, registerAccount };
-}
+};

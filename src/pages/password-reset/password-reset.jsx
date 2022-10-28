@@ -6,12 +6,17 @@ import { usePasswordReset } from '../../hooks';
 
 export const PasswordReset = () => {
   const [ email, setEmail ] = useState('');
-  const { loading, error, success, passwordReset } = usePasswordReset();
+  const {
+    loading,
+    error,
+    success,
+    passwordReset
+  } = usePasswordReset();
 
   function handleEmailChange({ target: { value } }) {
     setEmail(value);
   }
-  
+
   async function handleRecovery(event) {
     event.preventDefault();
     await passwordReset(email);
@@ -35,11 +40,13 @@ export const PasswordReset = () => {
         ) }
         <label className="form-group">
           <span>E-mail</span>
-          <TextField type="email"
-              name="email"
-              required
-              value={ email }
-              onChange={ handleEmailChange } />
+          <TextField
+            type="email"
+            name="email"
+            required
+            value={ email }
+            onChange={ handleEmailChange }
+          />
         </label>
         <Button variety="primary" size="lg" disabled={ loading }>
           { loading ? 'Please wait...' : 'Send' }
@@ -50,4 +57,4 @@ export const PasswordReset = () => {
       </form>
     </div>
   );
-}
+};

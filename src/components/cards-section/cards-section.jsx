@@ -7,11 +7,15 @@ export const CardsSection = ({ status, sectionTitle, tasks }) => {
     [ `cards__section-status--${ status }` ]: status
   });
 
+  const cardsSectionItems = `${ sectionTitle } (${ tasks.length })`;
+
   return (
     <section className="cards__section">
       <p className="cards__section-title">
         <span className={ sectionStatusClassName } />
-        <span className="cards__section-items">{ sectionTitle } ({ tasks.length })</span>
+        <span className="cards__section-items">
+          { cardsSectionItems }
+        </span>
       </p>
       <div className="cards__section-content">
         { tasks.map((task) => <Card key={ task.id } task={ task } />) }

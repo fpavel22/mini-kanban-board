@@ -16,20 +16,32 @@ export const SidebarNavigation = () => {
 
   function showBoardForm() {
     dispatch(openModal(MODAL_CONTENT.BOARD_FORM));
+  }
+
+  const renderNavigationTitle = () => {
+    switch (boardsStatus) {
+      case THUNK_STATUS.FAILED:
+        return boardsError;
+      case THUNK_STATUS.LOADING:
+        return 'Loading...';
+      default:
+        return `All Boards (${ boards.length })`;
+    }
   };
 
   return (
     <div className="sidebar__navigation">
       <p className="sidebar__navigation-title">
-        { boardsStatus === THUNK_STATUS.FAILED
-          ? boardsError
-          : boardsStatus === THUNK_STATUS.LOADING
-            ? 'Loading...'
-            : `All Boards (${ boards.length })` }
+        { renderNavigationTitle() }
       </p>
       <ul className="sidebar__navigation-items">
-        { boardsStatus !== THUNK_STATUS.LOADING && boards.map(({ path, pageName }) =>
-          <SidebarNavigationItem key={ path } path={ path } pageName={ pageName } /> ) }
+        { boardsStatus !== THUNK_STATUS.LOADING && boards.map(({ path, pageName }) => (
+          <SidebarNavigationItem
+            key={ path }
+            path={ path }
+            pageName={ pageName }
+          />
+        )) }
       </ul>
       <div className="sidebar__create" onClick={ showBoardForm }>
         <img src={ iconBoard } alt="Icon board" />

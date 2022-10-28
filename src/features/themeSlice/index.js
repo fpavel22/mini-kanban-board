@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { REDUCERS } from "../../constants";
+import { createSlice } from '@reduxjs/toolkit';
+import { REDUCERS } from '../../constants';
 
 const initialState = {
   darkMode: false

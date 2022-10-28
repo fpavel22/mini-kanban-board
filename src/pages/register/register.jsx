@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, PageRedirect, TextField } from "../../components";
+import { Button, PageRedirect, TextField } from '../../components';
 import { useRegisterAccount } from '../../hooks';
 
 export const Register = () => {
@@ -22,7 +22,7 @@ export const Register = () => {
     event.preventDefault();
 
     await registerAccount(email, password);
-  };
+  }
 
   return (
     <div className="auth__form-wrapper">
@@ -31,25 +31,32 @@ export const Register = () => {
         { error && <p className="firebase--error">{ error }</p> }
         <label className="form-group">
           <span>E-mail</span>
-          <TextField type="email"
-              name="email"
-              required
-              value={ email }
-              onChange={ handleEmailChange } />
+          <TextField
+            type="email"
+            name="email"
+            required
+            value={ email }
+            onChange={ handleEmailChange }
+          />
         </label>
         <label className="form-group">
           <span>Password</span>
-          <TextField type="password"
-              name="password"
-              required
-              value={ password }
-              onChange={ handlePasswordChange } />
+          <TextField
+            type="password"
+            name="password"
+            required
+            value={ password }
+            onChange={ handlePasswordChange }
+          />
         </label>
         <Button variety="primary" size="lg" disabled={ loading }>
           { loading ? 'Signing up...' : 'Sign-up' }
         </Button>
         <PageRedirect center={ true }>
-          <span>Already got an account? <Link to="/login">Log in.</Link></span>
+          <span>
+            Already got an account?
+            <Link to="/login">Log in.</Link>
+          </span>
         </PageRedirect>
       </form>
     </div>

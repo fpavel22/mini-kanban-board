@@ -32,9 +32,9 @@ export const BoardForm = () => {
           pageName: boardName,
           createdBy: user.uid
         };
-  
+
         await dispatch(addBoard(boardData));
-      } catch(error) {
+      } catch (error) {
         setLocalStatus(THUNK_STATUS.FAILED);
       } finally {
         setLocalStatus(THUNK_STATUS.IDLE);
@@ -42,21 +42,23 @@ export const BoardForm = () => {
         setBoardName('');
       }
     }
-  };
+  }
 
   return (
     <form className="form board-form" onSubmit={ handleSubmit }>
       <h2 className="form__title">Create new board</h2>
       <div className="form__group">
-        <TextField placeholder="Board name"
-            type="text"
-            value={ boardName }
-            error={ localStatus === THUNK_STATUS.FAILED }
-            onChange={ handleChange } />
+        <TextField
+          placeholder="Board name"
+          type="text"
+          value={ boardName }
+          error={ localStatus === THUNK_STATUS.FAILED }
+          onChange={ handleChange }
+        />
       </div>
       <Button variety="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
-        { localStatus === THUNK_STATUS.LOADING ? 'Creating board...': 'Create board' }
+        { localStatus === THUNK_STATUS.LOADING ? 'Creating board...' : 'Create board' }
       </Button>
     </form>
-  )
-}
+  );
+};

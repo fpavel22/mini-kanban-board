@@ -1,6 +1,6 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from 'firebase/firestore';
 
-import { firestore } from "../../firebase/firestore";
+import { firestore } from '../../firebase/firestore';
 
 export const setDocument = async (collectionName, docId, data) => {
   try {
@@ -8,7 +8,7 @@ export const setDocument = async (collectionName, docId, data) => {
 
     await setDoc(docResult, data);
     return data;
-  } catch(error) {
+  } catch (error) {
     return error;
   }
-}
+};

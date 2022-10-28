@@ -27,6 +27,18 @@ export const TextField = ({
     'text-field--d-mode': darkMode
   }, className);
 
+  function handleKeyDown(event) {
+    const { keyCode } = event;
+
+    if (keyCode === KEYCODES.ESCAPE) {
+      dispatch(closeModal());
+    }
+
+    if (onKeyDown) {
+      onKeyDown(event);
+    }
+  }
+
   const _type = type ?? 'text';
 
   const fieldProps = {
@@ -37,16 +49,6 @@ export const TextField = ({
   const field = multiline
     ? <textarea { ...fieldProps } />
     : <input { ...fieldProps } type={ _type } />;
-  
-  function handleKeyDown(event) {
-    const { keyCode } = event;
-    
-    if (keyCode === KEYCODES.ESCAPE) {
-      dispatch(closeModal());
-    }
-
-    onKeyDown && onKeyDown(event);
-  }
 
   return (
     <div className="text-field__control">
