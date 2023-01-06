@@ -10,3 +10,6 @@ Future plans:
 - implement `drag-and-drop` to be able to change the status of a task by dragging them around the sections. Additionally, the current status dropdown can be replaced with a "Priority" field.
 - implement delete board. Currently once a board is created, it cannot be deleted.
 - implement functionality to move tasks from one board to another.
+
+## Live app
+https://task-manager-mini.web.app/
