@@ -69,6 +69,7 @@ export const Login = () => {
         <PageRedirect>
           <span>
             Not a member?
+            {' '}
             <Link to="/register">Sign up.</Link>
           </span>
           <Link to="/password-reset">Forgot password?</Link>

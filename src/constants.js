@@ -40,14 +40,14 @@ export const MODAL_CONTENT = {
 export const BOARD_CONTENT_LABELS = [
   { status: 'to_do', sectionTitle: 'To do' },
   { status: 'in_progress', sectionTitle: 'In progress' },
+  { status: 'in_review', sectionTitle: 'In review' },
   { status: 'done', sectionTitle: 'Done' }
 ];
 
-export const DROPDOWN_OPTIONS = [
-  { value: 'to_do', label: 'To do' },
-  { value: 'in_progress', label: 'In progress' },
-  { value: 'done', label: 'Done' }
-];
+export const DROPDOWN_OPTIONS = BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => ({
+  value: status,
+  label: sectionTitle
+}));
 
 export const POPPER_MODIFIERS = [
   {

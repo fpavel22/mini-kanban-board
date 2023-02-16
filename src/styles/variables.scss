@@ -20,8 +20,9 @@ $z-index-important: 10;
 $transition-time: 100ms;
 
 // Board content
-$flex-row-gap: 1.25rem;
-$flex-column-gap: $padding-base-horizontal;
+$grid-width: 12rem;
+$grid-row-gap: 1.25rem;
+$grid-column-gap: $padding-base-horizontal;
 
 // Buttons
 $btn-horizontal-padding: 1.125rem;

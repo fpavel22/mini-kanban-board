@@ -55,6 +55,7 @@ export const Register = () => {
         <PageRedirect center={ true }>
           <span>
             Already got an account?
+            {' '}
             <Link to="/login">Log in.</Link>
           </span>
         </PageRedirect>

@@ -9,5 +9,5 @@ export const PopupItem = ({ option }) => {
     'popup__item--important': value === POPUP_STATES.IMPORTANT
   });
 
-  return <li key={ value } className={ _className } onClick={ onClick }>{ label }</li>;
+  return <li className={ _className } onClick={ onClick }>{ label }</li>;
 };

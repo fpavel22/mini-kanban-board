@@ -17,6 +17,7 @@ export const PageNotFound = () => (
     <PageRedirect center={ true }>
       <span>
         Page not found,
+        {' '}
         <Link to="/">go back.</Link>
       </span>
     </PageRedirect>

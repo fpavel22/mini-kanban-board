@@ -3,8 +3,8 @@
   padding: $padding-base-horizontal;
   min-height: inherit;
   display: grid;
-  grid-template-columns: repeat(3, calc($sidebar-width - $padding-base-horizontal));
-  grid-gap: $flex-row-gap $flex-column-gap;
+  grid-template-columns: repeat(4, minmax($grid-width, calc($sidebar-width - $padding-base-horizontal)));
+  grid-gap: $grid-row-gap $grid-column-gap;
   transition: margin $transition-time ease;
   overflow: auto;
 
