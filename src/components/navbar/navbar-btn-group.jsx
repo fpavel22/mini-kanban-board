@@ -56,13 +56,23 @@ export const NavbarBtnGroup = () => {
   return (
     <div className="header__btn-group">
       { tasks.length > 0 && (
-        <Button
-          variety="primary"
-          size="lg"
-          onClick={ handleAddTask }
-        >
-          + Add New Task
-        </Button>
+        <>
+          <Button
+            className="btn--mobile"
+            variety="primary"
+            onClick={ handleAddTask }
+          >
+            +
+          </Button>
+          <Button
+            className="btn--desktop"
+            variety="primary"
+            size="lg"
+            onClick={ handleAddTask }
+          >
+            + Add New Task
+          </Button>
+        </>
       ) }
       <img
         src={ iconEllipsis }

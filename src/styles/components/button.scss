@@ -14,8 +14,12 @@
 
   &.btn--lg {
     @include header-md;
+    
+    height: $btn-height;
 
-    height: $btn-lg-height;
+    @media (min-width: $md) {
+      height: $btn-lg-height;
+    }
   }
 
   &.btn--primary {

@@ -1,11 +1,24 @@
 .header {
   background-color: $color-white;
-  height: $navbar-height;
+  height: 4.5rem;
   position: sticky;
   top: 0;
   display: grid;
-  grid-template-columns: $sidebar-width 1fr;
+  grid-template-columns: 11rem 1fr;
   z-index: $z-index-important;
+  
+  @media (min-width: $xs) {
+    height: $navbar-height;
+    grid-template-columns: $sidebar-width-mobile 1fr;
+  }
+
+  @media (min-width: $sm) {
+    grid-template-columns: $sidebar-width-tablet 1fr;
+  }
+
+  @media (min-width: $md) {
+    grid-template-columns: $sidebar-width-desktop 1fr;
+  }
   
   .header__logo,
   .header__informative {
@@ -16,7 +29,21 @@
   
   .header__logo {
     border-right: 1px solid $light-gray;
-    padding-left: $padding-horizontal;
+    padding-left: 0;
+    justify-content: center;
+
+    img {
+      max-width: 8rem;
+    }
+    
+    @media (min-width: $sm) {
+      padding-left: $padding-horizontal;
+      justify-content: normal;
+
+      img {
+        max-width: 100%;
+      }
+    }
 
     &.header__logo--hidden-sidebar {
       border-bottom: 1px solid $light-gray;
@@ -30,7 +57,15 @@
     justify-content: space-between;
 
     .header__informative-title {
-      @include header-xl;
+      @include header-lg;
+      
+      @media (min-width: $sm) {
+        pointer-events: none;
+      }
+      
+      @media (min-width: $md) {
+        @include header-xl;
+      }
 
       padding-left: $padding-base-horizontal;
     }
@@ -39,6 +74,30 @@
       position: relative;
       display: flex;
       align-items: center;
+
+      .btn {
+        $breakpoint: 656px;
+
+        &--mobile {
+          @media (min-width: $breakpoint) {
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+          }
+        }
+
+        &--desktop {
+          display: none;
+          opacity: 0;
+          visibility: hidden;
+
+          @media (min-width: $breakpoint) {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
 
       .header__btn--options {
         margin-left: $padding-base-horizontal;

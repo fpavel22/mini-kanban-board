@@ -1,3 +1,8 @@
+// Breakpoints
+$xs: 481px;
+$sm: 570px;
+$md: 769px;
+
 // Globals
 $border-radius-xs: .25rem;
 $border-radius-sm: .375rem;
@@ -20,7 +25,7 @@ $z-index-important: 10;
 $transition-time: 100ms;
 
 // Board content
-$grid-width: 12rem;
+$grid-width: 14rem;
 $grid-row-gap: 1.25rem;
 $grid-column-gap: $padding-base-horizontal;
 
@@ -54,7 +59,9 @@ $sidebar-slider-margin-left: .1875rem;
 $sidebar-slider-indicator-size: .875rem;
 $sidebar-slider-height: 1.25rem;
 $sidebar-slider-width: 2.5rem;
-$sidebar-width: 17.5rem;
+$sidebar-width-mobile: 13rem;
+$sidebar-width-tablet: 16.3rem;
+$sidebar-width-desktop: 18.75rem;
 
 // Pages
 // Auth
