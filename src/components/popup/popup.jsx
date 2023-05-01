@@ -18,7 +18,7 @@ export const Popup = forwardRef(({ options, ...props }, ref) => {
     <>
       { createPortal(
         <ul { ...props } className={ _className } ref={ ref }>
-          { _options.map((option) => <PopupItem option={ option } />) }
+          { _options.map((option) => <PopupItem key={ option.value } option={ option } />) }
         </ul>,
         document.body
       ) }
