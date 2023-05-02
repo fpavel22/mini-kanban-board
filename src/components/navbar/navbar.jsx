@@ -39,9 +39,7 @@ export const Navbar = ({ className }) => {
     }
   };
 
-  function testClick() {
-    console.log('test');
-  }
+  function showBoards() {}
 
   return (
     <header className={ _className }>
@@ -49,7 +47,7 @@ export const Navbar = ({ className }) => {
         <img src={ darkMode ? logoLight : logoDark } alt="Header logo" />
       </div>
       <div className="header__informative">
-        <h2 className="header__informative-title" onClick={ testClick }>{ pageTitle() }</h2>
+        <h2 className="header__informative-title" onClick={ showBoards }>{ pageTitle() }</h2>
         <NavbarBtnGroup />
       </div>
     </header>

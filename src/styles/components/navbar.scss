@@ -3,46 +3,45 @@
   height: 4.5rem;
   position: sticky;
   top: 0;
-  display: grid;
-  grid-template-columns: 11rem 1fr;
+  display: flex;
+  align-items: center;
   z-index: $z-index-important;
-  
+  max-width: 95%;
+
   @media (min-width: $xs) {
     height: $navbar-height;
-    grid-template-columns: $sidebar-width-mobile 1fr;
   }
 
-  @media (min-width: $sm) {
-    grid-template-columns: $sidebar-width-tablet 1fr;
-  }
-
-  @media (min-width: $md) {
-    grid-template-columns: $sidebar-width-desktop 1fr;
-  }
-  
   .header__logo,
   .header__informative {
     height: 100%;
     display: flex;
     align-items: center;
   }
-  
+
   .header__logo {
     border-right: 1px solid $light-gray;
-    padding-left: 0;
+    padding: 0 0.75rem;
     justify-content: center;
+    width: 50%;
+    max-width: 8rem;
+    flex: 1 0 auto;
 
-    img {
-      max-width: 8rem;
+    @media (min-width: $sm) {
+      max-width: $sidebar-width-tablet;
     }
     
-    @media (min-width: $sm) {
-      padding-left: $padding-horizontal;
-      justify-content: normal;
+    @media (min-width: $md) {
+      max-width: $sidebar-width-desktop;
+    }
 
-      img {
-        max-width: 100%;
-      }
+    img {
+      max-width: 100%;
+    }
+
+    @media (min-width: $sm) {
+      padding: 0 0 0 $padding-horizontal;
+      justify-content: normal;
     }
 
     &.header__logo--hidden-sidebar {
@@ -52,49 +51,53 @@
 
   .header__informative {
     border-bottom: 1px solid $light-gray;
-    padding-right: $padding-horizontal;
-    width: 100%;
+    padding-right: 1rem;
+    width: 50%;
     justify-content: space-between;
+    flex: 1;
+    
+    @media (min-width: $sm) {
+      padding-right: $padding-horizontal;
+    }
 
     .header__informative-title {
       @include header-lg;
-      
+      padding: 0 .75rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 30rem;
+
       @media (min-width: $sm) {
         pointer-events: none;
+        padding-left: $padding-base-horizontal;
       }
-      
+
       @media (min-width: $md) {
         @include header-xl;
       }
-
-      padding-left: $padding-base-horizontal;
     }
 
     .header__btn-group {
       position: relative;
       display: flex;
       align-items: center;
+      flex: 0 1 auto;
 
       .btn {
         $breakpoint: 656px;
 
-        &--mobile {
-          @media (min-width: $breakpoint) {
-            display: none;
-            opacity: 0;
-            visibility: hidden;
-          }
+        @media (min-width: $breakpoint) {
+          display: flex;
+          align-items: center;
         }
 
-        &--desktop {
+        &__title {
           display: none;
-          opacity: 0;
-          visibility: hidden;
 
           @media (min-width: $breakpoint) {
             display: block;
-            opacity: 1;
-            visibility: visible;
+            padding-left: .25rem;
           }
         }
       }
