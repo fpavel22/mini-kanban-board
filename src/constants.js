@@ -44,10 +44,11 @@ export const BOARD_CONTENT_LABELS = [
   { status: 'done', sectionTitle: 'Done' }
 ];
 
-export const DROPDOWN_OPTIONS = BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => ({
-  value: status,
-  label: sectionTitle
-}));
+export const DROPDOWN_OPTIONS = [
+  { value: 'low', label: 'Low' },
+  { value: 'normal', label: 'Normal' },
+  { value: 'high', label: 'High' }
+];
 
 export const POPPER_MODIFIERS = [
   {

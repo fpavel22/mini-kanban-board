@@ -12,8 +12,6 @@ export const SidebarNavigation = () => {
   const boardsStatus = useSelector(boardsStatusSelector);
   const boardsError = useSelector(boardsErrorSelector);
 
-  console.log(boards);
-
   const dispatch = useDispatch();
 
   function showBoardForm() {

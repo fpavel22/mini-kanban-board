@@ -19,7 +19,7 @@ export const TaskForm = ({ editing }) => {
     title: editing ? selectedTask.title : '',
     description: editing ? selectedTask.description : '',
     subtasks: editing ? selectedTask.subtasks : [],
-    status: editing ? selectedTask.status : 'to_do'
+    priority: editing ? selectedTask.priority : 'normal'
   });
 
   const [ fieldsError, setFieldsError ] = useState({
@@ -36,7 +36,7 @@ export const TaskForm = ({ editing }) => {
     title,
     description,
     subtasks,
-    status
+    priority
   } = fieldsValue;
   const { titleError, descriptionError, subtasksError } = fieldsError;
 
@@ -105,7 +105,8 @@ export const TaskForm = ({ editing }) => {
           title,
           description,
           subtasks,
-          status
+          status: 'to_do',
+          priority
         };
 
         await dispatch(setTask(taskDetails));
@@ -170,8 +171,8 @@ export const TaskForm = ({ editing }) => {
         <Button variety="secondary" type="button" onClick={ addSubtask }>+ Add Subtask</Button>
       </div>
       <div className="form__group">
-        <p className="form__group-title">Status</p>
-        <Dropdown name="status" value={ status } onChange={ handleFormFieldsChange } />
+        <p className="form__group-title">Priority</p>
+        <Dropdown name="priority" value={ priority } onChange={ handleFormFieldsChange } />
       </div>
       <Button variety="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
         { localStatus === THUNK_STATUS.LOADING

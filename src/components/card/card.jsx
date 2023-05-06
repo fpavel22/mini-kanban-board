@@ -10,12 +10,13 @@ export const Card = ({ task, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
   const dispatch = useDispatch();
 
-  const { title, subtasks } = task;
+  const { title, subtasks, priority } = task;
   const subtasksCount = subtasks.length;
   const tasksCompleted = subtasks.filter(({ completed }) => completed).length;
 
   const _className = cn('card', {
-    'card--d-mode': darkMode
+    'card--d-mode': darkMode,
+    [`card--priority-${ priority }`]: priority
   });
 
   function showTaskDetails() {
@@ -25,7 +26,10 @@ export const Card = ({ task, ...props }) => {
 
   return (
     <div { ...props } className={ _className } onClick={ showTaskDetails }>
-      <h4 className="card__header">{ title }</h4>
+      <div className="card__header">
+        <h4>{ title }</h4>
+        <span />
+      </div>
       <p className="card__summary">
         { subtasksCount
           ? `${ tasksCompleted } of ${ subtasksCount } subtasks completed`
