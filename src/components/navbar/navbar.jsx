@@ -39,15 +39,13 @@ export const Navbar = ({ className }) => {
     }
   };
 
-  function showBoards() {}
-
   return (
     <header className={ _className }>
       <div className={ headerLogoClassName }>
         <img src={ darkMode ? logoLight : logoDark } alt="Header logo" />
       </div>
       <div className="header__informative">
-        <h2 className="header__informative-title" onClick={ showBoards }>{ pageTitle() }</h2>
+        <h2 className="header__informative-title">{ pageTitle() }</h2>
         <NavbarBtnGroup />
       </div>
     </header>

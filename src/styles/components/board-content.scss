@@ -2,18 +2,18 @@
   padding: $padding-base-horizontal;
   min-height: inherit;
   display: grid;
-  grid-template-columns: repeat(4, minmax($grid-width, calc($sidebar-width-tablet - $padding-base-horizontal)));
+  grid-template-columns: repeat(4, minmax($grid-width, calc($sidebar-width-sm - $padding-base-horizontal)));
   grid-gap: $grid-row-gap $grid-column-gap;
   transition: margin $transition-time ease;
   overflow: auto;
   
   @media (min-width: $sm) {
-    margin-left: $sidebar-width-tablet;
+    margin-left: $sidebar-width-sm;
   }
   
   @media (min-width: $md) {
-    margin-left: $sidebar-width-desktop;
-    grid-template-columns: repeat(4, minmax($grid-width, calc($sidebar-width-desktop - $padding-base-horizontal)));
+    margin-left: $sidebar-width-default;
+    grid-template-columns: repeat(4, minmax($grid-width, calc($sidebar-width-default - $padding-base-horizontal)));
   }
 
   &.board__content--expanded {

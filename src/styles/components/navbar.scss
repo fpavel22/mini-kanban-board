@@ -1,12 +1,11 @@
 .header {
   background-color: $color-white;
-  height: 4.5rem;
+  height: $navbar-height-sm;
   position: sticky;
   top: 0;
   display: flex;
   align-items: center;
   z-index: $z-index-important;
-  max-width: 95%;
 
   @media (min-width: $xs) {
     height: $navbar-height;
@@ -21,18 +20,18 @@
 
   .header__logo {
     border-right: 1px solid $light-gray;
-    padding: 0 0.75rem;
+    padding: 0 .75rem;
     justify-content: center;
     width: 50%;
     max-width: 8rem;
     flex: 1 0 auto;
 
     @media (min-width: $sm) {
-      max-width: $sidebar-width-tablet;
+      max-width: $sidebar-width-sm;
     }
     
     @media (min-width: $md) {
-      max-width: $sidebar-width-desktop;
+      max-width: $sidebar-width-default;
     }
 
     img {
