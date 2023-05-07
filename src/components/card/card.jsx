@@ -10,12 +10,13 @@ export const Card = ({ task, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
   const dispatch = useDispatch();
 
-  const { title, subtasks } = task;
+  const { title, subtasks, priority } = task;
   const subtasksCount = subtasks.length;
   const tasksCompleted = subtasks.filter(({ completed }) => completed).length;
 
   const _className = cn('card', {
-    'card--d-mode': darkMode
+    'card--d-mode': darkMode,
+    [`card--priority-${ priority }`]: priority
   });
 
   function showTaskDetails() {

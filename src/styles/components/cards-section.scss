@@ -1,4 +1,12 @@
 .cards__section {
+  padding: 0 $padding-sm-horizontal;
+  border-left: 1px solid $light-gray;
+  border-right: 1px solid $light-gray;
+  
+  @media (min-width: $md) {
+    padding: 0 $padding-lg-horizontal;
+  }
+
   .cards__section-title {
     @include header-sm;
 
@@ -24,8 +32,16 @@
       background-color: #8471F2;
     }
 
+    &--in_review {
+      background-color: #e267a4;
+    }
+
     &--done {
       background-color: #67E2AE;
     }
+  }
+
+  &--dark {
+    border-color: $color-black-50;
   }
 }

@@ -1,10 +1,42 @@
 .card {
+  $padding-bottom: $card-vertical-padding + $card-priority-border;
+
   background-color: $color-white;
-  padding: $card-vertical-padding $padding-sm-horizontal;
+  padding: $card-vertical-padding $padding-sm-horizontal $padding-bottom $padding-sm-horizontal;
   margin-bottom: $padding-base-horizontal;
   border-radius: $border-radius-base;
+  border: 1px solid #ddd;
+  position: relative;
   box-shadow: 0rem .25rem .375rem rgba(54, 78, 126, 0.1);
   cursor: pointer;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: $card-priority-border;
+    width: 100%;
+  }
+  
+  &--priority-low {
+    &::after {
+      background-color: #F6F6F6;
+    }
+  }
+
+  &--priority-normal {
+    &::after {
+      background-color: #CDF2F1;
+    }
+  }
+
+  &--priority-high {
+    &::after {
+      background-color: #FFE9E3;
+    }
+  }
 
   .card__header {
     @include header-md;
@@ -21,7 +53,22 @@
     color: $middle-gray;
   }
 
-  &.card--d-mode {
+  &--d-mode {
     background-color: $color-black-30;
+    border-color: #444;
+
+    &.card--priority {
+      &-high {
+        &::after {
+          background-color: #ffbcaa;
+        }
+      }
+
+      &-low {
+        &::after {
+          background-color: #c6c6c6;
+        }
+      }
+    }
   }
 }

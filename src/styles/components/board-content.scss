@@ -2,7 +2,7 @@
   padding: $padding-base-horizontal;
   min-height: inherit;
   display: grid;
-  grid-template-columns: repeat(4, minmax($grid-width, calc($sidebar-width-sm - $padding-base-horizontal)));
+  grid-template-columns: repeat(4, $sidebar-width-sm);
   grid-gap: $grid-row-gap $grid-column-gap;
   transition: margin $transition-time ease;
   overflow: auto;
@@ -13,7 +13,7 @@
   
   @media (min-width: $md) {
     margin-left: $sidebar-width-default;
-    grid-template-columns: repeat(4, minmax($grid-width, calc($sidebar-width-default - $padding-base-horizontal)));
+    grid-template-columns: repeat(4, $sidebar-width-default);
   }
 
   &.board__content--expanded {

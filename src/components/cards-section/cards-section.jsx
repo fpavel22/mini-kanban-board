@@ -1,8 +1,16 @@
+import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import { Card } from '../card';
+import { themeSliceSelector } from '../../features/themeSlice';
 
 export const CardsSection = ({ status, sectionTitle, tasks }) => {
+  const darkMode = useSelector(themeSliceSelector);
+
+  const _className = cn('cards__section', {
+    'cards__section--dark': darkMode
+  });
+
   const sectionStatusClassName = cn('cards__section-status', {
     [ `cards__section-status--${ status }` ]: status
   });
@@ -10,7 +18,7 @@ export const CardsSection = ({ status, sectionTitle, tasks }) => {
   const cardsSectionItems = `${ sectionTitle } (${ tasks.length })`;
 
   return (
-    <section className="cards__section">
+    <section className={ _className }>
       <p className="cards__section-title">
         <span className={ sectionStatusClassName } />
         <span className="cards__section-items">

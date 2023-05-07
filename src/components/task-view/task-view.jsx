@@ -116,7 +116,7 @@ export const TaskView = () => {
       </div>
       <div className="task__view-status">
         <h5 className="task__view-label">Current status</h5>
-        <Dropdown value={ selectedTask.status } disabled={ true } />
+        <Dropdown value={ selectedTask.priority } disabled />
       </div>
       { popupVisible && (
         <Popup
