@@ -26,10 +26,7 @@ export const Card = ({ task, ...props }) => {
 
   return (
     <div { ...props } className={ _className } onClick={ showTaskDetails }>
-      <div className="card__header">
-        <h4>{ title }</h4>
-        <span />
-      </div>
+      <h4 className="card__header">{ title }</h4>
       <p className="card__summary">
         { subtasksCount
           ? `${ tasksCompleted } of ${ subtasksCount } subtasks completed`

@@ -53,8 +53,22 @@
     color: $middle-gray;
   }
 
-  &.card--d-mode {
+  &--d-mode {
     background-color: $color-black-30;
     border-color: #444;
+
+    &.card--priority {
+      &-high {
+        &::after {
+          background-color: #ffbcaa;
+        }
+      }
+
+      &-low {
+        &::after {
+          background-color: #c6c6c6;
+        }
+      }
+    }
   }
 }

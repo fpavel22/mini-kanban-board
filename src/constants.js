@@ -44,6 +44,8 @@ export const BOARD_CONTENT_LABELS = [
   { status: 'done', sectionTitle: 'Done' }
 ];
 
+export const DEFAULT_CARD_STATUS = 'to_do';
+
 export const DROPDOWN_OPTIONS = [
   { value: 'low', label: 'Low' },
   { value: 'normal', label: 'Normal' },

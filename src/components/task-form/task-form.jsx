@@ -9,7 +9,7 @@ import { TextField } from '../text-field';
 import { closeModal, openModal } from '../../features/modalSlice';
 import { setTask, selectedTaskSelector } from '../../features/tasksSlice';
 import { userSelector } from '../../features/userSlice';
-import { MODAL_CONTENT, THUNK_STATUS } from '../../constants';
+import { DEFAULT_CARD_STATUS, MODAL_CONTENT, THUNK_STATUS } from '../../constants';
 
 export const TaskForm = ({ editing }) => {
   const selectedTask = useSelector(selectedTaskSelector);
@@ -105,7 +105,7 @@ export const TaskForm = ({ editing }) => {
           title,
           description,
           subtasks,
-          status: 'to_do',
+          status: DEFAULT_CARD_STATUS,
           priority
         };
 
