@@ -1,15 +1,21 @@
-# Task Manager Board
+# Task Management Board
 
-Simple application that helps track status of tasks. It offers the possibility of creating boards and inside the boards, tasks can be created or deleted, as well as updating its content. The tasks are structured on three different columns, similar to a Jira board - `To Do`, `In Progress` and `Done`.
+This is a simple task management board built with React, styled with Sass, and using Firebase as the backend. It allows you to create boards, and tasks within those boards.
 
-Created with ReactJS (create-react-app) and Firebase, styled with SASS.
+## Features
 
-Future plans:
+The following features have been implemented in this application:
 
-- create a timestamp and display the date a specific task was created.
-- implement `drag-and-drop` to be able to change the status of a task by dragging them around the sections. Additionally, the current status dropdown can be replaced with a "Priority" field.
-- implement delete board. Currently once a board is created, it cannot be deleted.
-- implement functionality to move tasks from one board to another.
+- **CRUD operations:** You can create new boards, and read, create, edit and update tasks in each board.
+- **Responsive design:** The application is responsive on mobile and tablet devices.
+- **Priority feature:** You can set the priority of a task to low, normal, or high, and the task's color will change accordingly.
+- **Drag-and-drop:** You can drag tasks within and between boards using the `dnd-kit` library (work in progress).
 
-## Live app
-https://task-manager-mini.web.app/
+## Usage
+
+To use this application, follow these steps:
+
+1. Clone the repository and navigate to the project directory.
+2. Install the dependencies using `npm install`.
+3. Set up a Firebase project and add your Firebase configuration to `src/firebase/config.js` (or create a .env file in the root folder).
+4. Start the development server using `npm start`.

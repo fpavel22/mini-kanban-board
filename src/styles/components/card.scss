@@ -7,9 +7,10 @@
   border-radius: $border-radius-base;
   border: 1px solid #ddd;
   position: relative;
-  box-shadow: 0rem .25rem .375rem rgba(54, 78, 126, 0.1);
+  box-shadow: 0rem .25rem .375rem rgba(54, 78, 126, .1);
   cursor: pointer;
   overflow: hidden;
+  touch-action: none;
 
   &::after {
     content: '';
@@ -19,22 +20,24 @@
     height: $card-priority-border;
     width: 100%;
   }
-  
-  &--priority-low {
-    &::after {
-      background-color: #F6F6F6;
-    }
-  }
 
-  &--priority-normal {
-    &::after {
-      background-color: #CDF2F1;
+  &--priority {
+    &-low {
+      &::after {
+        background-color: $card-priority-low;
+      }
     }
-  }
 
-  &--priority-high {
-    &::after {
-      background-color: #FFE9E3;
+    &-normal {
+      &::after {
+        background-color: $card-priority-normal;
+      }
+    }
+
+    &-high {
+      &::after {
+        background-color: $card-priority-high;
+      }
     }
   }
 
@@ -60,13 +63,13 @@
     &.card--priority {
       &-high {
         &::after {
-          background-color: #ffbcaa;
+          background-color: $card-dark-priority-high;
         }
       }
 
       &-low {
         &::after {
-          background-color: #c6c6c6;
+          background-color: $card-dark-priority-low;
         }
       }
     }

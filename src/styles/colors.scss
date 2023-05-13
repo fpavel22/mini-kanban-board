@@ -1,8 +1,8 @@
 $primary-m-purple: rgb(99, 95, 199);
 $primary-l-purple: rgb(168, 164, 255);
 
-$secondary-l-purple: rgba(99, 95, 199, 0.1);
-$secondary-m-purple: rgba(99, 95, 199, 0.25);
+$secondary-l-purple: rgba(99, 95, 199, .1);
+$secondary-m-purple: rgba(99, 95, 199, .25);
 
 $color-black: rgb(0, 1, 18);
 $color-black-25: rgb(32, 33, 44);
@@ -19,6 +19,19 @@ $danger-m-red: rgb(234, 85, 85);
 $danger-l-red: rgb(255, 152, 152);
 
 $success-l-green: rgb(90, 197, 95);
+
+$cards-section-to-do: rgb(73, 196, 229);
+$cards-section-in-progress: rgb(132, 113, 242);
+$cards-section-in-review: rgb(226, 103, 164);
+$cards-section-done: rgb(103, 226, 174);
+
+$card-priority-high: rgb(255, 233, 227);
+$card-dark-priority-high: rgb(255, 188, 170);
+
+$card-priority-normal: rgb(205, 242, 241);
+
+$card-priority-low: rgb(246, 246, 246);
+$card-dark-priority-low: rgb(198, 198, 198);
 
 $scrollbar-bg-color: rgb(214, 222, 225);
 $scrollbar-bg-color-hover: rgb(168, 187, 191);

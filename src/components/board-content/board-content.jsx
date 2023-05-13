@@ -1,11 +1,21 @@
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  DndContext,
+  useSensor,
+  useSensors,
+  PointerSensor
+} from '@dnd-kit/core';
 import cn from 'classnames';
 
 import { Button } from '../button';
 import { CardsSection } from '../cards-section';
 import { allBoardsSelector, boardsStatusSelector } from '../../features/boardsSlice';
 import { openModal } from '../../features/modalSlice';
-import { allTasksSelector, tasksStatusSelector } from '../../features/tasksSlice';
+import {
+  setTask,
+  allTasksSelector,
+  tasksStatusSelector
+} from '../../features/tasksSlice';
 import { filterTasksByStatus } from '../../utils/board-content';
 import { useConsumeContext } from '../../hooks';
 import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '../../constants';
@@ -13,6 +23,13 @@ import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '../../constan
 export const BoardContent = () => {
   const boards = useSelector(allBoardsSelector);
   const tasks = useSelector(allTasksSelector);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      }
+    })
+  );
 
   const boardsFetchStatus = useSelector(boardsStatusSelector);
   const tasksFetchStatus = useSelector(tasksStatusSelector);
@@ -48,15 +65,35 @@ export const BoardContent = () => {
     </div>
   );
 
+  function handleDrag(event) {
+    if (event.active && event.over) {
+      const { id: currentTask } = event.active;
+      const { id: status } = event.over;
+
+      const draggedTask = tasks.find(({ id }) => id === currentTask);
+
+      if (draggedTask) {
+        const task = {
+          ...draggedTask,
+          status
+        };
+
+        dispatch(setTask(task));
+      }
+    }
+  }
+
   const renderCardSections = (
-    BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => (
-      <CardsSection
-        key={ status }
-        status={ status }
-        sectionTitle={ sectionTitle }
-        tasks={ filterTasksByStatus(tasks, status) }
-      />
-    ))
+    <DndContext sensors={ sensors } onDragEnd={ handleDrag }>
+      { BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => (
+        <CardsSection
+          key={ status }
+          status={ status }
+          sectionTitle={ sectionTitle }
+          tasks={ filterTasksByStatus(tasks, status) }
+        />
+      )) }
+    </DndContext>
   );
 
   const content = tasksEmpty ? renderEmptyBoard : renderCardSections;

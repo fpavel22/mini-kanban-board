@@ -1,4 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import cn from 'classnames';
 
 import { openModal } from '../../features/modalSlice';
@@ -8,7 +10,18 @@ import { MODAL_CONTENT } from '../../constants';
 
 export const Card = ({ task, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform
+  } = useDraggable({
+    id: task.id
+  });
+
   const dispatch = useDispatch();
+
+  const style = { transform: CSS.Translate.toString(transform) };
 
   const { title, subtasks, priority } = task;
   const subtasksCount = subtasks.length;
@@ -25,7 +38,15 @@ export const Card = ({ task, ...props }) => {
   }
 
   return (
-    <div { ...props } className={ _className } onClick={ showTaskDetails }>
+    <div
+      { ...props }
+      { ...attributes }
+      { ...listeners }
+      style={ style }
+      className={ _className }
+      onClick={ showTaskDetails }
+      ref={ setNodeRef }
+    >
       <h4 className="card__header">{ title }</h4>
       <p className="card__summary">
         { subtasksCount

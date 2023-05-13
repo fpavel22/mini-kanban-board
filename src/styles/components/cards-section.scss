@@ -1,10 +1,10 @@
 .cards__section {
-  padding: 0 $padding-sm-horizontal;
+  padding: $padding-sm-horizontal $padding-sm-horizontal;
   border-left: 1px solid $light-gray;
   border-right: 1px solid $light-gray;
   
   @media (min-width: $md) {
-    padding: 0 $padding-lg-horizontal;
+    padding: $padding-sm-horizontal $padding-base-horizontal;
   }
 
   .cards__section-title {
@@ -25,23 +25,31 @@
     display: inline-block;
 
     &--to_do {
-      background-color: #49C4E5;
+      background-color: $cards-section-to-do;
     }
 
     &--in_progress {
-      background-color: #8471F2;
+      background-color: $cards-section-in-progress;
     }
 
     &--in_review {
-      background-color: #e267a4;
+      background-color: $cards-section-in-review;
     }
 
     &--done {
-      background-color: #67E2AE;
+      background-color: $cards-section-done;
     }
   }
 
   &--dark {
     border-color: $color-black-50;
+
+    &.cards__section--droppable {
+      background-color: lighten($color-black-25, 3%);
+    }
+  }
+
+  &--droppable {
+    background-color: darken($lightest-gray, 2%);
   }
 }

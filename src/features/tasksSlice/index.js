@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, miniSerializeError } from '@reduxjs/toolkit';
 
 import { getCollectionDocs, setDocument, deleteDocument } from '../../utils/firebase';
 import {
@@ -30,21 +30,28 @@ export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, asy
   return response;
 });
 
-export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (task) => {
-  const taskId = task.id ?? nanoid();
+export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (task, { getState, requestId, rejectWithValue }) => {
+  const taskId = task.id ?? requestId;
 
-  const taskData = {
-    ...task,
-    id: taskId
-  };
+  try {
+    const taskData = {
+      ...task,
+      id: taskId
+    };
 
-  const response = await setDocument(
-    FIREBASE_COLLECTIONS.TASKS,
-    taskId,
-    taskData
-  );
+    const response = await setDocument(
+      FIREBASE_COLLECTIONS.TASKS,
+      taskId,
+      taskData
+    );
 
-  return response;
+    return response;
+  } catch (err) {
+    const { tasks } = getState().tasks;
+
+    const originalTask = tasks.find(({ id }) => id === taskId);
+    return rejectWithValue(miniSerializeError(err), { originalTask });
+  }
 });
 
 export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, async (id) => {
@@ -76,16 +83,31 @@ const tasksSlice = createSlice({
 
         state.error = action.error.message;
       })
-      .addCase(setTask.fulfilled, (state, action) => {
-        const taskIndex = state.tasks.findIndex(({ id }) => id === action.payload.id);
+      .addCase(setTask.pending, (state, action) => {
+        const taskId = action.meta.arg.id ?? action.meta.requestId;
+
+        const taskIndex = state.tasks.findIndex(({ id }) => id === taskId);
+        const finalTask = { ...action.meta.arg, id: taskId };
 
         if (taskIndex >= 0) {
-          state.tasks[ taskIndex ] = action.payload;
+          state.tasks[ taskIndex ] = finalTask;
         } else {
-          state.tasks.push(action.payload);
+          state.tasks.push(finalTask);
         }
+      })
+      .addCase(setTask.rejected, (state, action) => {
+        const taskId = action.meta.arg.id ?? action.meta.requestId;
+        const taskIndex = state.tasks.findIndex(({ id }) => id === taskId);
 
-        state.selectedTask = action.payload;
+        if (taskIndex >= 0) {
+          const { originalTask } = action.meta;
+
+          if (originalTask) {
+            state.tasks[ taskIndex ] = originalTask;
+          } else {
+            state.tasks.splice(taskIndex, 1);
+          }
+        }
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
         const updatedTasks = state.tasks.filter(({ id }) => id !== action.payload);
