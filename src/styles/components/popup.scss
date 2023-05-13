@@ -6,7 +6,7 @@
   max-width: $max-popup-width;
   z-index: $z-index-important;
   overflow: hidden;
-  box-shadow: 0rem .625rem 1.25rem rgba(54, 78, 126, 0.25);
+  box-shadow: 0rem .625rem 1.25rem rgba(54, 78, 126, .25);
 
   .popup__item {
     padding: $padding-sm-horizontal;

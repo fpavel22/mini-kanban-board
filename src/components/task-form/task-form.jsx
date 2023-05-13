@@ -105,7 +105,7 @@ export const TaskForm = ({ editing }) => {
           title,
           description,
           subtasks,
-          status: DEFAULT_CARD_STATUS,
+          status: editing ? selectedTask.status : DEFAULT_CARD_STATUS,
           priority
         };
 
@@ -113,7 +113,6 @@ export const TaskForm = ({ editing }) => {
       } catch (error) {
         setLocalStatus(THUNK_STATUS.FAILED);
       } finally {
-        setLocalStatus(THUNK_STATUS.IDLE);
         dispatch(closeModal());
       }
     } else {

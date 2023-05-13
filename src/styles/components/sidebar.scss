@@ -35,7 +35,7 @@
     overflow: hidden;
 
     .sidebar__navigation-title {
-      padding-left: $padding-lg-horizontal;
+      padding: $padding-sm-horizontal 0 0 $padding-lg-horizontal;
       margin-bottom: 1.1875rem;
       text-transform: uppercase;
       letter-spacing: .125rem;
@@ -88,7 +88,7 @@
         white-space: nowrap;
       }
 
-      &.sidebar__navigation-item--active {
+      &--active {
         background-color: $primary-m-purple;
         color: $color-white;
       }

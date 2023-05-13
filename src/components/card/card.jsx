@@ -16,8 +16,9 @@ export const Card = ({ task, ...props }) => {
     setNodeRef,
     transform
   } = useDraggable({
-    id: task
+    id: task.id
   });
+
   const dispatch = useDispatch();
 
   const style = { transform: CSS.Translate.toString(transform) };

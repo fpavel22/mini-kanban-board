@@ -7,12 +7,13 @@ import { themeSliceSelector } from '../../features/themeSlice';
 
 export const CardsSection = ({ status, sectionTitle, tasks }) => {
   const darkMode = useSelector(themeSliceSelector);
-  const { setNodeRef } = useDroppable({
+  const { isOver, setNodeRef } = useDroppable({
     id: status
   });
 
   const _className = cn('cards__section', {
-    'cards__section--dark': darkMode
+    'cards__section--dark': darkMode,
+    'cards__section--droppable': isOver
   });
 
   const sectionStatusClassName = cn('cards__section-status', {
