@@ -62,11 +62,15 @@ export const TaskView = () => {
 
       setLocalState(THUNK_STATUS.LOADING);
 
-      await dispatch(setTask(taskData));
+      const dispatchResult = await dispatch(setTask(taskData));
+
+      if (dispatchResult.type === setTask.fulfilled.toString()) {
+        setLocalState(THUNK_STATUS.IDLE);
+      } else {
+        setLocalState(THUNK_STATUS.FAILED);
+      }
     } catch (error) {
       setLocalState(THUNK_STATUS.FAILED);
-    } finally {
-      setLocalState(THUNK_STATUS.IDLE);
     }
   }
 

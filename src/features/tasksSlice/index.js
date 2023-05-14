@@ -30,7 +30,14 @@ export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, asy
   return response;
 });
 
-export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (task, { getState, requestId, rejectWithValue }) => {
+export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (
+  task,
+  {
+    getState,
+    requestId,
+    rejectWithValue
+  }
+) => {
   const taskId = task.id ?? requestId;
 
   try {
@@ -94,6 +101,8 @@ const tasksSlice = createSlice({
         } else {
           state.tasks.push(finalTask);
         }
+
+        state.selectedTask = finalTask;
       })
       .addCase(setTask.rejected, (state, action) => {
         const taskId = action.meta.arg.id ?? action.meta.requestId;
@@ -104,8 +113,10 @@ const tasksSlice = createSlice({
 
           if (originalTask) {
             state.tasks[ taskIndex ] = originalTask;
+            state.selectedTask = originalTask;
           } else {
             state.tasks.splice(taskIndex, 1);
+            state.selectedTask = null;
           }
         }
       })

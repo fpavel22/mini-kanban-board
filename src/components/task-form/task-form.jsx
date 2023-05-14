@@ -109,7 +109,13 @@ export const TaskForm = ({ editing }) => {
           priority
         };
 
-        await dispatch(setTask(taskDetails));
+        const dispatchResult = await dispatch(setTask(taskDetails));
+
+        if (dispatchResult.type === setTask.fulfilled.toString()) {
+          setLocalStatus(THUNK_STATUS.IDLE);
+        } else {
+          setLocalStatus(THUNK_STATUS.FAILED);
+        }
       } catch (error) {
         setLocalStatus(THUNK_STATUS.FAILED);
       } finally {
