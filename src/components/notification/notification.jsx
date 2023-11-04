@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { themeSliceSelector } from '../../features/themeSlice';
+import { themeSliceSelector } from '@/features/themeSlice';
 
 export const Notification = ({ className, children, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);

@@ -3,17 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { mergeRefs } from 'react-merge-refs';
 import { signOut } from 'firebase/auth';
 
-import { Button } from '../button';
-import { Popup } from '../popup';
-import { openModal } from '../../features/modalSlice';
-import { allTasksSelector } from '../../features/tasksSlice';
-import { enableLightTheme } from '../../features/themeSlice';
-import { userSelector } from '../../features/userSlice';
-import { auth } from '../../firebase/auth';
-import { useHandleClickOutside, usePositionPopup } from '../../hooks';
-import { POPPER_MODIFIERS, POPPER_PLACEMENTS, MODAL_CONTENT } from '../../constants';
+import { Button } from '@components/button';
+import { Popup } from '@components/popup';
+import { openModal } from '@/features/modalSlice';
+import { allTasksSelector } from '@/features/tasksSlice';
+import { enableLightTheme } from '@/features/themeSlice';
+import { userSelector } from '@/features/userSlice';
+import { auth } from '@/firebase/auth';
+import { useHandleClickOutside, usePositionPopup } from '@/hooks';
+import { POPPER_MODIFIERS, POPPER_PLACEMENTS, MODAL_CONTENT } from '@/constants';
 
-import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
+import iconEllipsis from '@/assets/icon-vertical-ellipsis.svg';
 
 export const NavbarBtnGroup = () => {
   const [ showMenu, setShowMenu ] = useState(false);

@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import cn from 'classnames';
 
-import iconBoard from '../../assets/icon-board.svg';
+import iconBoard from '@/assets/icon-board.svg';
 
 export const SidebarNavigationItem = ({ path, pageName }) => {
   const { boardId } = useParams();

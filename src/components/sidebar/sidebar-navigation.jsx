@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
 
-import { SidebarNavigationItem } from './sidebar-navigation-item';
-import { allBoardsSelector, boardsStatusSelector, boardsErrorSelector } from '../../features/boardsSlice';
-import { openModal } from '../../features/modalSlice';
-import { MODAL_CONTENT, THUNK_STATUS } from '../../constants';
+import { SidebarNavigationItem } from '@components/sidebar/sidebar-navigation-item';
+import { allBoardsSelector, boardsStatusSelector, boardsErrorSelector } from '@/features/boardsSlice';
+import { openModal } from '@/features/modalSlice';
+import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
-import iconBoard from '../../assets/icon-board.svg';
+import iconBoard from '@/assets/icon-board.svg';
 
 export const SidebarNavigation = () => {
   const boards = useSelector(allBoardsSelector);

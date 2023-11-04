@@ -7,18 +7,18 @@ import {
 } from '@dnd-kit/core';
 import cn from 'classnames';
 
-import { Button } from '../button';
-import { CardsSection } from '../cards-section';
-import { allBoardsSelector, boardsStatusSelector } from '../../features/boardsSlice';
-import { openModal } from '../../features/modalSlice';
+import { Button } from '@components/button';
+import { CardsSection } from '@components/cards-section';
+import { allBoardsSelector, boardsStatusSelector } from '@/features/boardsSlice';
+import { openModal } from '@/features/modalSlice';
 import {
   setTask,
   allTasksSelector,
   tasksStatusSelector
-} from '../../features/tasksSlice';
-import { filterTasksByStatus } from '../../utils/board-content';
-import { useConsumeContext } from '../../hooks';
-import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '../../constants';
+} from '@/features/tasksSlice';
+import { filterTasksByStatus } from '@/utils/board-content';
+import { useConsumeContext } from '@/hooks';
+import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 export const BoardContent = () => {
   const boards = useSelector(allBoardsSelector);

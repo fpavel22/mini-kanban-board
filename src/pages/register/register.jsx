@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, PageRedirect, TextField } from '../../components';
-import { useRegisterAccount } from '../../hooks';
+import { Button, PageRedirect, TextField } from '@/components';
+import { useRegisterAccount } from '@/hooks';
 
 export const Register = () => {
   const [ email, setEmail ] = useState('');

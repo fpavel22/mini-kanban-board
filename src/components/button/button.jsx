@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { themeSliceSelector } from '../../features/themeSlice';
-import { SIZE } from '../../constants';
+import { themeSliceSelector } from '@/features/themeSlice';
+import { SIZE } from '@/constants';
 
 export const Button = ({
   variety,

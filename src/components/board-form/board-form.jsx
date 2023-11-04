@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Button } from '../button';
-import { TextField } from '../text-field';
-import { addBoard } from '../../features/boardsSlice';
-import { closeModal } from '../../features/modalSlice';
-import { userSelector } from '../../features/userSlice';
+import { Button } from '@components/button';
+import { TextField } from '@components/text-field';
+import { addBoard } from '@/features/boardsSlice';
+import { closeModal } from '@/features/modalSlice';
+import { userSelector } from '@/features/userSlice';
 
-import { THUNK_STATUS } from '../../constants';
+import { THUNK_STATUS } from '@/constants';
 
 export const BoardForm = () => {
   const [ boardName, setBoardName ] = useState('');

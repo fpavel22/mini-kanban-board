@@ -6,8 +6,8 @@ import {
   Notification,
   PageRedirect,
   TextField
-} from '../../components';
-import { useLogin } from '../../hooks';
+} from '@/components';
+import { useLogin } from '@/hooks';
 
 export const Login = () => {
   const [ email, setEmail ] = useState('');

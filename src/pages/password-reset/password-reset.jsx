@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, PageRedirect, TextField } from '../../components';
-import { usePasswordReset } from '../../hooks';
+import { Button, PageRedirect, TextField } from '@/components';
+import { usePasswordReset } from '@/hooks';
 
 export const PasswordReset = () => {
   const [ email, setEmail ] = useState('');

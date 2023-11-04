@@ -1,13 +1,13 @@
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { themeSliceSelector } from '../../features/themeSlice';
-import { Button } from '../button';
-import { SidebarNavigation } from './sidebar-navigation';
-import { SidebarToggle } from './sidebar-toggle';
-import { useConsumeContext } from '../../hooks';
+import { themeSliceSelector } from '@/features/themeSlice';
+import { Button } from '@components/button';
+import { SidebarNavigation } from '@components/sidebar/sidebar-navigation';
+import { SidebarToggle } from '@components/sidebar/sidebar-toggle';
+import { useConsumeContext } from '@/hooks';
 
-import iconShowSidebar from '../../assets/icon-show-sidebar.svg';
+import iconShowSidebar from '@/assets/icon-show-sidebar.svg';
 
 export const Sidebar = () => {
   const darkMode = useSelector(themeSliceSelector);

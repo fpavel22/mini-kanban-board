@@ -3,10 +3,10 @@ import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import cn from 'classnames';
 
-import { openModal } from '../../features/modalSlice';
-import { selectTask } from '../../features/tasksSlice';
-import { themeSliceSelector } from '../../features/themeSlice';
-import { MODAL_CONTENT } from '../../constants';
+import { openModal } from '@/features/modalSlice';
+import { selectTask } from '@/features/tasksSlice';
+import { themeSliceSelector } from '@/features/themeSlice';
+import { MODAL_CONTENT } from '@/constants';
 
 export const Card = ({ task, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);

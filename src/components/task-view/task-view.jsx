@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { mergeRefs } from 'react-merge-refs';
 
-import { Dropdown } from '../dropdown';
-import { Popup } from '../popup';
-import { SubtaskItem } from '../subtask-item';
-import { setTask, selectedTaskSelector } from '../../features/tasksSlice';
-import { openModal } from '../../features/modalSlice';
-import { useHandleClickOutside, usePositionPopup } from '../../hooks';
-import { MODAL_CONTENT, POPPER_MODIFIERS, THUNK_STATUS } from '../../constants';
+import { Dropdown } from '@components/dropdown';
+import { Popup } from '@components/popup';
+import { SubtaskItem } from '@components/subtask-item';
+import { setTask, selectedTaskSelector } from '@/features/tasksSlice';
+import { openModal } from '@/features/modalSlice';
+import { useHandleClickOutside, usePositionPopup } from '@/hooks';
+import { MODAL_CONTENT, POPPER_MODIFIERS, THUNK_STATUS } from '@/constants';
 
-import iconEllipsis from '../../assets/icon-vertical-ellipsis.svg';
+import iconEllipsis from '@/assets/icon-vertical-ellipsis.svg';
 
 export const TaskView = () => {
   const [ popupVisible, setPopupVisible ] = useState(false);

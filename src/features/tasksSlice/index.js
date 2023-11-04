@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, miniSerializeError } from '@reduxjs/toolkit';
 
-import { getCollectionDocs, setDocument, deleteDocument } from '../../utils/firebase';
+import { getCollectionDocs, setDocument, deleteDocument } from '@/utils/firebase';
 import {
   REDUCERS,
   THUNK_STATUS,
   FIREBASE_COLLECTIONS
-} from '../../constants';
+} from '@/constants';
 
 const initialState = {
   tasks: [],

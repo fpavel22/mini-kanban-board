@@ -2,8 +2,8 @@ import { useSelector } from 'react-redux';
 import { useDroppable } from '@dnd-kit/core';
 import cn from 'classnames';
 
-import { Card } from '../card';
-import { themeSliceSelector } from '../../features/themeSlice';
+import { Card } from '@components/card';
+import { themeSliceSelector } from '@/features/themeSlice';
 
 export const CardsSection = ({ status, sectionTitle, tasks }) => {
   const darkMode = useSelector(themeSliceSelector);
