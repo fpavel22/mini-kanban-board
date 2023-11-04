@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { POPUP_STATES } from '../../constants';
+import { POPUP_STATES } from '@/constants';
 
 export const PopupItem = ({ option }) => {
   const { value, label, onClick } = option;

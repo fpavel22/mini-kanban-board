@@ -1,4 +1,4 @@
-import { FIREBASE_AUTH_ERRORS } from '../../constants';
+import { FIREBASE_AUTH_ERRORS } from '@/constants';
 
 export const determineErrorMessage = (error) => {
   const { code, message } = error;

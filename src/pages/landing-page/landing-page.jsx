@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { modalOpenSelector, modalContentSelector } from '../../features/modalSlice';
+import { modalOpenSelector, modalContentSelector } from '@/features/modalSlice';
 import {
   BoardContent,
   BoardForm,
@@ -12,12 +12,12 @@ import {
   TaskForm,
   TaskView,
   TaskDelete
-} from '../../components';
-import { allBoardsSelector, boardsStatusSelector } from '../../features/boardsSlice';
-import { fetchTasks } from '../../features/tasksSlice';
-import { userSelector } from '../../features/userSlice';
-import { applyPageOverflow } from '../../utils/utils';
-import { MODAL_CONTENT, THUNK_STATUS } from '../../constants';
+} from '@/components';
+import { allBoardsSelector, boardsStatusSelector } from '@/features/boardsSlice';
+import { fetchTasks } from '@/features/tasksSlice';
+import { userSelector } from '@/features/userSlice';
+import { applyPageOverflow } from '@/utils/utils';
+import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 export const LandingPage = ({ sidebarProps }) => {
   const boards = useSelector(allBoardsSelector);

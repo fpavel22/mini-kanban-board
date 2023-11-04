@@ -4,7 +4,7 @@ import {
   Login,
   Register,
   PasswordReset
-} from '../pages';
+} from '@/pages';
 
 export const routes = [
   {

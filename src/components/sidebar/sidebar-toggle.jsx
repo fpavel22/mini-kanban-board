@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { enableDarkTheme, enableLightTheme } from '../../features/themeSlice';
-import { userSelector } from '../../features/userSlice';
-import { useConsumeContext } from '../../hooks';
-import { saveToLocalStorage } from '../../utils/utils';
+import { enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
+import { userSelector } from '@/features/userSlice';
+import { useConsumeContext } from '@/hooks';
+import { saveToLocalStorage } from '@/utils/utils';
 
-import iconDarkTheme from '../../assets/icon-dark-theme.svg';
-import iconLightTheme from '../../assets/icon-light-theme.svg';
-import iconHideSidebar from '../../assets/icon-hide-sidebar.svg';
+import iconDarkTheme from '@/assets/icon-dark-theme.svg';
+import iconLightTheme from '@/assets/icon-light-theme.svg';
+import iconHideSidebar from '@/assets/icon-hide-sidebar.svg';
 
 export const SidebarToggle = ({ darkMode }) => {
   const user = useSelector(userSelector);

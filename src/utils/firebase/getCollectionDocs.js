@@ -5,8 +5,8 @@ import {
   getDocs
 } from 'firebase/firestore';
 
-import { firestore } from '../../firebase/firestore';
-import { FIREBASE_COLLECTIONS, FIREBASE_QUERY } from '../../constants';
+import { firestore } from '@/firebase/firestore';
+import { FIREBASE_COLLECTIONS, FIREBASE_QUERY } from '@/constants';
 
 export const getCollectionDocs = async (collectionName, id, userId) => {
   let docQuery;

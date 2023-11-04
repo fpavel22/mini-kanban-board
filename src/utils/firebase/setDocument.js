@@ -1,6 +1,6 @@
 import { doc, setDoc } from 'firebase/firestore';
 
-import { firestore } from '../../firebase/firestore';
+import { firestore } from '@/firebase/firestore';
 
 export const setDocument = async (collectionName, docId, data) => {
   try {

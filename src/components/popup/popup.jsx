@@ -3,8 +3,8 @@ import { createPortal } from 'react-dom';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { PopupItem } from './popup-item';
-import { themeSliceSelector } from '../../features/themeSlice';
+import { PopupItem } from '@components/popup/popup-item';
+import { themeSliceSelector } from '@/features/themeSlice';
 
 export const Popup = forwardRef(({ options, ...props }, ref) => {
   const darkMode = useSelector(themeSliceSelector);

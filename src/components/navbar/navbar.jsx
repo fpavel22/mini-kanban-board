@@ -2,14 +2,14 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import cn from 'classnames';
 
-import { NavbarBtnGroup } from './navbar-btn-group';
-import { allBoardsSelector, boardsStatusSelector } from '../../features/boardsSlice';
-import { themeSliceSelector } from '../../features/themeSlice';
-import { useConsumeContext } from '../../hooks';
-import { THUNK_STATUS } from '../../constants';
+import { NavbarBtnGroup } from '@components/navbar/navbar-btn-group';
+import { allBoardsSelector, boardsStatusSelector } from '@/features/boardsSlice';
+import { themeSliceSelector } from '@/features/themeSlice';
+import { useConsumeContext } from '@/hooks';
+import { THUNK_STATUS } from '@/constants';
 
-import logoDark from '../../assets/logo-dark.svg';
-import logoLight from '../../assets/logo-light.svg';
+import logoDark from '@/assets/logo-dark.svg';
+import logoLight from '@/assets/logo-light.svg';
 
 export const Navbar = ({ className }) => {
   const darkMode = useSelector(themeSliceSelector);

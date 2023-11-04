@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
-import { closeModal } from '../../features/modalSlice';
-import { themeSliceSelector } from '../../features/themeSlice';
-import { KEYCODES } from '../../constants';
+import { closeModal } from '@/features/modalSlice';
+import { themeSliceSelector } from '@/features/themeSlice';
+import { KEYCODES } from '@/constants';
 
-import iconClose from '../../assets/icon-cross.svg';
+import iconClose from '@/assets/icon-cross.svg';
 
 export const TextField = ({
   multiline,

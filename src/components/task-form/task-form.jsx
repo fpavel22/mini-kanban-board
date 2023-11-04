@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Button } from '../button';
-import { Dropdown } from '../dropdown';
-import { TextField } from '../text-field';
-import { closeModal, openModal } from '../../features/modalSlice';
-import { setTask, selectedTaskSelector } from '../../features/tasksSlice';
-import { userSelector } from '../../features/userSlice';
-import { DEFAULT_CARD_STATUS, MODAL_CONTENT, THUNK_STATUS } from '../../constants';
+import { Button } from '@components/button';
+import { Dropdown } from '@components/dropdown';
+import { TextField } from '@components/text-field';
+import { closeModal, openModal } from '@/features/modalSlice';
+import { setTask, selectedTaskSelector } from '@/features/tasksSlice';
+import { userSelector } from '@/features/userSlice';
+import { DEFAULT_CARD_STATUS, MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 export const TaskForm = ({ editing }) => {
   const selectedTask = useSelector(selectedTaskSelector);

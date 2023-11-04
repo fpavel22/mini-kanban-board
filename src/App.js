@@ -3,13 +3,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
-import { PageNotFound } from './pages';
-import { routes } from './routes';
-import { fetchUserBoards, resetUserBoards } from './features/boardsSlice';
-import { themeSliceSelector, enableDarkTheme, enableLightTheme } from './features/themeSlice';
-import { userSelector } from './features/userSlice';
-import { useAuthStateChange, useConsumeContext } from './hooks';
-import { loadFromLocalStorage } from './utils/utils';
+import { PageNotFound } from '@/pages';
+import { routes } from '@/routes';
+import { fetchUserBoards, resetUserBoards } from '@/features/boardsSlice';
+import { themeSliceSelector, enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
+import { userSelector } from '@/features/userSlice';
+import { useAuthStateChange, useConsumeContext } from '@/hooks';
+import { loadFromLocalStorage } from '@/utils/utils';
 
 const App = () => {
   const darkMode = useSelector(themeSliceSelector);

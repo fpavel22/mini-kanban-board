@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { boardsReducer } from '../features/boardsSlice';
-import { modalReducer } from '../features/modalSlice';
-import { tasksReducer } from '../features/tasksSlice';
-import { themeReducer } from '../features/themeSlice';
-import { userReducer } from '../features/userSlice';
+import { boardsReducer } from '@/features/boardsSlice';
+import { modalReducer } from '@/features/modalSlice';
+import { tasksReducer } from '@/features/tasksSlice';
+import { themeReducer } from '@/features/themeSlice';
+import { userReducer } from '@/features/userSlice';
 
-import { REDUCERS } from '../constants';
+import { REDUCERS } from '@/constants';
 
 export const store = configureStore({
   reducer: {

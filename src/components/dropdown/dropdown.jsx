@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { themeSliceSelector } from '../../features/themeSlice';
-import { DROPDOWN_OPTIONS } from '../../constants';
+import { themeSliceSelector } from '@/features/themeSlice';
+import { DROPDOWN_OPTIONS } from '@/constants';
 
 export const Dropdown = ({ options, ...props }) => {
   const darkMode = useSelector(themeSliceSelector);

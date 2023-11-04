@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
 
-import { getCollectionDocs, setDocument } from '../../utils/firebase';
-import { REDUCERS, THUNK_STATUS, FIREBASE_COLLECTIONS } from '../../constants';
+import { getCollectionDocs, setDocument } from '@/utils/firebase';
+import { REDUCERS, THUNK_STATUS, FIREBASE_COLLECTIONS } from '@/constants';
 
 const initialState = {
   boards: [],
