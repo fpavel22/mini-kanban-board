@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PageRedirect } from '@/components';
+import { PageRedirect } from '@components/ui';
 
 export const PageNotFound = () => (
   <div className="not__found">

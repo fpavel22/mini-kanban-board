@@ -22,10 +22,11 @@ export const useLogin = () => {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
       const errorContent = determineErrorMessage(err);
-      setError(errorContent);
-    }
 
-    setLoading(false);
+      setError(errorContent);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function loginWithGoogle() {

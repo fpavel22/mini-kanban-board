@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, PageRedirect, TextField } from '@/components';
+import { PageForm } from '@components';
+import { Button, PageRedirect, TextField } from '@components/ui';
 import { usePasswordReset } from '@/hooks';
+import { FORM_FIELDS } from '@/constants';
+
+const { RESET } = FORM_FIELDS;
 
 export const PasswordReset = () => {
-  const [ email, setEmail ] = useState('');
   const {
     loading,
     error,
@@ -13,48 +15,59 @@ export const PasswordReset = () => {
     passwordReset
   } = usePasswordReset();
 
-  function handleEmailChange({ target: { value } }) {
-    setEmail(value);
-  }
-
-  async function handleRecovery(event) {
-    event.preventDefault();
+  async function handleRecovery([ email ]) {
     await passwordReset(email);
   }
 
-  useEffect(() => {
-    if (!error && success) {
-      setEmail('');
-    }
-  }, [ error, success ]);
-
   return (
     <div className="auth__form-wrapper">
-      <form className="auth__form login" onSubmit={ handleRecovery }>
-        <h2 className="auth__form-title">Password reset</h2>
-        { error && <p className="firebase--error">{ error }</p> }
-        { success && (
-          <div className="firebase--success">
-            <p>Your request has been successful, check your e-mail.</p>
-          </div>
-        ) }
-        <label className="form-group">
-          <span>E-mail</span>
-          <TextField
-            type="email"
-            name="email"
-            required
-            value={ email }
-            onChange={ handleEmailChange }
-          />
-        </label>
-        <Button variety="primary" size="lg" disabled={ loading }>
-          { loading ? 'Please wait...' : 'Send' }
-        </Button>
+      <div className="auth__form">
+        <PageForm
+          loading={ loading }
+          error={ error }
+          success={ success }
+          fields={ RESET }
+          className="reset"
+          onSubmit={ handleRecovery }
+        >
+          { ({
+            fields,
+            formState,
+            formError,
+            formSuccess,
+            isLoading,
+            handleInputChange
+          }) => (
+            <>
+              <h2 className="auth__form-title">Password reset</h2>
+              { formError && <p className="firebase--error">{ formError }</p> }
+              { formSuccess && (
+                <div className="firebase--success">
+                  <p>Your request has been successful, check your e-mail.</p>
+                </div>
+              ) }
+              { fields.map((field) => (
+                <label key={ field.name } className="form-group">
+                  <span>{ field.label }</span>
+                  <TextField
+                    type={ field.type }
+                    name={ field.name }
+                    required
+                    value={ formState[ field.name ] }
+                    onChange={ handleInputChange }
+                  />
+                </label>
+              )) }
+              <Button variety="primary" size="lg" disabled={ isLoading }>
+                { isLoading ? 'Please wait...' : 'Reset' }
+              </Button>
+            </>
+          ) }
+        </PageForm>
         <PageRedirect center={ true }>
           <Link to="/login">Back to login.</Link>
         </PageRedirect>
-      </form>
+      </div>
     </div>
   );
 };

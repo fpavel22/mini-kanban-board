@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Button } from '@components/button';
-import { TextField } from '@components/text-field';
+import { Button, TextField } from '@components/ui';
 import { addBoard } from '@/features/boardsSlice';
 import { closeModal } from '@/features/modalSlice';
 import { userSelector } from '@/features/userSlice';

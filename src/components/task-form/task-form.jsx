@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Button } from '@components/button';
-import { Dropdown } from '@components/dropdown';
-import { TextField } from '@components/text-field';
+import { Button, Dropdown, TextField } from '@components/ui';
 import { closeModal, openModal } from '@/features/modalSlice';
 import { setTask, selectedTaskSelector } from '@/features/tasksSlice';
 import { userSelector } from '@/features/userSlice';

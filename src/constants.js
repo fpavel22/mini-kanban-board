@@ -1,4 +1,4 @@
-export const TEXTAREA_PLACEHOLDER = 'e.g. It\'s always good to take a break. This 15 minutes break will recharge the batteries.';
+export const DEFAULT_CARD_STATUS = 'to_do';
 
 export const SIZE = {
   LG: 'lg'
@@ -29,6 +29,14 @@ export const THUNK_STATUS = {
   FAILED: 'failed'
 };
 
+export const PATHS = {
+  ROOT: '/',
+  BOARDS: '/boards',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  RESET: '/password-reset'
+};
+
 export const MODAL_CONTENT = {
   BOARD_FORM: 'board-form',
   TASK_VIEW: 'task-view',
@@ -44,9 +52,21 @@ export const BOARD_CONTENT_LABELS = [
   { status: 'done', sectionTitle: 'Done' }
 ];
 
-export const DEFAULT_CARD_STATUS = 'to_do';
+export const FORM_FIELDS = {
+  LOGIN: [
+    { name: 'email', label: 'E-mail', type: 'email' },
+    { name: 'password', label: 'Password', type: 'password' }
+  ],
+  REGISTER: [
+    { name: 'email', label: 'E-mail', type: 'email' },
+    { name: 'password', label: 'Password', type: 'password' }
+  ],
+  RESET: [
+    { name: 'email', label: 'E-mail', type: 'email' }
+  ]
+};
 
-export const DROPDOWN_OPTIONS = [
+export const DROPDOWN_DEFAULT_OPTIONS = [
   { value: 'low', label: 'Low' },
   { value: 'normal', label: 'Normal' },
   { value: 'high', label: 'High' }

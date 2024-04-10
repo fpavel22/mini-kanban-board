@@ -1,6 +1,6 @@
 export * from './useAuthStateChange';
 
-export * from './useConsumeContext';
+export * from './useSidebarContext';
 
 export * from './useHandleClickOutside';
 

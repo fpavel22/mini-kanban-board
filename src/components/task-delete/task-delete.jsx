@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Button } from '@components/button';
+import { Button } from '@components/ui';
 import { closeModal } from '@/features/modalSlice';
 import { selectedTaskSelector, deleteTask } from '@/features/tasksSlice';
 import { THUNK_STATUS } from '@/constants';

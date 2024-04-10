@@ -1,57 +1,57 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, PageRedirect, TextField } from '@/components';
+import { PageForm } from '@components';
+import { Button, PageRedirect, TextField } from '@components/ui';
 import { useRegisterAccount } from '@/hooks';
+import { FORM_FIELDS } from '@/constants';
+
+const { REGISTER } = FORM_FIELDS;
 
 export const Register = () => {
-  const [ email, setEmail ] = useState('');
-  const [ password, setPassword ] = useState('');
-
   const { loading, error, registerAccount } = useRegisterAccount();
 
-  function handleEmailChange({ target: { value } }) {
-    setEmail(value);
-  }
-
-  function handlePasswordChange({ target: { value } }) {
-    setPassword(value);
-  }
-
-  async function handleRegistration(event) {
-    event.preventDefault();
-
+  async function handleRegistration([ email, password ]) {
     await registerAccount(email, password);
   }
 
   return (
     <div className="auth__form-wrapper">
-      <form className="auth__form register" onSubmit={ handleRegistration }>
-        <h2 className="auth__form-title">Sign-up a new account</h2>
-        { error && <p className="firebase--error">{ error }</p> }
-        <label className="form-group">
-          <span>E-mail</span>
-          <TextField
-            type="email"
-            name="email"
-            required
-            value={ email }
-            onChange={ handleEmailChange }
-          />
-        </label>
-        <label className="form-group">
-          <span>Password</span>
-          <TextField
-            type="password"
-            name="password"
-            required
-            value={ password }
-            onChange={ handlePasswordChange }
-          />
-        </label>
-        <Button variety="primary" size="lg" disabled={ loading }>
-          { loading ? 'Signing up...' : 'Sign-up' }
-        </Button>
+      <div className="auth__form">
+        <PageForm
+          loading={ loading }
+          error={ error }
+          fields={ REGISTER }
+          className="register"
+          onSubmit={ handleRegistration }
+        >
+          { ({
+            fields,
+            formState,
+            formError,
+            isLoading,
+            handleInputChange
+          }) => (
+            <>
+              <h2 className="auth__form-title">Sign-up a new account</h2>
+              { formError && <p className="firebase--error">{ formError }</p> }
+              { fields.map((field) => (
+                <label key={ field.name } className="form-group">
+                  <span>{ field.label }</span>
+                  <TextField
+                    type={ field.type }
+                    name={ field.name }
+                    required
+                    value={ formState[ field.name ] }
+                    onChange={ handleInputChange }
+                  />
+                </label>
+              )) }
+              <Button variety="primary" size="lg" disabled={ isLoading }>
+                { isLoading ? 'Signing up...' : 'Sign-up' }
+              </Button>
+            </>
+          ) }
+        </PageForm>
         <PageRedirect center={ true }>
           <span>
             Already got an account?
@@ -59,7 +59,7 @@ export const Register = () => {
             <Link to="/login">Log in.</Link>
           </span>
         </PageRedirect>
-      </form>
+      </div>
     </div>
   );
 };

@@ -6,23 +6,24 @@ export const applyPageOverflow = (isModalVisible) => {
 
 export const isEmailGmail = (email) => email.match(/^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/i);
 
-export const saveToLocalStorage = (userId, darkMode, sidebarVisible) => {
-  const setup = {
-    userId,
-    darkMode,
-    sidebarVisible
-  };
+export const saveToLocalStorage = (preferences) => {
+  const { userId } = preferences;
 
-  const stringified = JSON.stringify(setup);
+  const stringified = JSON.stringify(preferences);
 
   localStorage.setItem(userId, stringified);
 };
 
 export const loadFromLocalStorage = (userId) => {
   if (userId) {
-    const setup = localStorage.getItem(userId);
-    const parsed = JSON.parse(setup);
+    const preferences = localStorage.getItem(userId);
 
-    return parsed;
+    return preferences ? JSON.parse(preferences) : preferences;
   }
+};
+
+export const filterTasksByStatus = (tasks, taskStatus) => {
+  const filteredTasks = tasks.filter(({ status }) => status === taskStatus);
+
+  return filteredTasks;
 };

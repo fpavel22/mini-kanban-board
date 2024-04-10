@@ -1,28 +1,32 @@
 import { useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
-import { closeModal } from '@/features/modalSlice';
-import { themeSliceSelector } from '@/features/themeSlice';
-
-export const CardModal = ({ children, ...props }) => {
-  const darkMode = useSelector(themeSliceSelector);
-  const dispatch = useDispatch();
-
+export const CardModal = ({
+  darkMode,
+  className,
+  closeModal = () => {},
+  children,
+  ...props
+}) => {
   const modalRef = useRef();
 
   const _className = cn('card__modal', {
     'card__modal--d-mode': darkMode
-  });
+  }, className);
 
   function handleClickOutside({ target }) {
     if (target.contains(modalRef?.current)) {
-      dispatch(closeModal());
+      closeModal();
     }
   }
 
   return (
-    <div { ...props } className={ _className } ref={ modalRef } onMouseDown={ handleClickOutside }>
+    <div
+      { ...props }
+      className={ _className }
+      ref={ modalRef }
+      onMouseDown={ handleClickOutside }
+    >
       <div className="card__modal-content">
         { children }
       </div>

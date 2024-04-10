@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { mergeRefs } from 'react-merge-refs';
 
-import { Dropdown } from '@components/dropdown';
-import { Popup } from '@components/popup';
-import { SubtaskItem } from '@components/subtask-item';
+import { Dropdown, Popup, SubtaskItem } from '@components/ui';
 import { setTask, selectedTaskSelector } from '@/features/tasksSlice';
 import { openModal } from '@/features/modalSlice';
+import { themeSliceSelector } from '@/features/themeSlice';
 import { useHandleClickOutside, usePositionPopup } from '@/hooks';
 import { MODAL_CONTENT, POPPER_MODIFIERS, THUNK_STATUS } from '@/constants';
 
@@ -16,6 +15,7 @@ export const TaskView = () => {
   const [ popupVisible, setPopupVisible ] = useState(false);
   const [ localState, setLocalState ] = useState(THUNK_STATUS.IDLE);
 
+  const darkMode = useSelector(themeSliceSelector);
   const selectedTask = useSelector(selectedTaskSelector);
   const dispatch = useDispatch();
 
@@ -84,6 +84,7 @@ export const TaskView = () => {
           subtaskId={ id }
           completed={ completed }
           loading={ localState === THUNK_STATUS.LOADING }
+          darkMode={ darkMode }
           title={ value }
           onChange={ (event) => handleSubtaskStatus(event, id) }
         >
@@ -120,7 +121,7 @@ export const TaskView = () => {
       </div>
       <div className="task__view-status">
         <h5 className="task__view-label">Current status</h5>
-        <Dropdown value={ selectedTask.priority } disabled />
+        <Dropdown darkMode={ darkMode } value={ selectedTask.priority } disabled />
       </div>
       { popupVisible && (
         <Popup
