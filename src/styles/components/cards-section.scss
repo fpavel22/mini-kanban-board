@@ -2,6 +2,7 @@
   padding: $padding-sm-horizontal $padding-sm-horizontal;
   border-left: 1px solid $light-gray;
   border-right: 1px solid $light-gray;
+  height: 100%;
   
   @media (min-width: $md) {
     padding: $padding-sm-horizontal $padding-base-horizontal;
@@ -43,13 +44,5 @@
 
   &--dark {
     border-color: $color-black-50;
-
-    &.cards__section--droppable {
-      background-color: lighten($color-black-25, 3%);
-    }
-  }
-
-  &--droppable {
-    background-color: darken($lightest-gray, 2%);
   }
 }

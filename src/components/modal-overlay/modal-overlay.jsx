@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import cn from 'classnames';
 
-export const CardModal = ({
+export const ModalOverlay = ({
   darkMode,
   className,
   closeModal = () => {},

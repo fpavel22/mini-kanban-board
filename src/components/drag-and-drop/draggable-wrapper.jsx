@@ -1,7 +1,7 @@
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 
-export const CardDraggable = ({ id, children, ...props }) => {
+export const DraggableWrapper = ({ id, children, ...props }) => {
   const {
     attributes,
     listeners,

@@ -3,14 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import cn from 'classnames';
 
-import { BoardColumn } from '@components';
+import { BoardColumn, DroppableWrapper } from '@components';
 import { Button } from '@components/ui';
 import { allBoardsSelector, boardsStatusSelector } from '@/features/boardsSlice';
 import { openModal } from '@/features/modalSlice';
 import {
   allTasksSelector,
   tasksStatusSelector,
-  fetchTasks
+  fetchTasks,
+  selectTask
 } from '@/features/tasksSlice';
 import { themeSliceSelector } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
@@ -18,7 +19,7 @@ import { filterTasksByStatus } from '@/utils/utils';
 import { useSidebarContext } from '@/hooks';
 import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
-import { DragAndDrop } from './drag-and-drop';
+import { DndWrapper } from './dnd-wrapper';
 
 export const BoardContent = () => {
   const boards = useSelector(allBoardsSelector);
@@ -51,7 +52,12 @@ export const BoardContent = () => {
     dispatch(openModal(MODAL_CONTENT.TASK_FORM_ADD));
   }
 
-  const renderEmptyBoard = (
+  function handleCardClick(task) {
+    dispatch(selectTask(task));
+    dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
+  }
+
+  const createEmptyBoard = (
     <div className="empty__board">
       <p>
         { boardsEmpty
@@ -66,21 +72,24 @@ export const BoardContent = () => {
     </div>
   );
 
-  const renderCardSections = (
-    <DragAndDrop tasks={ tasks }>
+  const createBoardColumns = (
+    <DndWrapper tasks={ tasks }>
       { BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => (
-        <BoardColumn
-          key={ status }
-          darkMode={ darkMode }
-          status={ status }
-          sectionTitle={ sectionTitle }
-          tasks={ filterTasksByStatus(tasks, status) }
-        />
+        <DroppableWrapper key={ status } status={ status } darkMode={ darkMode }>
+          <BoardColumn
+            darkMode={ darkMode }
+            status={ status }
+            sectionTitle={ sectionTitle }
+            isDraggable={ true }
+            columnItems={ filterTasksByStatus(tasks, status) }
+            onItemClick={ handleCardClick }
+          />
+        </DroppableWrapper>
       )) }
-    </DragAndDrop>
+    </DndWrapper>
   );
 
-  const content = tasksEmpty ? renderEmptyBoard : renderCardSections;
+  const content = tasksEmpty ? createEmptyBoard : createBoardColumns;
 
   useEffect(() => {
     const ids = {

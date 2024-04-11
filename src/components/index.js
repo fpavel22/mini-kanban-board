@@ -1,19 +1,13 @@
 export * from './board-column';
 
-export * from './board-form';
+export * from './column-item';
 
-export * from './card-draggable';
+export * from './drag-and-drop';
 
-export * from './card-modal';
+export * from './modal-overlay';
 
 export * from './page-form';
 
 export * from './navbar';
 
 export * from './sidebar';
-
-export * from './task-form';
-
-export * from './task-view';
-
-export * from './task-delete';

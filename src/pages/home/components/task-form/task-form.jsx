@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Button, Dropdown, TextField } from '@components/ui';
-import { closeModal, openModal } from '@/features/modalSlice';
-import { setTask, selectedTaskSelector } from '@/features/tasksSlice';
-import { userSelector } from '@/features/userSlice';
-import { DEFAULT_CARD_STATUS, MODAL_CONTENT, THUNK_STATUS } from '@/constants';
+import { DEFAULT_CARD_STATUS, THUNK_STATUS } from '@/constants';
 
-export const TaskForm = ({ editing }) => {
-  const selectedTask = useSelector(selectedTaskSelector);
-
+export const TaskForm = ({
+  user,
+  editing,
+  selectedTask = {},
+  showViewDialog = () => {},
+  createNewTask = async () => {},
+  closeModal = () => {}
+}) => {
   const [ localStatus, setLocalStatus ] = useState(THUNK_STATUS.IDLE);
   const [ fieldsValue, setFieldsValue ] = useState({
     title: editing ? selectedTask.title : '',
@@ -26,8 +27,6 @@ export const TaskForm = ({ editing }) => {
     subtasksError: null
   });
 
-  const user = useSelector(userSelector);
-  const dispatch = useDispatch();
   const { boardId } = useParams();
 
   const {
@@ -37,10 +36,6 @@ export const TaskForm = ({ editing }) => {
     priority
   } = fieldsValue;
   const { titleError, descriptionError, subtasksError } = fieldsError;
-
-  function goBack() {
-    dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
-  }
 
   function handleFormFieldsChange({ target }) {
     const { name, value } = target;
@@ -107,17 +102,12 @@ export const TaskForm = ({ editing }) => {
           priority
         };
 
-        const dispatchResult = await dispatch(setTask(taskDetails));
+        await createNewTask(taskDetails);
 
-        if (dispatchResult.type === setTask.fulfilled.toString()) {
-          setLocalStatus(THUNK_STATUS.IDLE);
-        } else {
-          setLocalStatus(THUNK_STATUS.FAILED);
-        }
+        setLocalStatus(THUNK_STATUS.IDLE);
+        closeModal();
       } catch (error) {
         setLocalStatus(THUNK_STATUS.FAILED);
-      } finally {
-        dispatch(closeModal());
       }
     } else {
       const subtasksIds = emptySubtasks.map(({ id }) => id);
@@ -134,7 +124,7 @@ export const TaskForm = ({ editing }) => {
   return (
     <form className="form task__form" onSubmit={ handleSubmit }>
       { editing
-        && <span className="task__form--go-back" onClick={ goBack }>&#x2190; Go back</span> }
+        && <span className="task__form--go-back" onClick={ showViewDialog }>&#x2190; Go back</span> }
       <h2 className="form__title">Add New Task</h2>
       <div className="form__group">
         <p className="form__group-title">Title</p>

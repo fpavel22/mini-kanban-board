@@ -1,11 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 
-import { Button, Popup } from '@components/ui';
+import { Button, EllipsisIcon, Popup } from '@components/ui';
 import { useHandleClickOutside, usePositionPopup } from '@/hooks';
 import { POPPER_MODIFIERS, POPPER_PLACEMENTS } from '@/constants';
-
-import iconEllipsis from '@/assets/icon-vertical-ellipsis.svg';
 
 export const NavbarBtnGroup = ({
   darkMode,
@@ -28,9 +26,11 @@ export const NavbarBtnGroup = ({
 
   const { parentRef, popupRef } = useHandleClickOutside(showMenu, hidePopup);
 
-  function toggleOptionsMenu() {
+  const ellipsisRefs = useMemo(() => mergeRefs([ parentRef, setParentRef ]), []);
+
+  const toggleOptionsMenu = useCallback(() => {
     setShowMenu((prevState) => !prevState);
-  }
+  }, []);
 
   return (
     <div className="header__btn-group">
@@ -44,11 +44,10 @@ export const NavbarBtnGroup = ({
           <span className="btn__title">{ btnTitle }</span>
         </Button>
       ) }
-      <img
-        src={ iconEllipsis }
+      <EllipsisIcon
         className="header__btn--options"
         alt="Options icon"
-        ref={ mergeRefs([ parentRef, setParentRef ]) }
+        ref={ ellipsisRefs }
         onClick={ toggleOptionsMenu }
       />
       { showMenu

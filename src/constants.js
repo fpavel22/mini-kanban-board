@@ -63,6 +63,9 @@ export const FORM_FIELDS = {
   ],
   RESET: [
     { name: 'email', label: 'E-mail', type: 'email' }
+  ],
+  BOARD_FORM: [
+    { name: 'board-name', label: 'Board name', type: 'text' }
   ]
 };
 

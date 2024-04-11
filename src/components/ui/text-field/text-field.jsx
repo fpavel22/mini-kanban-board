@@ -9,7 +9,7 @@ import iconClose from '@/assets/icon-cross.svg';
 
 export const TextField = ({
   multiline,
-  type,
+  type = 'text',
   closable,
   error,
   className,
@@ -39,8 +39,6 @@ export const TextField = ({
     }
   }
 
-  const _type = type ?? 'text';
-
   const fieldProps = {
     ...props,
     onKeyDown: handleKeyDown
@@ -48,7 +46,7 @@ export const TextField = ({
 
   const field = multiline
     ? <textarea { ...fieldProps } />
-    : <input { ...fieldProps } type={ _type } />;
+    : <input { ...fieldProps } type={ type } />;
 
   return (
     <div className="text-field__control">

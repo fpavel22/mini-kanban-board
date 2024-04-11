@@ -1,65 +1,54 @@
-import { useDispatch } from 'react-redux';
-import { useDroppable } from '@dnd-kit/core';
 import cn from 'classnames';
 
-import { Card } from '@components/ui';
-import { CardDraggable } from '@components/card-draggable';
-import { openModal } from '@/features/modalSlice';
-import { selectTask } from '@/features/tasksSlice';
-import { MODAL_CONTENT } from '@/constants';
+import { ColumnItem as CardColumnItem } from '@components/column-item';
 
 export const BoardColumn = ({
   darkMode,
   status,
   sectionTitle,
-  tasks
+  columnItems,
+  itemType = CardColumnItem,
+  onItemClick = () => {},
+  ...props
 }) => {
-  const dispatch = useDispatch();
-
-  const { isOver, setNodeRef } = useDroppable({
-    id: status
-  });
-
   const _className = cn('cards__section', {
-    'cards__section--dark': darkMode,
-    'cards__section--droppable': isOver
+    'cards__section--dark': darkMode
   });
 
   const sectionStatusClassName = cn('cards__section-status', {
     [ `cards__section-status--${ status }` ]: status
   });
 
-  const cardsSectionItems = `${ sectionTitle } (${ tasks.length })`;
+  const columnTitle = `${ sectionTitle } (${ columnItems.length })`;
 
-  function onCardClick(task) {
+  const ColumnItem = itemType;
+
+  function handleItemClick(task) {
     return () => {
-      dispatch(selectTask(task));
-      dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
+      onItemClick(task);
     };
   }
 
   return (
-    <section className={ _className } ref={ setNodeRef }>
+    <div className={ _className }>
       <p className="cards__section-title">
         <span className={ sectionStatusClassName } />
         <span className="cards__section-items">
-          { cardsSectionItems }
+          { columnTitle }
         </span>
       </p>
       <div className="cards__section-content">
-        { tasks.map((task) => (
-          <CardDraggable
+        { columnItems.map((task) => (
+          <ColumnItem
+            { ...props }
             key={ task.id }
             id={ task.id }
-          >
-            <Card
-              task={ task }
-              darkMode={ darkMode }
-              onClick={ onCardClick(task) }
-            />
-          </CardDraggable>
+            task={ task }
+            darkMode={ darkMode }
+            onClick={ handleItemClick(task) }
+          />
         )) }
       </div>
-    </section>
+    </div>
   );
 };

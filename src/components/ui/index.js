@@ -4,6 +4,8 @@ export * from './card';
 
 export * from './dropdown';
 
+export * from './ellipsis-icon';
+
 export * from './notification';
 
 export * from './page-redirect';
