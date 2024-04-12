@@ -1,10 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Sidebar as GenericSidebar } from '@components';
+import { Sidebar as PageSidebar } from '@components';
 import { allBoardsSelector, boardsStatusSelector, boardsErrorSelector } from '@/features/boardsSlice';
 import { openModal } from '@/features/modalSlice';
 import { themeSliceSelector, enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
+import { userSelector } from '@/features/userSlice';
 import { useSidebarContext } from '@/hooks';
+import { saveToLocalStorage } from '@/utils/utils';
 import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 export const Sidebar = () => {
@@ -12,6 +14,7 @@ export const Sidebar = () => {
   const boardsStatus = useSelector(boardsStatusSelector);
   const boardsError = useSelector(boardsErrorSelector);
 
+  const user = useSelector(userSelector);
   const darkMode = useSelector(themeSliceSelector);
 
   const { sidebarVisible, setSidebarVisible } = useSidebarContext();
@@ -24,14 +27,22 @@ export const Sidebar = () => {
     [ THUNK_STATUS.SUCCEEDED ]: `All Boards (${ boards.length })`
   };
 
-  function showSidebar() {
-    setSidebarVisible(true);
+  function toggleSidebar(showSidebar) {
+    setSidebarVisible(showSidebar);
+    saveToLocalStorage({ userId: user.uid, sidebarVisible: showSidebar });
+  }
+
+  function toggleTheme() {
+    dispatch(darkMode ? enableLightTheme() : enableDarkTheme());
+    saveToLocalStorage({ userId: user.uid, darkMode: !darkMode });
   }
 
   const sidebarProps = {
     darkMode,
     sidebarVisible,
-    showSidebar
+    showSidebar() {
+      toggleSidebar(true);
+    }
   };
 
   const sidebarNavigationProps = {
@@ -45,11 +56,9 @@ export const Sidebar = () => {
 
   const sidebarToggleProps = {
     hideSidebar() {
-      setSidebarVisible(false);
+      toggleSidebar(false);
     },
-    toggleTheme() {
-      dispatch(darkMode ? enableLightTheme() : enableDarkTheme());
-    }
+    toggleTheme
   };
 
   const props = {
@@ -58,5 +67,5 @@ export const Sidebar = () => {
     ...sidebarToggleProps
   };
 
-  return <GenericSidebar { ...props } />;
+  return <PageSidebar { ...props } />;
 };

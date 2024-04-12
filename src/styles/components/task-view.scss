@@ -2,20 +2,24 @@
   .task__view-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
   }
 
   .task__view-title {
     margin-right: $padding-xs-horizontal;
     max-width: 100%;
+    max-height: calc(1.4375rem * 3);
+    overflow: auto;
   }
 
   .task__view-options {
+    align-self: center;
     cursor: pointer;
   }
 
   .task__view-description {
     margin: $padding-base-horizontal 0;
+    max-height: 9rem;
+    overflow: auto;
   }
 
   .task__view-label {

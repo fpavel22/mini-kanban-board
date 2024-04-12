@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { unwrapResult } from '@reduxjs/toolkit';
 
 import {
   BoardContent,
@@ -10,7 +9,9 @@ import {
   Sidebar
 } from '@/pages/home/components';
 import { fetchUserBoards, resetUserBoards } from '@/features/boardsSlice';
+import { enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
+import { useSidebarContext, useDispatchUnwrapper, useLoadPreferences } from '@/hooks';
 import { PATHS } from '@/constants';
 
 export const Home = () => {
@@ -20,10 +21,12 @@ export const Home = () => {
   const navigate = useNavigate();
   const { boardId } = useParams();
 
+  const { setSidebarVisible } = useSidebarContext();
+  const unwrapDispatch = useDispatchUnwrapper();
+
   useEffect(() => {
     (async function () {
-      const thunkResponse = await dispatch(fetchUserBoards(user.uid));
-      const userBoards = await unwrapResult(thunkResponse);
+      const userBoards = await unwrapDispatch(fetchUserBoards(user.uid));
 
       let navigateTo = PATHS.ROOT;
       const activeBoard = boardId
@@ -40,6 +43,11 @@ export const Home = () => {
     return () => {
       dispatch(resetUserBoards());
     };
+  }, []);
+
+  useLoadPreferences(user.uid, ({ darkMode, sidebarVisible }) => {
+    dispatch(darkMode ? enableDarkTheme() : enableLightTheme());
+    setSidebarVisible(sidebarVisible);
   }, []);
 
   return (

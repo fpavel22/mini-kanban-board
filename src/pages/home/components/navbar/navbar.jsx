@@ -2,10 +2,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 
-import { Navbar as GenericNavbar } from '@components';
+import { Navbar as PageNavbar } from '@components';
 import { allBoardsSelector, boardsStatusSelector } from '@/features/boardsSlice';
 import { openModal } from '@/features/modalSlice';
-import { allTasksSelector } from '@/features/tasksSlice';
+import { allTasksSelector, tasksStatusSelector } from '@/features/tasksSlice';
 import { themeSliceSelector, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
 import { auth } from '@/firebase/auth';
@@ -17,16 +17,18 @@ export const Navbar = () => {
   const boardsStatus = useSelector(boardsStatusSelector);
 
   const tasks = useSelector(allTasksSelector);
+  const tasksStatus = useSelector(tasksStatusSelector);
 
   const user = useSelector(userSelector);
   const darkMode = useSelector(themeSliceSelector);
 
+  const dispatch = useDispatch();
+
   const { boardId } = useParams();
   const { sidebarVisible } = useSidebarContext();
 
-  const dispatch = useDispatch();
+  const tasksFetched = tasksStatus === THUNK_STATUS.SUCCEEDED;
 
-  const showNavbarBtn = tasks.length > 0;
   const popupMenuOptions = [
     {
       value: 'important',
@@ -54,7 +56,7 @@ export const Navbar = () => {
   };
 
   const navbarBtnProps = {
-    showBtn: showNavbarBtn,
+    showBtn: tasksFetched && tasks.length > 0,
     menuOptions: popupMenuOptions,
     btnTitle: 'Add New Task',
     onButtonClick() {
@@ -64,5 +66,5 @@ export const Navbar = () => {
 
   const props = { ...navbarProps, ...navbarBtnProps };
 
-  return <GenericNavbar { ...props } />;
+  return <PageNavbar { ...props } />;
 };

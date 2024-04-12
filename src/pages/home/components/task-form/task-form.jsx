@@ -1,19 +1,20 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Button, Dropdown, TextField } from '@components/ui';
+import { selectedTaskSelector } from '@/features/tasksSlice';
+import { useModalState, useTaskOperations } from '@/hooks';
 import { DEFAULT_CARD_STATUS, THUNK_STATUS } from '@/constants';
 
 export const TaskForm = ({
   user,
   editing,
-  selectedTask = {},
-  showViewDialog = () => {},
-  createNewTask = async () => {},
   closeModal = () => {}
 }) => {
-  const [ localStatus, setLocalStatus ] = useState(THUNK_STATUS.IDLE);
+  const selectedTask = useSelector(selectedTaskSelector);
+
   const [ fieldsValue, setFieldsValue ] = useState({
     title: editing ? selectedTask.title : '',
     description: editing ? selectedTask.description : '',
@@ -27,6 +28,9 @@ export const TaskForm = ({
     subtasksError: null
   });
 
+  const { showViewDialog } = useModalState();
+  const { status: localStatus, createTask } = useTaskOperations();
+
   const { boardId } = useParams();
 
   const {
@@ -36,6 +40,8 @@ export const TaskForm = ({
     priority
   } = fieldsValue;
   const { titleError, descriptionError, subtasksError } = fieldsError;
+
+  const isCreating = localStatus === THUNK_STATUS.LOADING;
 
   function handleFormFieldsChange({ target }) {
     const { name, value } = target;
@@ -88,27 +94,20 @@ export const TaskForm = ({
     const emptySubtasks = subtasks.filter(({ value }) => !value);
 
     if ([ title, description, emptySubtasks.length === 0 ].every(Boolean)) {
-      try {
-        setLocalStatus(THUNK_STATUS.LOADING);
+      const taskDetails = {
+        id: editing ? selectedTask.id : null,
+        pageId: boardId,
+        createdBy: editing ? selectedTask.createdBy : user.uid,
+        title,
+        description,
+        subtasks,
+        status: editing ? selectedTask.status : DEFAULT_CARD_STATUS,
+        priority
+      };
 
-        const taskDetails = {
-          id: editing ? selectedTask.id : null,
-          pageId: boardId,
-          createdBy: editing ? selectedTask.createdBy : user.uid,
-          title,
-          description,
-          subtasks,
-          status: editing ? selectedTask.status : DEFAULT_CARD_STATUS,
-          priority
-        };
-
-        await createNewTask(taskDetails);
-
-        setLocalStatus(THUNK_STATUS.IDLE);
+      createTask(taskDetails).then(() => {
         closeModal();
-      } catch (error) {
-        setLocalStatus(THUNK_STATUS.FAILED);
-      }
+      });
     } else {
       const subtasksIds = emptySubtasks.map(({ id }) => id);
 
@@ -167,8 +166,8 @@ export const TaskForm = ({
         <p className="form__group-title">Priority</p>
         <Dropdown name="priority" value={ priority } onChange={ handleFormFieldsChange } />
       </div>
-      <Button variety="primary" disabled={ localStatus === THUNK_STATUS.LOADING }>
-        { localStatus === THUNK_STATUS.LOADING
+      <Button variety="primary" disabled={ isCreating }>
+        { isCreating
           ? 'Please wait...'
           : `${ editing ? 'Save' : 'Create' } Task` }
       </Button>

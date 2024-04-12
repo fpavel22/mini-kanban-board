@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { mergeRefs } from 'react-merge-refs';
 
 import {
@@ -7,23 +8,26 @@ import {
   Popup,
   SubtaskItem
 } from '@components/ui';
-import { useHandleClickOutside, usePositionPopup } from '@/hooks';
+import { selectedTaskSelector } from '@/features/tasksSlice';
+import {
+  useHandleClickOutside,
+  usePositionPopup,
+  useTaskOperations,
+  useModalState
+} from '@/hooks';
 import { POPPER_MODIFIERS, THUNK_STATUS } from '@/constants';
 
-export const TaskView = ({
-  darkMode,
-  selectedTask = {},
-  showEditDialog = () => {},
-  showDeleteDialog = () => {},
-  updateSubtaskStatus = async () => {}
-}) => {
+export const TaskView = ({ darkMode }) => {
   const [ popupVisible, setPopupVisible ] = useState(false);
-  const [ localState, setLocalState ] = useState(THUNK_STATUS.IDLE);
+  const selectedTask = useSelector(selectedTaskSelector);
+
+  const { status: localState, updateSubtaskStatus } = useTaskOperations();
+  const { showEditDialog, showDeleteDialog } = useModalState();
 
   const { popperStyles, setParentRef, setReferenceRef } = usePositionPopup(POPPER_MODIFIERS);
 
-  const subtasksCompleted = selectedTask.subtasks?.filter(({ completed }) => completed).length;
-  const subtasksTotal = selectedTask.subtasks?.length;
+  const subtasksCompleted = selectedTask.subtasks.filter(({ completed }) => completed).length;
+  const subtasksTotal = selectedTask.subtasks.length;
 
   function hidePopup() {
     setPopupVisible(false);
@@ -38,34 +42,20 @@ export const TaskView = ({
     { value: 'danger', label: 'Delete task', onClick: showDeleteDialog }
   ];
 
-  function handleSubtaskStatus(id) {
-    return async (event) => {
-      try {
-        setLocalState(THUNK_STATUS.LOADING);
-
-        await updateSubtaskStatus(event, id);
-
-        setLocalState(THUNK_STATUS.IDLE);
-      } catch (err) {
-        setLocalState(THUNK_STATUS.FAILED);
-      }
-    };
-  }
-
   const togglePopup = useCallback(() => {
     setPopupVisible((prevState) => !prevState);
   }, []);
 
   const ellipsisRefs = useMemo(() => mergeRefs([ parentRef, setParentRef ]), []);
 
-  const renderSubtasksList = selectedTask?.subtasks.map(({ id, value, completed }) => (
+  const renderSubtasksList = selectedTask.subtasks.map(({ id, value, completed }) => (
     <SubtaskItem
       key={ id }
       completed={ completed }
       loading={ localState === THUNK_STATUS.LOADING }
       darkMode={ darkMode }
       title={ value }
-      onChange={ handleSubtaskStatus(id) }
+      onChange={ updateSubtaskStatus(id) }
     >
       { value }
     </SubtaskItem>
@@ -74,9 +64,11 @@ export const TaskView = ({
   return (
     <div className="form task__view">
       <div className="task__view-header">
-        <h2 className="form__title">
-          { selectedTask?.title }
-        </h2>
+        <div className="task__view-title">
+          <h2 className="form__title">
+            { selectedTask.title }
+          </h2>
+        </div>
         <EllipsisIcon
           className="task__view-options"
           alt="Task view options icon"
@@ -85,7 +77,7 @@ export const TaskView = ({
         />
       </div>
       <p className="task__view-description">
-        { selectedTask?.description }
+        { selectedTask.description }
       </p>
       <div className="task__view-subtasks">
         <h5 className="task__view-label">

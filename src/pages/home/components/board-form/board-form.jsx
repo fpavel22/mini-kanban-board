@@ -1,30 +1,18 @@
-import { useState } from 'react';
-
 import { PageForm } from '@components/page-form';
 import { Button, TextField } from '@components/ui';
+import { useCreateBoard } from '@/hooks';
 import { THUNK_STATUS, FORM_FIELDS } from '@/constants';
 
 const { BOARD_FORM } = FORM_FIELDS;
 
-export const BoardForm = ({ addBoard = async () => {}, closeModal = () => {} }) => {
-  const [ localStatus, setLocalStatus ] = useState(THUNK_STATUS.IDLE);
+export const BoardForm = ({ user, closeModal = () => {} }) => {
+  const [ localStatus, createBoard ] = useCreateBoard();
 
-  async function handleSubmit([ boardName ]) {
+  function handleSubmit([ boardName ]) {
     if (boardName) {
-      try {
-        setLocalStatus(THUNK_STATUS.LOADING);
-
-        const boardData = {
-          pageName: boardName
-        };
-
-        await addBoard(boardData);
-
-        setLocalStatus(THUNK_STATUS.IDLE);
+      createBoard(boardName, user.uid).then(() => {
         closeModal();
-      } catch (error) {
-        setLocalStatus(THUNK_STATUS.FAILED);
-      }
+      });
     }
   }
 

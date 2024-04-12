@@ -1,26 +1,24 @@
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectedTaskSelector } from '@/features/tasksSlice';
 
 import { Button } from '@components/ui';
+import { useTaskOperations } from '@/hooks';
 import { THUNK_STATUS } from '@/constants';
 
-export const TaskDelete = ({
-  taskTitle,
-  onDeleteTask = async () => {},
-  closeModal = () => {}
-}) => {
-  const [ localStatus, setLocalStatus ] = useState(THUNK_STATUS.IDLE);
+export const TaskDelete = ({ closeModal = () => {} }) => {
+  const selectedTask = useSelector(selectedTaskSelector);
+  const { status: localStatus, deleteTask } = useTaskOperations();
 
-  async function deleteSelectedTask() {
-    try {
-      setLocalStatus(THUNK_STATUS.LOADING);
+  const isLoading = localStatus === THUNK_STATUS.LOADING;
 
-      await onDeleteTask();
+  const taskTitle = selectedTask?.title.length > 24
+    ? `${selectedTask?.title.substring(0, 24)}...`
+    : selectedTask?.title;
 
-      setLocalStatus(THUNK_STATUS.IDLE);
+  function onDeleteClick() {
+    deleteTask(selectedTask.id).then(() => {
       closeModal();
-    } catch (error) {
-      setLocalStatus(THUNK_STATUS.FAILED);
-    }
+    });
   }
 
   return (
@@ -34,10 +32,10 @@ export const TaskDelete = ({
         " task? This action will remove the task and it cannot be reversed.
       </p>
       <div className="task__delete-btn-group">
-        <Button variety="danger" onClick={ deleteSelectedTask }>
-          { localStatus === THUNK_STATUS.LOADING ? 'Deleting task...' : 'Delete' }
+        <Button variety="danger" onClick={ onDeleteClick } disabled={ isLoading }>
+          { isLoading ? 'Deleting task...' : 'Delete' }
         </Button>
-        <Button variety="secondary" onClick={ closeModal }>Cancel</Button>
+        <Button variety="secondary" onClick={ closeModal } disabled={ isLoading }>Cancel</Button>
       </div>
     </div>
   );

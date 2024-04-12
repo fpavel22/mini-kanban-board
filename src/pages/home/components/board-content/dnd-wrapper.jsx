@@ -21,10 +21,10 @@ export const DndWrapper = ({ tasks, children }) => {
 
   function handleDrag(task) {
     if (task) {
-      const { droppableId } = task;
+      const { droppableId, ...rest } = task;
 
       const updatedTask = {
-        ...task,
+        ...rest,
         status: droppableId
       };
 

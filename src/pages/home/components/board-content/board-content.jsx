@@ -39,20 +39,20 @@ export const BoardContent = () => {
   const boardsEmpty = boards.length === 0;
   const tasksEmpty = tasks.length === 0;
 
-  const _className = cn('board__content', {
-    'board__content--expanded': !sidebarVisible,
-    'board__content--empty': tasksEmpty
-  });
-
   const isLoading = (
     boardsStatus === THUNK_STATUS.LOADING || tasksFetchStatus === THUNK_STATUS.LOADING
   );
 
-  function handleAddTask() {
+  const _className = cn('board__content', {
+    'board__content--expanded': !sidebarVisible,
+    'board__content--empty': isLoading || tasksEmpty
+  });
+
+  function showTaskForm() {
     dispatch(openModal(MODAL_CONTENT.TASK_FORM_ADD));
   }
 
-  function handleCardClick(task) {
+  function showTaskView(task) {
     dispatch(selectTask(task));
     dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
   }
@@ -65,7 +65,7 @@ export const BoardContent = () => {
           : 'This board is empty. Create a new task to get started.' }
       </p>
       { !boardsEmpty && (
-        <Button variety="primary" darkMode={ darkMode } onClick={ handleAddTask }>
+        <Button variety="primary" darkMode={ darkMode } onClick={ showTaskForm }>
           + Add New Task
         </Button>
       ) }
@@ -82,7 +82,7 @@ export const BoardContent = () => {
             sectionTitle={ sectionTitle }
             isDraggable={ true }
             columnItems={ filterTasksByStatus(tasks, status) }
-            onItemClick={ handleCardClick }
+            onItemClick={ showTaskView }
           />
         </DroppableWrapper>
       )) }
