@@ -1,13 +1,11 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import cn from 'classnames';
 
 import iconBoard from '@/assets/icon-board.svg';
 
-export const SidebarNavigationItem = ({ path, pageName }) => {
-  const { boardId } = useParams();
-
+export const SidebarNavigationItem = ({ path, pageName, isActive }) => {
   const _className = cn('sidebar__navigation-item', {
-    'sidebar__navigation-item--active': path === boardId
+    'sidebar__navigation-item--active': isActive
   });
 
   return (

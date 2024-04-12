@@ -25,10 +25,11 @@ export const usePasswordReset = () => {
       setSuccess(true);
     } catch (err) {
       const errorContent = determineErrorMessage(err);
-      setError(errorContent);
-    }
 
-    setLoading(false);
+      setError(errorContent);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return {

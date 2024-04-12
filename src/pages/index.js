@@ -1,4 +1,4 @@
-export * from './landing-page';
+export * from './home';
 
 export * from './login';
 

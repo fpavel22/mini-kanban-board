@@ -20,13 +20,15 @@ export const useRegisterAccount = () => {
       }
 
       const response = await createUserWithEmailAndPassword(auth, email, password);
+
       await sendEmailVerification(response.user);
     } catch (err) {
       const errorContent = determineErrorMessage(err);
-      setError(errorContent);
-    }
 
-    setLoading(false);
+      setError(errorContent);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return { loading, error, registerAccount };

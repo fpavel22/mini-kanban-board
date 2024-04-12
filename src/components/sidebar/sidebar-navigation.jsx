@@ -1,51 +1,39 @@
-import { useSelector, useDispatch } from 'react-redux';
-
 import { SidebarNavigationItem } from '@components/sidebar/sidebar-navigation-item';
-import { allBoardsSelector, boardsStatusSelector, boardsErrorSelector } from '@/features/boardsSlice';
-import { openModal } from '@/features/modalSlice';
-import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 import iconBoard from '@/assets/icon-board.svg';
+import { useParams } from 'react-router-dom';
 
-export const SidebarNavigation = () => {
-  const boards = useSelector(allBoardsSelector);
-  const boardsStatus = useSelector(boardsStatusSelector);
-  const boardsError = useSelector(boardsErrorSelector);
-
-  const dispatch = useDispatch();
-
-  function showBoardForm() {
-    dispatch(openModal(MODAL_CONTENT.BOARD_FORM));
-  }
-
-  const renderNavigationTitle = () => {
-    switch (boardsStatus) {
-      case THUNK_STATUS.FAILED:
-        return boardsError;
-      case THUNK_STATUS.LOADING:
-        return 'Loading...';
-      default:
-        return `All Boards (${ boards.length })`;
-    }
-  };
+export const SidebarNavigation = ({
+  navigationItems = [],
+  navigationTitle,
+  navigationBtnText,
+  onButtonClick = () => {}
+}) => {
+  const { boardId } = useParams();
 
   return (
     <div className="sidebar__navigation">
       <p className="sidebar__navigation-title">
-        { renderNavigationTitle() }
+        { navigationTitle }
       </p>
       <ul className="sidebar__navigation-items">
-        { boardsStatus !== THUNK_STATUS.LOADING && boards.map(({ path, pageName }) => (
-          <SidebarNavigationItem
-            key={ path }
-            path={ path }
-            pageName={ pageName }
-          />
-        )) }
+        { navigationItems.length > 0
+          && navigationItems.map(({ path, pageName }) => (
+            <SidebarNavigationItem
+              key={ path }
+              path={ path }
+              pageName={ pageName }
+              isActive={ path === boardId }
+            />
+          )) }
       </ul>
-      <div className="sidebar__create" onClick={ showBoardForm }>
+      <div className="sidebar__create" onClick={ onButtonClick }>
         <img src={ iconBoard } alt="Icon board" />
-        <span>+ Create new Board</span>
+        <span>
+          +
+          {' '}
+          { navigationBtnText }
+        </span>
       </div>
     </div>
   );

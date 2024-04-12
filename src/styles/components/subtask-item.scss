@@ -31,18 +31,18 @@
     margin-top: $padding-xs-horizontal + $subtask-tooltip-width;
     padding: $padding-xs-horizontal;
     min-height: $btn-height;
-    width: 65%;
+    width: 45%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
     top: 100%;
-    left: 50%;
+    left: 0;
     text-align: center;
-    transform: translateX(-50%);
     z-index: $z-index-important;
     visibility: hidden;
     opacity: 0;
+    word-break: break-word;
     transition: opacity 350ms ease 700ms;
 
     &::after {

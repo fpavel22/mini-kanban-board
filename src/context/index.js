@@ -1,1 +1,1 @@
-export * from './context-provider';
+export * from './sidebar-context';

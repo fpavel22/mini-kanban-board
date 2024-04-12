@@ -1,27 +1,18 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useCallback, useMemo } from 'react';
 import { mergeRefs } from 'react-merge-refs';
-import { signOut } from 'firebase/auth';
 
-import { Button } from '@components/button';
-import { Popup } from '@components/popup';
-import { openModal } from '@/features/modalSlice';
-import { allTasksSelector } from '@/features/tasksSlice';
-import { enableLightTheme } from '@/features/themeSlice';
-import { userSelector } from '@/features/userSlice';
-import { auth } from '@/firebase/auth';
+import { Button, EllipsisIcon, Popup } from '@components/ui';
 import { useHandleClickOutside, usePositionPopup } from '@/hooks';
-import { POPPER_MODIFIERS, POPPER_PLACEMENTS, MODAL_CONTENT } from '@/constants';
+import { POPPER_MODIFIERS, POPPER_PLACEMENTS } from '@/constants';
 
-import iconEllipsis from '@/assets/icon-vertical-ellipsis.svg';
-
-export const NavbarBtnGroup = () => {
+export const NavbarBtnGroup = ({
+  darkMode,
+  showBtn,
+  btnTitle,
+  menuOptions,
+  onButtonClick = () => {}
+}) => {
   const [ showMenu, setShowMenu ] = useState(false);
-
-  const tasks = useSelector(allTasksSelector);
-  const user = useSelector(userSelector);
-
-  const dispatch = useDispatch();
 
   const {
     popperStyles,
@@ -35,46 +26,35 @@ export const NavbarBtnGroup = () => {
 
   const { parentRef, popupRef } = useHandleClickOutside(showMenu, hidePopup);
 
-  function handleAddTask() {
-    dispatch(openModal(MODAL_CONTENT.TASK_FORM_ADD));
-  }
+  const ellipsisRefs = useMemo(() => mergeRefs([ parentRef, setParentRef ]), []);
 
-  function showOptionsMenu() {
+  const toggleOptionsMenu = useCallback(() => {
     setShowMenu((prevState) => !prevState);
-  }
-
-  function handleSignout() {
-    signOut(auth);
-    dispatch(enableLightTheme());
-  }
-
-  const popupOptions = [
-    { value: 'important', label: `Logged in as ${ user.email }` },
-    { value: 'danger', label: 'Sign out', onClick: handleSignout }
-  ];
+  }, []);
 
   return (
     <div className="header__btn-group">
-      { tasks.length > 0 && (
+      { showBtn && (
         <Button
           variety="primary"
-          onClick={ handleAddTask }
+          darkMode={ darkMode }
+          onClick={ onButtonClick }
         >
           +
-          <span className="btn__title">Add New Task</span>
+          <span className="btn__title">{ btnTitle }</span>
         </Button>
       ) }
-      <img
-        src={ iconEllipsis }
+      <EllipsisIcon
         className="header__btn--options"
         alt="Options icon"
-        ref={ mergeRefs([ parentRef, setParentRef ]) }
-        onClick={ showOptionsMenu }
+        ref={ ellipsisRefs }
+        onClick={ toggleOptionsMenu }
       />
       { showMenu
         && (
           <Popup
-            options={ popupOptions }
+            darkMode={ darkMode }
+            options={ menuOptions }
             style={ popperStyles }
             ref={ mergeRefs([ popupRef, setReferenceRef ]) }
           />
