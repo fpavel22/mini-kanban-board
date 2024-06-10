@@ -57,7 +57,7 @@ export const BoardContent = () => {
     dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
   }
 
-  const createEmptyBoard = (
+  const emptyBoard = (
     <div className="empty__board">
       <p>
         { boardsEmpty
@@ -89,7 +89,7 @@ export const BoardContent = () => {
     </DndWrapper>
   );
 
-  const content = tasksEmpty ? createEmptyBoard : createBoardColumns;
+  const content = tasksEmpty ? emptyBoard : createBoardColumns;
 
   useEffect(() => {
     const ids = {

@@ -32,18 +32,16 @@ export const Home = () => {
     (async function () {
       const userBoards = await unwrapDispatch(fetchUserBoards(user.uid));
 
-      let navigateTo = PATHS.ROOT;
-      const activeBoard = boardId
-        ? userBoards.find(({ path }) => path === boardId)
-        : userBoards[ 0 ];
+      if (userBoards.length > 0) {
+        const [ userBoard ] = userBoards;
+        let activeBoard = boardId && userBoards.find(({ path }) => path === boardId);
 
-      if (activeBoard) {
-        navigateTo = `${ PATHS.BOARDS }/${ activeBoard.path }`;
+        if (!activeBoard) {
+          activeBoard = userBoard;
+        }
+
+        navigate(`${ PATHS.BOARDS }/${ activeBoard.path }`);
       }
-
-      console.log(boardId, userBoards[0], activeBoard);
-
-      navigate(navigateTo);
     }());
 
     return () => {
