@@ -1,18 +1,16 @@
-import { createContext, useMemo, useState } from 'react';
+import { createContext, useState } from 'react';
 
-export const Context = createContext();
+export const SidebarVisibleContext = createContext(null);
+export const SidebarToggleContext = createContext(null);
 
 export const SidebarContext = ({ children }) => {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);
 
-  const contextValue = useMemo(() => ({
-    sidebarVisible,
-    setSidebarVisible
-  }), [ sidebarVisible ]);
-
   return (
-    <Context.Provider value={ contextValue }>
-      { children }
-    </Context.Provider>
+    <SidebarToggleContext.Provider value={ setSidebarVisible }>
+      <SidebarVisibleContext.Provider value={ sidebarVisible }>
+        { children }
+      </SidebarVisibleContext.Provider>
+    </SidebarToggleContext.Provider>
   );
 };

@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
 
-import { getCollectionDocs, setDocument } from '@/utils/firebase';
-import { REDUCERS, THUNK_STATUS, FIREBASE_COLLECTIONS } from '@/constants';
+import { getDoc, putDoc } from '@/firebase/crud';
+import { createBoardQuery, boardDocRef } from '@/utils/firebase';
+import { REDUCERS, THUNK_STATUS } from '@/constants';
 
 const initialState = {
   boards: [],
@@ -15,10 +16,8 @@ export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserB
     return [];
   }
 
-  const response = await getCollectionDocs(
-    FIREBASE_COLLECTIONS.BOARDS,
-    id
-  );
+  const query = createBoardQuery({ id });
+  const response = await getDoc(query);
 
   return response;
 });
@@ -31,12 +30,9 @@ export const addBoard = createAsyncThunk(`${ REDUCERS.BOARDS }/addBoard`, async 
     id,
     path: id
   };
+  const docRef = boardDocRef(id);
 
-  const response = await setDocument(
-    FIREBASE_COLLECTIONS.BOARDS,
-    id,
-    boardData
-  );
+  const response = await putDoc(docRef, boardData);
 
   return response;
 });

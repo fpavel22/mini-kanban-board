@@ -11,7 +11,11 @@ import {
 import { fetchUserBoards, resetUserBoards } from '@/features/boardsSlice';
 import { enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-import { useSidebarContext, useDispatchUnwrapper, useLoadPreferences } from '@/hooks';
+import {
+  useSidebarToggleContext,
+  useDispatchUnwrapper,
+  useLoadPreferences
+} from '@/hooks';
 import { PATHS } from '@/constants';
 
 export const Home = () => {
@@ -21,7 +25,7 @@ export const Home = () => {
   const navigate = useNavigate();
   const { boardId } = useParams();
 
-  const { setSidebarVisible } = useSidebarContext();
+  const setSidebarVisible = useSidebarToggleContext();
   const unwrapDispatch = useDispatchUnwrapper();
 
   useEffect(() => {
@@ -36,6 +40,8 @@ export const Home = () => {
       if (activeBoard) {
         navigateTo = `${ PATHS.BOARDS }/${ activeBoard.path }`;
       }
+
+      console.log(boardId, userBoards[0], activeBoard);
 
       navigate(navigateTo);
     }());
