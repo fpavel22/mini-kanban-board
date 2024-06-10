@@ -11,7 +11,11 @@ import {
 import { fetchUserBoards, resetUserBoards } from '@/features/boardsSlice';
 import { enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-import { useSidebarContext, useDispatchUnwrapper, useLoadPreferences } from '@/hooks';
+import {
+  useSidebarToggleContext,
+  useDispatchUnwrapper,
+  useLoadPreferences
+} from '@/hooks';
 import { PATHS } from '@/constants';
 
 export const Home = () => {
@@ -21,23 +25,23 @@ export const Home = () => {
   const navigate = useNavigate();
   const { boardId } = useParams();
 
-  const { setSidebarVisible } = useSidebarContext();
+  const setSidebarVisible = useSidebarToggleContext();
   const unwrapDispatch = useDispatchUnwrapper();
 
   useEffect(() => {
     (async function () {
       const userBoards = await unwrapDispatch(fetchUserBoards(user.uid));
 
-      let navigateTo = PATHS.ROOT;
-      const activeBoard = boardId
-        ? userBoards.find(({ path }) => path === boardId)
-        : userBoards[ 0 ];
+      if (userBoards.length > 0) {
+        const [ userBoard ] = userBoards;
+        let activeBoard = boardId && userBoards.find(({ path }) => path === boardId);
 
-      if (activeBoard) {
-        navigateTo = `${ PATHS.BOARDS }/${ activeBoard.path }`;
+        if (!activeBoard) {
+          activeBoard = userBoard;
+        }
+
+        navigate(`${ PATHS.BOARDS }/${ activeBoard.path }`);
       }
-
-      navigate(navigateTo);
     }());
 
     return () => {

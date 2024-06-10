@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, miniSerializeError } from '@reduxjs/toolkit';
 
-import { getCollectionDocs, setDocument, deleteDocument } from '@/utils/firebase';
+import { getDoc, putDoc, deleteDoc } from '@/firebase/crud';
+import { createTasksQuery, taskDocRef } from '@/utils/firebase';
 import {
   REDUCERS,
   THUNK_STATUS,
@@ -21,11 +22,8 @@ export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, asy
     return [];
   }
 
-  const response = await getCollectionDocs(
-    FIREBASE_COLLECTIONS.TASKS,
-    boardId,
-    userId
-  );
+  const query = createTasksQuery({ id: boardId, userId });
+  const response = await getDoc(query);
 
   return response;
 });
@@ -45,12 +43,9 @@ export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (
       ...task,
       id: taskId
     };
+    const docRef = taskDocRef(taskId);
 
-    const response = await setDocument(
-      FIREBASE_COLLECTIONS.TASKS,
-      taskId,
-      taskData
-    );
+    const response = await putDoc(docRef, taskData);
 
     return response;
   } catch (err) {
@@ -62,7 +57,7 @@ export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (
 });
 
 export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, async (id) => {
-  const response = await deleteDocument(FIREBASE_COLLECTIONS.TASKS, id);
+  const response = await deleteDoc(FIREBASE_COLLECTIONS.TASKS, id);
 
   return response;
 });

@@ -1,7 +1,5 @@
-export * from './deleteDocument';
+export * from './docRefs';
 
 export * from './error-handling';
 
-export * from './getCollectionDocs';
-
-export * from './setDocument';
+export * from './queries';

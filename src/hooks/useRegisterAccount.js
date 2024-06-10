@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
-import { auth } from '@/firebase/auth';
+import { auth } from '@/firebase/config';
 import { isEmailGmail } from '@/utils/utils';
 import { determineErrorMessage } from '@/utils/firebase';
 import { FIREBASE_INTERNAL_ERRORS } from '@/constants';

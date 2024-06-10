@@ -18,6 +18,8 @@ export * from './usePositionPopup';
 
 export * from './useRegisterAccount';
 
-export * from './useSidebarContext';
+export * from './useSidebarVisibleContext';
+
+export * from './useSidebarToggleContext';
 
 export * from './useTaskOperations';

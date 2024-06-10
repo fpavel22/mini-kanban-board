@@ -5,7 +5,7 @@ import { allBoardsSelector, boardsStatusSelector, boardsErrorSelector } from '@/
 import { openModal } from '@/features/modalSlice';
 import { themeSliceSelector, enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-import { useSidebarContext } from '@/hooks';
+import { useSidebarVisibleContext, useSidebarToggleContext } from '@/hooks';
 import { saveToLocalStorage } from '@/utils/utils';
 import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
@@ -17,7 +17,8 @@ export const Sidebar = () => {
   const user = useSelector(userSelector);
   const darkMode = useSelector(themeSliceSelector);
 
-  const { sidebarVisible, setSidebarVisible } = useSidebarContext();
+  const sidebarVisible = useSidebarVisibleContext();
+  const setSidebarVisible = useSidebarToggleContext();
 
   const dispatch = useDispatch();
 

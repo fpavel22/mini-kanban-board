@@ -8,8 +8,8 @@ import { openModal } from '@/features/modalSlice';
 import { allTasksSelector, tasksStatusSelector } from '@/features/tasksSlice';
 import { themeSliceSelector, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-import { auth } from '@/firebase/auth';
-import { useSidebarContext } from '@/hooks';
+import { auth } from '@/firebase/config';
+import { useSidebarVisibleContext } from '@/hooks';
 import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 export const Navbar = () => {
@@ -25,7 +25,7 @@ export const Navbar = () => {
   const dispatch = useDispatch();
 
   const { boardId } = useParams();
-  const { sidebarVisible } = useSidebarContext();
+  const sidebarVisible = useSidebarVisibleContext();
 
   const tasksFetched = tasksStatus === THUNK_STATUS.SUCCEEDED;
 

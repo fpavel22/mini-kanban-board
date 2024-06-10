@@ -16,7 +16,7 @@ import {
 import { themeSliceSelector } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
 import { filterTasksByStatus } from '@/utils/utils';
-import { useSidebarContext } from '@/hooks';
+import { useSidebarVisibleContext } from '@/hooks';
 import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 import { DndWrapper } from './dnd-wrapper';
@@ -34,7 +34,7 @@ export const BoardContent = () => {
   const dispatch = useDispatch();
 
   const { boardId } = useParams();
-  const { sidebarVisible } = useSidebarContext();
+  const sidebarVisible = useSidebarVisibleContext();
 
   const boardsEmpty = boards.length === 0;
   const tasksEmpty = tasks.length === 0;
@@ -57,7 +57,7 @@ export const BoardContent = () => {
     dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
   }
 
-  const createEmptyBoard = (
+  const emptyBoard = (
     <div className="empty__board">
       <p>
         { boardsEmpty
@@ -89,7 +89,7 @@ export const BoardContent = () => {
     </DndWrapper>
   );
 
-  const content = tasksEmpty ? createEmptyBoard : createBoardColumns;
+  const content = tasksEmpty ? emptyBoard : createBoardColumns;
 
   useEffect(() => {
     const ids = {

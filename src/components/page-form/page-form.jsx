@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 
-function createFieldsState(fields) {
+function initFieldsState(fields) {
   return fields.reduce((prevFormState, field) => ({
-    ...prevFormState, [field.name]: ''
+    ...prevFormState,
+    [ field.name ]: ''
   }), {});
 }
 
@@ -16,7 +17,7 @@ export const PageForm = ({
   children,
   ...props
 }) => {
-  const [ formState, setFormState ] = useState(() => createFieldsState(fields));
+  const [ formState, setFormState ] = useState(() => initFieldsState(fields));
 
   function handleInputChange({ target }) {
     setFormState((prevState) => ({
@@ -33,7 +34,7 @@ export const PageForm = ({
 
   useEffect(() => {
     if (success) {
-      setFormState(createFieldsState(fields));
+      setFormState(initFieldsState(fields));
     }
   }, [ success ]);
 
