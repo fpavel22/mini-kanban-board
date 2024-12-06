@@ -5,7 +5,6 @@ import { ModalOverlay } from '@/components';
 import { modalOpenSelector, modalContentSelector } from '@/features/modalSlice';
 import { themeSliceSelector } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-import { applyPageOverflow } from '@/utils/utils';
 import { useModalState } from '@/hooks';
 import { MODAL_CONTENT } from '@/constants';
 
@@ -13,6 +12,12 @@ import { BoardForm } from '../board-form';
 import { TaskDelete } from '../task-delete';
 import { TaskForm } from '../task-form';
 import { TaskView } from '../task-view';
+
+const applyPageOverflow = (isModalVisible) => {
+  const { documentElement } = document;
+
+  documentElement.classList.toggle('modal--visible', isModalVisible);
+};
 
 export const ModalWrapper = () => {
   const user = useSelector(userSelector);

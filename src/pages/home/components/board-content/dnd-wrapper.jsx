@@ -6,7 +6,7 @@ import {
 } from '@dnd-kit/core';
 
 import { DragAndDrop } from '@components';
-import { setTask } from '@/features/tasksSlice';
+import { updateTask } from '@/features/tasksSlice';
 
 export const DndWrapper = ({ tasks, children }) => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ export const DndWrapper = ({ tasks, children }) => {
         status: droppableId
       };
 
-      dispatch(setTask(updatedTask));
+      dispatch(updateTask(updatedTask));
     }
   }
 

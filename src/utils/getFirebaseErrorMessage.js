@@ -1,6 +1,6 @@
 import { FIREBASE_AUTH_ERRORS } from '@/constants';
 
-export const determineErrorMessage = (error) => {
+export const getFirebaseErrorMessage = (error) => {
   const { code, message } = error;
 
   switch (code) {

@@ -1,11 +1,18 @@
 import { createAsyncThunk, createSlice, miniSerializeError } from '@reduxjs/toolkit';
-
-import { getDoc, putDoc, deleteDoc } from '@/firebase/crud';
-import { createTasksQuery, taskDocRef } from '@/utils/firebase';
 import {
+  collection,
+  doc,
+  query as firestoreQuery,
+  where
+} from 'firebase/firestore';
+
+import { firestore } from '@/firebase/config';
+import { getAllDocs, updateDoc, deleteDoc } from '@/firebase/operations';
+import {
+  FIREBASE_COLLECTIONS,
+  FIREBASE_QUERY,
   REDUCERS,
   THUNK_STATUS,
-  FIREBASE_COLLECTIONS
 } from '@/constants';
 
 const initialState = {
@@ -15,20 +22,28 @@ const initialState = {
   selectedTask: null
 };
 
-export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, async (ids) => {
-  const { boardId, userId } = ids;
+const createGetTasksQuery = (boardId, userId) => firestoreQuery(
+  collection(firestore, FIREBASE_COLLECTIONS.TASKS),
+  where(FIREBASE_QUERY.PAGE_ID, '==', boardId),
+  where(FIREBASE_QUERY.CREATED_BY, '==', userId)
+);
 
+const createTaskDocumentRef = (id) => doc(firestore, FIREBASE_COLLECTIONS.TASKS, id);
+
+export const fetchBoardTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchBoardTasks`, async ({ boardId, userId }) => {
   if (!boardId || !userId) {
     return [];
   }
 
-  const query = createTasksQuery({ id: boardId, userId });
-  const response = await getDoc(query);
+  const tasksQuery = createGetTasksQuery(boardId, userId);
+  const boardTasks = await getAllDocs(tasksQuery);
 
-  return response;
+  return boardTasks;
 });
 
-export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (
+// export const addTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, (task) => {});
+
+export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, async (
   task,
   {
     getState,
@@ -43,9 +58,8 @@ export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (
       ...task,
       id: taskId
     };
-    const docRef = taskDocRef(taskId);
 
-    const response = await putDoc(docRef, taskData);
+    const response = await updateDoc(createTaskDocumentRef(taskId), taskData);
 
     return response;
   } catch (err) {
@@ -57,9 +71,9 @@ export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (
 });
 
 export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, async (id) => {
-  const response = await deleteDoc(FIREBASE_COLLECTIONS.TASKS, id);
+  const deletedTaskId = await deleteDoc(createTaskDocumentRef(id));
 
-  return response;
+  return deletedTaskId;
 });
 
 const tasksSlice = createSlice({
@@ -72,20 +86,20 @@ const tasksSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTasks.pending, (state) => {
+      .addCase(fetchBoardTasks.pending, (state) => {
         state.status = THUNK_STATUS.LOADING;
       })
-      .addCase(fetchTasks.fulfilled, (state, action) => {
+      .addCase(fetchBoardTasks.fulfilled, (state, action) => {
         state.status = THUNK_STATUS.SUCCEEDED;
 
         state.tasks = action.payload;
       })
-      .addCase(fetchTasks.rejected, (state, action) => {
+      .addCase(fetchBoardTasks.rejected, (state, action) => {
         state.status = THUNK_STATUS.FAILED;
 
         state.error = action.error.message;
       })
-      .addCase(setTask.pending, (state, action) => {
+      .addCase(updateTask.pending, (state, action) => {
         const taskId = action.meta.arg.id ?? action.meta.requestId;
 
         const taskIndex = state.tasks.findIndex(({ id }) => id === taskId);
@@ -99,7 +113,7 @@ const tasksSlice = createSlice({
 
         state.selectedTask = finalTask;
       })
-      .addCase(setTask.rejected, (state, action) => {
+      .addCase(updateTask.rejected, (state, action) => {
         const taskId = action.meta.arg.id ?? action.meta.requestId;
         const taskIndex = state.tasks.findIndex(({ id }) => id === taskId);
 

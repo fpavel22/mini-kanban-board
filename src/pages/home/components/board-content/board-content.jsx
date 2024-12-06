@@ -10,16 +10,21 @@ import { openModal } from '@/features/modalSlice';
 import {
   allTasksSelector,
   tasksStatusSelector,
-  fetchTasks,
+  fetchBoardTasks,
   selectTask
 } from '@/features/tasksSlice';
 import { themeSliceSelector } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-import { filterTasksByStatus } from '@/utils/utils';
 import { useSidebarVisibleContext } from '@/hooks';
 import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 import { DndWrapper } from './dnd-wrapper';
+
+const filterTasksByStatus = (tasks, taskStatus) => {
+  const filteredTasks = tasks.filter(({ status }) => status === taskStatus);
+
+  return filteredTasks;
+};
 
 export const BoardContent = () => {
   const boards = useSelector(allBoardsSelector);
@@ -97,7 +102,7 @@ export const BoardContent = () => {
       userId: user.uid
     };
 
-    dispatch(fetchTasks(ids));
+    dispatch(fetchBoardTasks(ids));
   }, []);
 
   return (
