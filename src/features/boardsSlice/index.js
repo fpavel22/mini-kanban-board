@@ -21,7 +21,7 @@ const initialState = {
   error: null
 };
 
-const addBoardRef = collection(firestore, FIREBASE_COLLECTIONS.BOARDS);
+const boardsCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.BOARDS);
 
 const createBoardQuery = (id) => firestoreQuery(
   collection(firestore, FIREBASE_COLLECTIONS.BOARDS),
@@ -40,7 +40,7 @@ export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserB
 });
 
 export const addBoard = createAsyncThunk(`${ REDUCERS.BOARDS }/addBoard`, async (boardData) => {
-  const newBoard = await addDoc(addBoardRef, boardData);
+  const newBoard = await addDoc(boardsCollectionRef, boardData);
 
   return newBoard;
 });

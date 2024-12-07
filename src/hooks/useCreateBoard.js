@@ -13,12 +13,10 @@ export const useCreateBoard = () => {
     setStatus(THUNK_STATUS.LOADING);
 
     try {
-      const boardData = {
+      await unwrapDispatch(addBoard({
         pageName,
         createdBy
-      };
-
-      await unwrapDispatch(addBoard(boardData));
+      }));
 
       setStatus(THUNK_STATUS.IDLE);
     } catch (err) {

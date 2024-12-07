@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 
 import {
   selectedTaskSelector,
-  updateTask,
+  addTask,
+  updateTask as updateTaskAction,
   deleteTask as deleteTaskAction
 } from '@/features/tasksSlice';
 import { THUNK_STATUS } from '@/constants';
@@ -19,7 +20,21 @@ export const useTaskOperations = () => {
     setStatus(THUNK_STATUS.LOADING);
 
     try {
-      await unwrapDispatch(updateTask(taskDetails));
+      await unwrapDispatch(addTask(taskDetails));
+
+      setStatus(THUNK_STATUS.IDLE);
+    } catch (err) {
+      setStatus(THUNK_STATUS.FAILED);
+
+      throw err;
+    }
+  }
+
+  async function updateTask(taskDetails) {
+    setStatus(THUNK_STATUS.LOADING);
+
+    try {
+      await unwrapDispatch(updateTaskAction(taskDetails));
 
       setStatus(THUNK_STATUS.IDLE);
     } catch (err) {
@@ -59,7 +74,7 @@ export const useTaskOperations = () => {
           subtasks: updatedSubtasks
         };
 
-        await unwrapDispatch(updateTask(taskData));
+        await unwrapDispatch(updateTaskAction(taskData));
 
         setStatus(THUNK_STATUS.IDLE);
       } catch (err) {
@@ -73,6 +88,7 @@ export const useTaskOperations = () => {
   return {
     status,
     createTask,
+    updateTask,
     deleteTask,
     updateSubtaskStatus
   };
