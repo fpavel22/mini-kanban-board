@@ -5,11 +5,11 @@ import { THUNK_STATUS } from '@/constants';
 
 import { useDispatchUnwrapper } from './useDispatchUnwrapper';
 
-export const useCreateBoard = () => {
+export const useBoardOperations = () => {
   const [ status, setStatus ] = useState(THUNK_STATUS.IDLE);
   const unwrapDispatch = useDispatchUnwrapper();
 
-  async function create(pageName, createdBy) {
+  async function createBoard(pageName, createdBy) {
     setStatus(THUNK_STATUS.LOADING);
 
     try {
@@ -18,7 +18,7 @@ export const useCreateBoard = () => {
         createdBy
       }));
 
-      setStatus(THUNK_STATUS.IDLE);
+      setStatus(THUNK_STATUS.SUCCEEDED);
     } catch (err) {
       setStatus(THUNK_STATUS.FAILED);
 
@@ -26,5 +26,5 @@ export const useCreateBoard = () => {
     }
   }
 
-  return [ status, create ];
+  return { status, createBoard };
 };

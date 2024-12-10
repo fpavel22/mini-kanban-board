@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 import { auth } from '@/firebase/config';
-import { getFirebaseErrorMessage, isEmailGmail } from '@/utils';
+import { parseFirebaseError, isEmailGmail } from '@/utils';
 import { FIREBASE_INTERNAL_ERRORS } from '@/constants';
 
 export const useRegisterAccount = () => {
@@ -22,9 +22,7 @@ export const useRegisterAccount = () => {
 
       await sendEmailVerification(response.user);
     } catch (err) {
-      const errorContent = getFirebaseErrorMessage(err);
-
-      setError(errorContent);
+      setError(parseFirebaseError(err));
     } finally {
       setLoading(false);
     }

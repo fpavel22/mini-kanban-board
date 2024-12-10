@@ -29,12 +29,6 @@ const initialState = {
 
 const tasksCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.TASKS);
 
-const createGetTasksQuery = (boardId, userId) => firestoreQuery(
-  collection(firestore, FIREBASE_COLLECTIONS.TASKS),
-  where(FIREBASE_QUERY.PAGE_ID, '==', boardId),
-  where(FIREBASE_QUERY.CREATED_BY, '==', userId)
-);
-
 const createTaskDocumentRef = (id) => doc(firestore, FIREBASE_COLLECTIONS.TASKS, id);
 
 export const fetchBoardTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchBoardTasks`, async ({ boardId, userId }) => {
@@ -42,7 +36,11 @@ export const fetchBoardTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchBoardT
     return [];
   }
 
-  const tasksQuery = createGetTasksQuery(boardId, userId);
+  const tasksQuery = firestoreQuery(
+    tasksCollectionRef,
+    where(FIREBASE_QUERY.PAGE_ID, '==', boardId),
+    where(FIREBASE_QUERY.CREATED_BY, '==', userId)
+  );
   const boardTasks = await getAllDocs(tasksQuery);
 
   return boardTasks;
@@ -55,9 +53,9 @@ export const addTask = createAsyncThunk(`${ REDUCERS.TASKS }/addTask`, async (ta
 });
 
 export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, async (task) => {
-  const response = await updateDoc(createTaskDocumentRef(task.id), task);
+  const updatedTask = await updateDoc(createTaskDocumentRef(task.id), task);
 
-  return response;
+  return updatedTask;
 });
 
 export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, async (id) => {

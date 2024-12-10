@@ -23,17 +23,15 @@ const initialState = {
 
 const boardsCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.BOARDS);
 
-const createBoardQuery = (id) => firestoreQuery(
-  collection(firestore, FIREBASE_COLLECTIONS.BOARDS),
-  where(FIREBASE_QUERY.CREATED_BY, '==', id)
-);
-
 export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserBoards`, async (id) => {
   if (!id) {
     return [];
   }
 
-  const boardQuery = createBoardQuery(id);
+  const boardQuery = firestoreQuery(
+    boardsCollectionRef,
+    where(FIREBASE_QUERY.CREATED_BY, '==', id)
+  );
   const boards = await getAllDocs(boardQuery);
 
   return boards;

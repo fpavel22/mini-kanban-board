@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 import { auth } from '@/firebase/config';
-import { getFirebaseErrorMessage, isEmailGmail } from '@/utils';
+import { parseFirebaseError, isEmailGmail } from '@/utils';
 import { FIREBASE_INTERNAL_ERRORS } from '@/constants';
 
 export const useLogin = () => {
@@ -20,9 +20,7 @@ export const useLogin = () => {
 
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      const errorContent = getFirebaseErrorMessage(err);
-
-      setError(errorContent);
+      setError(parseFirebaseError(err));
     } finally {
       setLoading(false);
     }
@@ -37,11 +35,10 @@ export const useLogin = () => {
     try {
       await signInWithPopup(auth, provider);
     } catch (err) {
-      const errorContent = getFirebaseErrorMessage(err);
-      setError(errorContent);
+      setError(parseFirebaseError(err));
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return {

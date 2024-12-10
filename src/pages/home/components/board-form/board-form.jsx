@@ -1,12 +1,12 @@
 import { PageForm } from '@components/page-form';
 import { Button, TextField } from '@components/ui';
-import { useCreateBoard } from '@/hooks';
+import { useBoardOperations } from '@/hooks';
 import { THUNK_STATUS, FORM_FIELDS } from '@/constants';
 
 const { BOARD_FORM } = FORM_FIELDS;
 
 export const BoardForm = ({ user, closeModal = () => {} }) => {
-  const [ localStatus, createBoard ] = useCreateBoard();
+  const { status: localStatus, createBoard } = useBoardOperations();
 
   function handleSubmit([ boardName ]) {
     if (boardName) {

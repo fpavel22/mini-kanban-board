@@ -1,4 +1,4 @@
-import { getDoc, getDocs as firebaseGetDocs } from 'firebase/firestore';
+import { getDoc, getDocs } from 'firebase/firestore';
 
 export const getSingleDoc = async (documentRef) => {
   try {
@@ -16,7 +16,7 @@ export const getSingleDoc = async (documentRef) => {
 
 export const getAllDocs = async (query) => {
   try {
-    const querySnapshot = await firebaseGetDocs(query);
+    const querySnapshot = await getDocs(query);
 
     const parsedDocs = querySnapshot.docs.map((doc) => doc.data());
 
