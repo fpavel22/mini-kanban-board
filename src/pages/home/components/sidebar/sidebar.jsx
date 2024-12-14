@@ -6,7 +6,7 @@ import { openModal } from '@/features/modalSlice';
 import { themeSliceSelector, enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
 import { useSidebarVisibleContext, useSidebarToggleContext } from '@/hooks';
-import { saveToLocalStorage } from '@/utils/utils';
+import { saveToLocalStorage } from '@/utils';
 import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 export const Sidebar = () => {

@@ -1,12 +1,20 @@
-import { createAsyncThunk, createSlice, miniSerializeError } from '@reduxjs/toolkit';
-
-import { getDoc, putDoc, deleteDoc } from '@/firebase/crud';
-import { createTasksQuery, taskDocRef } from '@/utils/firebase';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
-  REDUCERS,
-  THUNK_STATUS,
-  FIREBASE_COLLECTIONS
-} from '@/constants';
+  collection,
+  doc,
+  query as firestoreQuery,
+  where
+} from 'firebase/firestore';
+
+import { firestore } from '@/firebase/config';
+import {
+  getAllDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc
+} from '@/firebase/operations';
+import { FIREBASE_QUERY, FIREBASE_COLLECTIONS } from '@/firebase/constants';
+import { REDUCERS, THUNK_STATUS } from '@/constants';
 
 const initialState = {
   tasks: [],
@@ -15,51 +23,41 @@ const initialState = {
   selectedTask: null
 };
 
-export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, async (ids) => {
-  const { boardId, userId } = ids;
+const tasksCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.TASKS);
 
+const createTaskDocumentRef = (id) => doc(firestore, FIREBASE_COLLECTIONS.TASKS, id);
+
+export const fetchBoardTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchBoardTasks`, async ({ boardId, userId }) => {
   if (!boardId || !userId) {
     return [];
   }
 
-  const query = createTasksQuery({ id: boardId, userId });
-  const response = await getDoc(query);
+  const tasksQuery = firestoreQuery(
+    tasksCollectionRef,
+    where(FIREBASE_QUERY.PAGE_ID, '==', boardId),
+    where(FIREBASE_QUERY.CREATED_BY, '==', userId)
+  );
+  const boardTasks = await getAllDocs(tasksQuery);
 
-  return response;
+  return boardTasks;
 });
 
-export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (
-  task,
-  {
-    getState,
-    requestId,
-    rejectWithValue
-  }
-) => {
-  const taskId = task.id ?? requestId;
+export const addTask = createAsyncThunk(`${ REDUCERS.TASKS }/addTask`, async (taskData) => {
+  const newTask = await addDoc(tasksCollectionRef, taskData);
 
-  try {
-    const taskData = {
-      ...task,
-      id: taskId
-    };
-    const docRef = taskDocRef(taskId);
+  return newTask;
+});
 
-    const response = await putDoc(docRef, taskData);
+export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, async (taskData) => {
+  const updatedTask = await updateDoc(createTaskDocumentRef(taskData.id), taskData);
 
-    return response;
-  } catch (err) {
-    const { tasks } = getState().tasks;
-
-    const originalTask = tasks.find(({ id }) => id === taskId);
-    return rejectWithValue(miniSerializeError(err), { originalTask });
-  }
+  return updatedTask;
 });
 
 export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, async (id) => {
-  const response = await deleteDoc(FIREBASE_COLLECTIONS.TASKS, id);
+  const deletedTaskId = await deleteDoc(createTaskDocumentRef(id));
 
-  return response;
+  return deletedTaskId;
 });
 
 const tasksSlice = createSlice({
@@ -72,53 +70,33 @@ const tasksSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTasks.pending, (state) => {
+      .addCase(fetchBoardTasks.pending, (state) => {
         state.status = THUNK_STATUS.LOADING;
       })
-      .addCase(fetchTasks.fulfilled, (state, action) => {
+      .addCase(fetchBoardTasks.fulfilled, (state, action) => {
         state.status = THUNK_STATUS.SUCCEEDED;
 
         state.tasks = action.payload;
       })
-      .addCase(fetchTasks.rejected, (state, action) => {
+      .addCase(fetchBoardTasks.rejected, (state, action) => {
         state.status = THUNK_STATUS.FAILED;
 
         state.error = action.error.message;
       })
-      .addCase(setTask.pending, (state, action) => {
-        const taskId = action.meta.arg.id ?? action.meta.requestId;
-
-        const taskIndex = state.tasks.findIndex(({ id }) => id === taskId);
-        const finalTask = { ...action.meta.arg, id: taskId };
-
-        if (taskIndex >= 0) {
-          state.tasks[ taskIndex ] = finalTask;
-        } else {
-          state.tasks.push(finalTask);
-        }
-
-        state.selectedTask = finalTask;
+      .addCase(addTask.fulfilled, (state, action) => {
+        state.tasks.push(action.payload);
       })
-      .addCase(setTask.rejected, (state, action) => {
-        const taskId = action.meta.arg.id ?? action.meta.requestId;
-        const taskIndex = state.tasks.findIndex(({ id }) => id === taskId);
+      .addCase(updateTask.fulfilled, (state, action) => {
+        state.tasks = state.tasks.map((task) => (
+          task.id === action.payload.id ? action.payload : task
+        ));
 
-        if (taskIndex >= 0) {
-          const { originalTask } = action.meta;
-
-          if (originalTask) {
-            state.tasks[ taskIndex ] = originalTask;
-            state.selectedTask = originalTask;
-          } else {
-            state.tasks.splice(taskIndex, 1);
-            state.selectedTask = null;
-          }
+        if (state.selectedTask.id === action.payload.id) {
+          state.selectedTask = action.payload;
         }
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
-        const updatedTasks = state.tasks.filter(({ id }) => id !== action.payload);
-
-        state.tasks = updatedTasks;
+        state.tasks = state.tasks.filter(({ id }) => id !== action.payload);
         state.selectedTask = null;
       });
   }

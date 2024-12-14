@@ -29,7 +29,7 @@ export const TaskForm = ({
   });
 
   const { showViewDialog } = useModalState();
-  const { status: localStatus, createTask } = useTaskOperations();
+  const { status: localStatus, createTask, updateTask } = useTaskOperations();
 
   const { boardId } = useParams();
 
@@ -105,7 +105,9 @@ export const TaskForm = ({
         priority
       };
 
-      createTask(taskDetails).then(() => {
+      const taskAction = editing ? updateTask : createTask;
+
+      taskAction(taskDetails).then(() => {
         closeModal();
       });
     } else {

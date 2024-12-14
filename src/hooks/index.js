@@ -1,6 +1,6 @@
 export * from './useAuthStateChange';
 
-export * from './useCreateBoard';
+export * from './useBoardOperations';
 
 export * from './useDispatchUnwrapper';
 

@@ -1,7 +1,13 @@
-import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  collection,
+  query as firestoreQuery,
+  where
+} from 'firebase/firestore';
 
-import { getDoc, putDoc } from '@/firebase/crud';
-import { createBoardQuery, boardDocRef } from '@/utils/firebase';
+import { firestore } from '@/firebase/config';
+import { addDoc, getAllDocs } from '@/firebase/operations';
+import { FIREBASE_QUERY, FIREBASE_COLLECTIONS } from '@/firebase/constants';
 import { REDUCERS, THUNK_STATUS } from '@/constants';
 
 const initialState = {
@@ -11,30 +17,26 @@ const initialState = {
   error: null
 };
 
-export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserBoards`, async (id) => {
-  if (!id) {
+const boardsCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.BOARDS);
+
+export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserBoards`, async (userId) => {
+  if (!userId) {
     return [];
   }
 
-  const query = createBoardQuery({ id });
-  const response = await getDoc(query);
+  const boardQuery = firestoreQuery(
+    boardsCollectionRef,
+    where(FIREBASE_QUERY.CREATED_BY, '==', userId)
+  );
+  const boards = await getAllDocs(boardQuery);
 
-  return response;
+  return boards;
 });
 
-export const addBoard = createAsyncThunk(`${ REDUCERS.BOARDS }/addBoard`, async (board) => {
-  const id = nanoid();
+export const addBoard = createAsyncThunk(`${ REDUCERS.BOARDS }/addBoard`, async (boardData) => {
+  const newBoard = await addDoc(boardsCollectionRef, boardData);
 
-  const boardData = {
-    ...board,
-    id,
-    path: id
-  };
-  const docRef = boardDocRef(id);
-
-  const response = await putDoc(docRef, boardData);
-
-  return response;
+  return newBoard;
 });
 
 const boardsSlice = createSlice({

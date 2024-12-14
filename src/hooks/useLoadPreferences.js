@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { loadFromLocalStorage } from '@/utils/utils';
+import { loadFromLocalStorage } from '@/utils';
 
 export const useLoadPreferences = (userId, callback, deps) => {
   useEffect(() => {

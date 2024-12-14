@@ -33,7 +33,7 @@ export const useAuthStateChange = () => {
     });
 
     return unsub;
-  }, []);
+  }, [dispatch]);
 
   return { authIsReady };
 };

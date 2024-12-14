@@ -21,20 +21,19 @@ export const TaskView = ({ darkMode }) => {
   const [ popupVisible, setPopupVisible ] = useState(false);
   const selectedTask = useSelector(selectedTaskSelector);
 
-  const { status: localState, updateSubtaskStatus } = useTaskOperations();
+  const { status: localState, updateTask } = useTaskOperations();
   const { showEditDialog, showDeleteDialog } = useModalState();
 
   const { popperStyles, setParentRef, setReferenceRef } = usePositionPopup(POPPER_MODIFIERS);
 
-  const subtasksCompleted = selectedTask.subtasks.filter(({ completed }) => completed).length;
-  const subtasksTotal = selectedTask.subtasks.length;
-
-  function hidePopup() {
+  const hidePopup = () => {
     setPopupVisible(false);
-  }
+  };
 
   const { parentRef, popupRef } = useHandleClickOutside(popupVisible, hidePopup);
 
+  const subtasksCompleted = selectedTask.subtasks.filter(({ completed }) => completed).length;
+  const subtasksTotal = selectedTask.subtasks.length;
   const subtasksTitle = `Subtasks (${ subtasksCompleted } out of ${ subtasksTotal })`;
 
   const popupOptions = [
@@ -47,6 +46,21 @@ export const TaskView = ({ darkMode }) => {
   }, []);
 
   const ellipsisRefs = useMemo(() => mergeRefs([ parentRef, setParentRef ]), []);
+
+  const updateSubtaskStatus = (subtaskId) => (event) => {
+    const { checked } = event.target;
+
+    const updatedSubtasks = selectedTask.subtasks.map((subtask) => (
+      subtask.id === subtaskId ? { ...subtask, completed: checked } : subtask
+    ));
+
+    const taskData = {
+      ...selectedTask,
+      subtasks: updatedSubtasks
+    };
+
+    updateTask(taskData);
+  };
 
   const renderSubtasksList = selectedTask.subtasks.map(({ id, value, completed }) => (
     <SubtaskItem

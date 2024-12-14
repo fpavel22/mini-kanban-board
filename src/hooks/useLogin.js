@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 import { auth } from '@/firebase/config';
-import { isEmailGmail } from '@/utils/utils';
-import { determineErrorMessage } from '@/utils/firebase';
-import { FIREBASE_INTERNAL_ERRORS } from '@/constants';
+import { FIREBASE_INTERNAL_ERRORS } from '@/firebase/constants';
+import { parseFirebaseError, isEmailGmail } from '@/utils';
 
 export const useLogin = () => {
   const [ loading, setLoading ] = useState(false);
@@ -21,9 +20,7 @@ export const useLogin = () => {
 
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      const errorContent = determineErrorMessage(err);
-
-      setError(errorContent);
+      setError(parseFirebaseError(err));
     } finally {
       setLoading(false);
     }
@@ -38,11 +35,10 @@ export const useLogin = () => {
     try {
       await signInWithPopup(auth, provider);
     } catch (err) {
-      const errorContent = determineErrorMessage(err);
-      setError(errorContent);
+      setError(parseFirebaseError(err));
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return {
