@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import {
-  addTask as addTaskAction,
-  updateTask as updateTaskAction,
-  deleteTask as deleteTaskAction,
+  addTask as addTaskThunk,
+  updateTask as updateTaskThunk,
+  deleteTask as deleteTaskThunk,
 } from '@/features/tasksSlice';
 import { THUNK_STATUS } from '@/constants';
 
@@ -13,11 +13,11 @@ export const useTaskOperations = () => {
   const [ status, setStatus ] = useState(THUNK_STATUS.IDLE);
   const unwrapDispatch = useDispatchUnwrapper();
 
-  async function addTask(taskDetails) {
+  async function createTask(taskDetails) {
     setStatus(THUNK_STATUS.LOADING);
 
     try {
-      await unwrapDispatch(addTaskAction(taskDetails));
+      await unwrapDispatch(addTaskThunk(taskDetails));
 
       setStatus(THUNK_STATUS.SUCCEEDED);
     } catch (err) {
@@ -31,7 +31,7 @@ export const useTaskOperations = () => {
     setStatus(THUNK_STATUS.LOADING);
 
     try {
-      await unwrapDispatch(updateTaskAction(taskDetails));
+      await unwrapDispatch(updateTaskThunk(taskDetails));
 
       setStatus(THUNK_STATUS.SUCCEEDED);
     } catch (err) {
@@ -45,7 +45,7 @@ export const useTaskOperations = () => {
     setStatus(THUNK_STATUS.LOADING);
 
     try {
-      await unwrapDispatch(deleteTaskAction(taskId));
+      await unwrapDispatch(deleteTaskThunk(taskId));
 
       setStatus(THUNK_STATUS.SUCCEEDED);
     } catch (err) {
@@ -57,7 +57,7 @@ export const useTaskOperations = () => {
 
   return {
     status,
-    addTask,
+    createTask,
     updateTask,
     deleteTask
   };

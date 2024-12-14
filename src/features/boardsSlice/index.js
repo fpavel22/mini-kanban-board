@@ -7,12 +7,8 @@ import {
 
 import { firestore } from '@/firebase/config';
 import { addDoc, getAllDocs } from '@/firebase/operations';
-import {
-  FIREBASE_QUERY,
-  FIREBASE_COLLECTIONS,
-  REDUCERS,
-  THUNK_STATUS
-} from '@/constants';
+import { FIREBASE_QUERY, FIREBASE_COLLECTIONS } from '@/firebase/constants';
+import { REDUCERS, THUNK_STATUS } from '@/constants';
 
 const initialState = {
   boards: [],
@@ -23,14 +19,14 @@ const initialState = {
 
 const boardsCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.BOARDS);
 
-export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserBoards`, async (id) => {
-  if (!id) {
+export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserBoards`, async (userId) => {
+  if (!userId) {
     return [];
   }
 
   const boardQuery = firestoreQuery(
     boardsCollectionRef,
-    where(FIREBASE_QUERY.CREATED_BY, '==', id)
+    where(FIREBASE_QUERY.CREATED_BY, '==', userId)
   );
   const boards = await getAllDocs(boardQuery);
 

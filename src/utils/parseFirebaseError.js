@@ -1,4 +1,4 @@
-import { FIREBASE_AUTH_ERRORS } from '@/constants';
+import { FIREBASE_AUTH_ERRORS } from '@/firebase/constants';
 
 export const parseFirebaseError = (error) => {
   const { code, message } = error;

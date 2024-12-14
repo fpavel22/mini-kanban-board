@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 
 import { auth } from '@/firebase/config';
+import { FIREBASE_INTERNAL_ERRORS } from '@/firebase/constants';
 import { parseFirebaseError, isEmailGmail } from '@/utils';
-import { FIREBASE_INTERNAL_ERRORS } from '@/constants';
 
 export const usePasswordReset = () => {
   const [ loading, setLoading ] = useState(false);

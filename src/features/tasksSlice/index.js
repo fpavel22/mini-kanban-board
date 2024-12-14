@@ -13,12 +13,8 @@ import {
   updateDoc,
   deleteDoc
 } from '@/firebase/operations';
-import {
-  FIREBASE_COLLECTIONS,
-  FIREBASE_QUERY,
-  REDUCERS,
-  THUNK_STATUS,
-} from '@/constants';
+import { FIREBASE_QUERY, FIREBASE_COLLECTIONS } from '@/firebase/constants';
+import { REDUCERS, THUNK_STATUS } from '@/constants';
 
 const initialState = {
   tasks: [],
@@ -52,8 +48,8 @@ export const addTask = createAsyncThunk(`${ REDUCERS.TASKS }/addTask`, async (ta
   return newTask;
 });
 
-export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, async (task) => {
-  const updatedTask = await updateDoc(createTaskDocumentRef(task.id), task);
+export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, async (taskData) => {
+  const updatedTask = await updateDoc(createTaskDocumentRef(taskData.id), taskData);
 
   return updatedTask;
 });
