@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { mergeRefs } from 'react-merge-refs';
 
 import {
+  CheckboxItem,
   Dropdown,
   EllipsisIcon,
-  Popup,
-  SubtaskItem
-} from '@components/ui';
+  Popup
+} from '@components';
 import { selectedTaskSelector } from '@/features/tasksSlice';
 import {
   useHandleClickOutside,
@@ -15,7 +15,7 @@ import {
   useTaskOperations,
   useModalState
 } from '@/hooks';
-import { POPPER_MODIFIERS, THUNK_STATUS } from '@/constants';
+import { POPPER_DEFAULT_MODIFIERS, TASK_PRIORITY_OPTIONS, THUNK_STATUS } from '@/constants';
 
 export const TaskView = ({ darkMode }) => {
   const [ popupVisible, setPopupVisible ] = useState(false);
@@ -24,11 +24,15 @@ export const TaskView = ({ darkMode }) => {
   const { status: localState, updateTask } = useTaskOperations();
   const { showEditDialog, showDeleteDialog } = useModalState();
 
-  const { popperStyles, setParentRef, setReferenceRef } = usePositionPopup(POPPER_MODIFIERS);
+  const {
+    popperStyles,
+    setParentRef,
+    setReferenceRef
+  } = usePositionPopup(POPPER_DEFAULT_MODIFIERS);
 
-  const hidePopup = () => {
+  const hidePopup = useCallback(() => {
     setPopupVisible(false);
-  };
+  }, []);
 
   const { parentRef, popupRef } = useHandleClickOutside(popupVisible, hidePopup);
 
@@ -36,10 +40,10 @@ export const TaskView = ({ darkMode }) => {
   const subtasksTotal = selectedTask.subtasks.length;
   const subtasksTitle = `Subtasks (${ subtasksCompleted } out of ${ subtasksTotal })`;
 
-  const popupOptions = [
-    { value: 'edit', label: 'Edit task', onClick: showEditDialog },
-    { value: 'danger', label: 'Delete task', onClick: showDeleteDialog }
-  ];
+  const popupItems = useMemo(() => [
+    { value: 'edit', label: 'Edit task', onPopupItemClick: showEditDialog },
+    { value: 'danger', label: 'Delete task', onPopupItemClick: showDeleteDialog }
+  ], [ showEditDialog, showDeleteDialog ]);
 
   const togglePopup = useCallback(() => {
     setPopupVisible((prevState) => !prevState);
@@ -63,7 +67,7 @@ export const TaskView = ({ darkMode }) => {
   };
 
   const renderSubtasksList = selectedTask.subtasks.map(({ id, value, completed }) => (
-    <SubtaskItem
+    <CheckboxItem
       key={ id }
       completed={ completed }
       loading={ localState === THUNK_STATUS.LOADING }
@@ -72,7 +76,7 @@ export const TaskView = ({ darkMode }) => {
       onChange={ updateSubtaskStatus(id) }
     >
       { value }
-    </SubtaskItem>
+    </CheckboxItem>
   ));
 
   return (
@@ -103,11 +107,16 @@ export const TaskView = ({ darkMode }) => {
       </div>
       <div className="task__view-status">
         <h5 className="task__view-label">Current status</h5>
-        <Dropdown darkMode={ darkMode } value={ selectedTask.priority } disabled={ true } />
+        <Dropdown
+          darkMode={ darkMode }
+          options={ TASK_PRIORITY_OPTIONS }
+          value={ selectedTask.priority }
+          disabled={ true }
+        />
       </div>
       { popupVisible && (
         <Popup
-          options={ popupOptions }
+          items={ popupItems }
           style={ popperStyles }
           ref={ mergeRefs([ popupRef, setReferenceRef ]) }
         />

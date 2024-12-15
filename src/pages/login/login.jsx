@@ -1,14 +1,13 @@
 import { Link } from 'react-router-dom';
 
-import { PageForm } from '@components';
 import {
   Button,
   Notification,
-  PageRedirect,
+  PageForm,
   TextField
-} from '@components/ui';
+} from '@components';
 import { useLogin } from '@/hooks';
-import { FORM_FIELDS } from '@/constants';
+import { FORM_FIELDS, SIZE } from '@/constants';
 
 const { LOGIN } = FORM_FIELDS;
 
@@ -60,20 +59,20 @@ export const Login = () => {
                   />
                 </label>
               )) }
-              <Button variety="primary" size="lg" disabled={ isLoading }>
+              <Button variety="primary" size={ SIZE.LG } disabled={ isLoading }>
                 { isLoading ? 'Logging in...' : 'Login' }
               </Button>
             </>
           ) }
         </PageForm>
-        <PageRedirect>
+        <div className="page-redirect">
           <span>
             Not a member?
             {' '}
             <Link to="/register">Sign up.</Link>
           </span>
           <Link to="/password-reset">Forgot password?</Link>
-        </PageRedirect>
+        </div>
         <Notification onClick={ handleGoogleSignIn }>
           Or login with Google
         </Notification>

@@ -1,7 +1,5 @@
 import cn from 'classnames';
 
-import { SIZE } from '@/constants';
-
 export const Button = ({
   variety,
   size,
@@ -12,7 +10,7 @@ export const Button = ({
 }) => {
   const _className = cn('btn', {
     [ `btn--${ variety }` ]: variety,
-    [ `btn--${ size }` ]: size === SIZE.LG,
+    [ `btn--${ size }` ]: size,
     'btn--d-mode': darkMode
   }, className);
 

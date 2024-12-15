@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import cn from 'classnames';
 
-import { BoardColumn, DroppableWrapper } from '@components';
-import { Button } from '@components/ui';
+import { BoardColumn, Button, DroppableWrapper } from '@components';
 import { allBoardsSelector, boardsStatusSelector } from '@/features/boardsSlice';
 import { openModal } from '@/features/modalSlice';
 import {
@@ -15,7 +14,7 @@ import {
 } from '@/features/tasksSlice';
 import { themeSliceSelector } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-import { useSidebarVisibleContext } from '@/hooks';
+import { useSidebarVisibleContext } from '@/context';
 import { BOARD_CONTENT_LABELS, MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 
 import { DndWrapper } from './dnd-wrapper';

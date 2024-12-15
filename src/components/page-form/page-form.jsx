@@ -13,7 +13,7 @@ export const PageForm = ({
   success,
   fields,
   className,
-  onSubmit = () => {},
+  onSubmit,
   children,
   ...props
 }) => {
@@ -29,7 +29,7 @@ export const PageForm = ({
   function handleSubmit(event) {
     event.preventDefault();
 
-    onSubmit(Object.values(formState));
+    onSubmit?.(Object.values(formState));
   }
 
   useEffect(() => {

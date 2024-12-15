@@ -1,10 +1,10 @@
 import cn from 'classnames';
 
-import { Button } from '@components/ui';
-import { SidebarNavigation } from '@components/sidebar/sidebar-navigation';
-import { SidebarToggle } from '@components/sidebar/sidebar-toggle';
-
 import iconShowSidebar from '@/assets/icon-show-sidebar.svg';
+import { SIZE } from '@/constants';
+import { Button } from '../button';
+import { SidebarNavigation } from './sidebar-navigation';
+import { SidebarToggle } from './sidebar-toggle';
 
 export const Sidebar = ({
   darkMode,
@@ -29,7 +29,7 @@ export const Sidebar = ({
       </aside>
       <Button
         variety="primary"
-        size="lg"
+        size={ SIZE.LG }
         darkMode={ darkMode }
         className={ showSidebarBtnClassName }
         onClick={ showSidebar }

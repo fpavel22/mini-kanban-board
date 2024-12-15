@@ -9,8 +9,9 @@ import { allTasksSelector, tasksStatusSelector } from '@/features/tasksSlice';
 import { themeSliceSelector, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
 import { auth } from '@/firebase/config';
-import { useSidebarVisibleContext } from '@/hooks';
+import { useSidebarVisibleContext } from '@/context';
 import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
+import { useMemo } from 'react';
 
 export const Navbar = () => {
   const boards = useSelector(allBoardsSelector);
@@ -29,20 +30,20 @@ export const Navbar = () => {
 
   const tasksFetched = tasksStatus === THUNK_STATUS.SUCCEEDED;
 
-  const popupMenuOptions = [
+  const popupMenuOptions = useMemo(() => [
     {
       value: 'important',
-      label: `Logged in as ${ user.email }`
+      label: `Logged in as ${ user.email }`,
     },
     {
       value: 'danger',
       label: 'Sign out',
-      onClick() {
+      onPopupItemClick() {
         signOut(auth);
         dispatch(enableLightTheme());
       }
     }
-  ];
+  ], [ dispatch, user.email ]);
 
   const navbarTitle = {
     [ THUNK_STATUS.LOADING ]: 'Loading...',

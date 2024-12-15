@@ -4,7 +4,7 @@ export const DragAndDrop = ({
   sensors,
   items,
   children,
-  onDragEnd = () => {}
+  onDragEnd
 }) => {
   function handleDrag(event) {
     if (event.active && event.over) {
@@ -19,7 +19,7 @@ export const DragAndDrop = ({
           droppableId
         };
 
-        onDragEnd(item);
+        onDragEnd?.(item);
       }
     }
   }

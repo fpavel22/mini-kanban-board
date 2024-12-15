@@ -1,12 +1,7 @@
-export const DEFAULT_CARD_STATUS = 'to_do';
-
 export const SIZE = {
+  SM: 'sm',
+  MD: 'md',
   LG: 'lg'
-};
-
-export const POPUP_STATES = {
-  DANGER: 'danger',
-  IMPORTANT: 'important'
 };
 
 export const KEYCODES = {
@@ -69,13 +64,13 @@ export const FORM_FIELDS = {
   ]
 };
 
-export const DROPDOWN_DEFAULT_OPTIONS = [
+export const TASK_PRIORITY_OPTIONS = [
   { value: 'low', label: 'Low' },
   { value: 'normal', label: 'Normal' },
   { value: 'high', label: 'High' }
 ];
 
-export const POPPER_MODIFIERS = [
+export const POPPER_DEFAULT_MODIFIERS = [
   {
     name: 'offset',
     options: {

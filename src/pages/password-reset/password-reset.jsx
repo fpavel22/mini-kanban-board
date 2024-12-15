@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 
-import { PageForm } from '@components';
-import { Button, PageRedirect, TextField } from '@components/ui';
+import {
+  Button,
+  PageForm,
+  TextField
+} from '@components';
 import { usePasswordReset } from '@/hooks';
-import { FORM_FIELDS } from '@/constants';
+import { FORM_FIELDS, SIZE } from '@/constants';
 
 const { RESET } = FORM_FIELDS;
 
@@ -58,15 +61,15 @@ export const PasswordReset = () => {
                   />
                 </label>
               )) }
-              <Button variety="primary" size="lg" disabled={ isLoading }>
+              <Button variety="primary" size={ SIZE.LG } disabled={ isLoading }>
                 { isLoading ? 'Please wait...' : 'Reset' }
               </Button>
             </>
           ) }
         </PageForm>
-        <PageRedirect center={ true }>
+        <div className="page-redirect page-redirect--center">
           <Link to="/login">Back to login.</Link>
-        </PageRedirect>
+        </div>
       </div>
     </div>
   );

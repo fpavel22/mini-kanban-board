@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import { ModalOverlay } from '@/components';
@@ -12,6 +12,14 @@ import { BoardForm } from '../board-form';
 import { TaskDelete } from '../task-delete';
 import { TaskForm } from '../task-form';
 import { TaskView } from '../task-view';
+
+const MODAL_CHILDREN = {
+  [ MODAL_CONTENT.BOARD_FORM ]: (props) => <BoardForm { ...props } />,
+  [ MODAL_CONTENT.TASK_DELETE ]: (props) => <TaskDelete { ...props } />,
+  [ MODAL_CONTENT.TASK_FORM_ADD ]: (props) => <TaskForm { ...props } />,
+  [ MODAL_CONTENT.TASK_FORM_EDIT ]: (props) => <TaskForm { ...props } editing={ true } />,
+  [ MODAL_CONTENT.TASK_VIEW]: (props) => <TaskView { ...props } />
+};
 
 const applyPageOverflow = (isModalVisible) => {
   const { documentElement } = document;
@@ -34,26 +42,18 @@ export const ModalWrapper = () => {
     closeModal
   };
 
-  const MODAL_CHILDREN = {
-    [ MODAL_CONTENT.BOARD_FORM ]: <BoardForm { ...commonProps } />,
-    [ MODAL_CONTENT.TASK_DELETE ]: <TaskDelete { ...commonProps } />,
-    [ MODAL_CONTENT.TASK_FORM_ADD ]: <TaskForm { ...commonProps } />,
-    [ MODAL_CONTENT.TASK_FORM_EDIT ]: <TaskForm { ...commonProps } editing={ true } />,
-    [ MODAL_CONTENT.TASK_VIEW]: <TaskView { ...commonProps } />
-  };
+  const ModalContent = MODAL_CHILDREN[ modalContent ];
 
-  const children = MODAL_CHILDREN[ modalContent ];
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     applyPageOverflow(modalOpen);
   }, [ modalOpen ]);
 
   return modalOpen && (
     <ModalOverlay
       darkMode={ darkMode }
-      closeModal={ closeModal }
+      onClickOutside={ closeModal }
     >
-      { children }
+      <ModalContent { ...commonProps } />
     </ModalOverlay>
   );
 };

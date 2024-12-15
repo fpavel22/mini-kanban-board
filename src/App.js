@@ -5,6 +5,7 @@ import cn from 'classnames';
 import { themeSliceSelector } from '@/features/themeSlice';
 import { publicRoutes, protectedRoutes } from '@/routes';
 import { PageNotFound } from '@/pages';
+import { Spinner } from '@/components';
 import { useAuthStateChange } from '@/hooks';
 
 const App = () => {
@@ -20,7 +21,7 @@ const App = () => {
 
   return (
     <main className={ className }>
-      { authIsReady && (
+      { authIsReady ? (
         <BrowserRouter>
           <Routes>
             { routes.map(({ path, element }) => (
@@ -33,7 +34,7 @@ const App = () => {
             <Route path="*" element={ <PageNotFound /> } />
           </Routes>
         </BrowserRouter>
-      ) }
+      ) : <Spinner fullPage /> }
     </main>
   );
 };

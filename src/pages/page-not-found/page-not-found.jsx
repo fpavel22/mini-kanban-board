@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { PageRedirect } from '@components/ui';
 
 export const PageNotFound = () => (
   <div className="not__found">
@@ -14,12 +13,12 @@ export const PageNotFound = () => (
       <div className="grid-num">4</div>
       <div className="grid-num">0</div>
     </div>
-    <PageRedirect center={ true }>
+    <div className="page-redirect page-redirect--center">
       <span>
         Page not found,
         {' '}
         <Link to="/">go back.</Link>
       </span>
-    </PageRedirect>
+    </div>
   </div>
 );

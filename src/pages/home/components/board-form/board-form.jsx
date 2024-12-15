@@ -1,5 +1,5 @@
 import { PageForm } from '@components/page-form';
-import { Button, TextField } from '@components/ui';
+import { Button, TextField } from '@components';
 import { useBoardOperations } from '@/hooks';
 import { THUNK_STATUS, FORM_FIELDS } from '@/constants';
 

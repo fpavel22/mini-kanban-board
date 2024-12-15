@@ -1,12 +1,14 @@
-import { DraggableWrapper } from '@components/drag-and-drop';
-import { Card } from '@components/ui';
+import { DraggableWrapper } from '../drag-and-drop';
 
-export const ColumnItem = ({ id, isDraggable, ...props }) => {
-  const card = <Card { ...props } />;
-
-  return isDraggable ? (
-    <DraggableWrapper id={ id }>
-      { card }
+export const ColumnItem = ({
+  id,
+  isDraggable,
+  children,
+  ...props
+}) => (
+  isDraggable ? (
+    <DraggableWrapper { ...props } id={ id }>
+      { children }
     </DraggableWrapper>
-  ) : card;
-};
+  ) : children
+);

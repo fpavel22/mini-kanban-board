@@ -5,7 +5,7 @@ import { allBoardsSelector, boardsStatusSelector, boardsErrorSelector } from '@/
 import { openModal } from '@/features/modalSlice';
 import { themeSliceSelector, enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-import { useSidebarVisibleContext, useSidebarToggleContext } from '@/hooks';
+import { useSidebarVisibleContext, useSidebarToggleContext } from '@/context';
 import { saveToLocalStorage } from '@/utils';
 import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 

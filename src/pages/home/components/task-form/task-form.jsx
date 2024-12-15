@@ -3,15 +3,18 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Button, Dropdown, TextField } from '@components/ui';
+import { Button, Dropdown, TextField } from '@components';
 import { selectedTaskSelector } from '@/features/tasksSlice';
 import { useModalState, useTaskOperations } from '@/hooks';
-import { DEFAULT_CARD_STATUS, THUNK_STATUS } from '@/constants';
+import { TASK_PRIORITY_OPTIONS, THUNK_STATUS } from '@/constants';
+
+const DEFAULT_CARD_STATUS = 'to_do';
 
 export const TaskForm = ({
+  darkMode,
   user,
   editing,
-  closeModal = () => {}
+  closeModal
 }) => {
   const selectedTask = useSelector(selectedTaskSelector);
 
@@ -108,7 +111,7 @@ export const TaskForm = ({
       const taskAction = editing ? updateTask : createTask;
 
       taskAction(taskDetails).then(() => {
-        closeModal();
+        closeModal?.();
       });
     } else {
       const subtasksIds = emptySubtasks.map(({ id }) => id);
@@ -156,7 +159,7 @@ export const TaskForm = ({
             closable={ true }
             value={ value }
             error={ subtasksError?.includes(id) }
-            onClick={ removeSubtask(id) }
+            onIconCloseClick={ removeSubtask(id) }
             onChange={ changeSubtaskValue(id) }
           />
         )) }
@@ -166,7 +169,13 @@ export const TaskForm = ({
       </div>
       <div className="form__group">
         <p className="form__group-title">Priority</p>
-        <Dropdown name="priority" value={ priority } onChange={ handleFormFieldsChange } />
+        <Dropdown
+          name="priority"
+          darkMode={ darkMode }
+          options={ TASK_PRIORITY_OPTIONS }
+          value={ priority }
+          onChange={ handleFormFieldsChange }
+        />
       </div>
       <Button variety="primary" disabled={ isCreating }>
         { isCreating

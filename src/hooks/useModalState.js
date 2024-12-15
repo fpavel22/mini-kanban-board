@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { closeModal as closeModalAction, openModal } from '@/features/modalSlice';
@@ -6,21 +7,21 @@ import { MODAL_CONTENT } from '@/constants';
 export const useModalState = () => {
   const dispatch = useDispatch();
 
-  function closeModal() {
+  const closeModal = useCallback(() => {
     dispatch(closeModalAction());
-  }
+  }, [ dispatch ]);
 
-  function showViewDialog() {
+  const showViewDialog = useCallback(() => {
     dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
-  }
+  }, [ dispatch ]);
 
-  function showEditDialog() {
+  const showEditDialog = useCallback(() => {
     dispatch(openModal(MODAL_CONTENT.TASK_FORM_EDIT));
-  }
+  }, [ dispatch ]);
 
-  function showDeleteDialog() {
+  const showDeleteDialog = useCallback(() => {
     dispatch(openModal(MODAL_CONTENT.TASK_DELETE));
-  }
+  }, [ dispatch ]);
 
   return {
     closeModal,

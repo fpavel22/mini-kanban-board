@@ -4,19 +4,19 @@ import cn from 'classnames';
 export const ModalOverlay = ({
   darkMode,
   className,
-  closeModal = () => {},
+  onClickOutside,
   children,
   ...props
 }) => {
   const modalRef = useRef();
 
-  const _className = cn('card__modal', {
-    'card__modal--d-mode': darkMode
+  const _className = cn('modal', {
+    'modal--d-mode': darkMode
   }, className);
 
-  function handleClickOutside({ target }) {
+  function handleClick({ target }) {
     if (target.contains(modalRef?.current)) {
-      closeModal();
+      onClickOutside?.();
     }
   }
 
@@ -25,9 +25,9 @@ export const ModalOverlay = ({
       { ...props }
       className={ _className }
       ref={ modalRef }
-      onMouseDown={ handleClickOutside }
+      onClick={ handleClick }
     >
-      <div className="card__modal-content">
+      <div className="modal-content">
         { children }
       </div>
     </div>

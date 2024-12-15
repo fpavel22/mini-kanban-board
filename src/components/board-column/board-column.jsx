@@ -1,13 +1,14 @@
 import cn from 'classnames';
 
-import { ColumnItem as CardColumnItem } from '@components/column-item';
+import { ColumnItem } from '../column-item';
+import { Card } from '../card';
 
 export const BoardColumn = ({
   darkMode,
   status,
   sectionTitle,
   columnItems,
-  itemType = CardColumnItem,
+  itemType = ColumnItem,
   onItemClick = () => {},
   ...props
 }) => {
@@ -21,7 +22,7 @@ export const BoardColumn = ({
 
   const columnTitle = `${ sectionTitle } (${ columnItems.length })`;
 
-  const ColumnItem = itemType;
+  const Column = itemType;
 
   function handleItemClick(task) {
     return () => {
@@ -38,16 +39,35 @@ export const BoardColumn = ({
         </span>
       </p>
       <div className="cards__section-content">
-        { columnItems.map((task) => (
-          <ColumnItem
-            { ...props }
-            key={ task.id }
-            id={ task.id }
-            task={ task }
-            darkMode={ darkMode }
-            onClick={ handleItemClick(task) }
-          />
-        )) }
+        { columnItems.map((task) => {
+          const {
+            title,
+            id,
+            subtasks,
+            priority
+          } = task;
+          const subtasksCount = subtasks.length;
+          const tasksCompleted = subtasks.filter(({ completed }) => completed).length;
+
+          return (
+            <Column
+              { ...props }
+              key={ id }
+              id={ id }
+              darkMode={ darkMode }
+              onClick={ handleItemClick(task) }
+            >
+              <Card
+                darkMode={ darkMode }
+                title={ title }
+                priority={ priority }
+                description={ subtasksCount
+                  ? `${ tasksCompleted } of ${ subtasksCount } subtasks completed`
+                  : 'No subtasks added' }
+              />
+            </Column>
+          );
+        }) }
       </div>
     </div>
   );

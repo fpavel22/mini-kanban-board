@@ -1,7 +1,7 @@
-import { SidebarNavigationItem } from '@components/sidebar/sidebar-navigation-item';
+import { useParams } from 'react-router-dom';
 
 import iconBoard from '@/assets/icon-board.svg';
-import { useParams } from 'react-router-dom';
+import { SidebarNavigationItem } from './sidebar-navigation-item';
 
 export const SidebarNavigation = ({
   navigationItems = [],

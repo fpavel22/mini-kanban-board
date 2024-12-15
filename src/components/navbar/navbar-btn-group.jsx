@@ -1,9 +1,11 @@
 import { useState, useCallback, useMemo } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 
-import { Button, EllipsisIcon, Popup } from '@components/ui';
 import { useHandleClickOutside, usePositionPopup } from '@/hooks';
-import { POPPER_MODIFIERS, POPPER_PLACEMENTS } from '@/constants';
+import { POPPER_DEFAULT_MODIFIERS, POPPER_PLACEMENTS } from '@/constants';
+import { Button } from '../button';
+import { EllipsisIcon } from '../ellipsis-icon';
+import { Popup } from '../popup';
 
 export const NavbarBtnGroup = ({
   darkMode,
@@ -18,11 +20,11 @@ export const NavbarBtnGroup = ({
     popperStyles,
     setParentRef,
     setReferenceRef
-  } = usePositionPopup(POPPER_MODIFIERS, POPPER_PLACEMENTS.bottomRight);
+  } = usePositionPopup(POPPER_DEFAULT_MODIFIERS, POPPER_PLACEMENTS.bottomRight);
 
-  function hidePopup() {
+  const hidePopup = useCallback(() => {
     setShowMenu(false);
-  }
+  }, []);
 
   const { parentRef, popupRef } = useHandleClickOutside(showMenu, hidePopup);
 
@@ -46,7 +48,7 @@ export const NavbarBtnGroup = ({
       ) }
       <EllipsisIcon
         className="header__btn--options"
-        alt="Options icon"
+        alt="Navbar options icon"
         ref={ ellipsisRefs }
         onClick={ toggleOptionsMenu }
       />
@@ -54,7 +56,7 @@ export const NavbarBtnGroup = ({
         && (
           <Popup
             darkMode={ darkMode }
-            options={ menuOptions }
+            items={ menuOptions }
             style={ popperStyles }
             ref={ mergeRefs([ popupRef, setReferenceRef ]) }
           />

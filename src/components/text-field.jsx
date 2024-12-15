@@ -1,9 +1,9 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { closeModal } from '@/features/modalSlice';
+// import { closeModal } from '@/features/modalSlice';
+// import { KEYCODES } from '@/constants';
 import { themeSliceSelector } from '@/features/themeSlice';
-import { KEYCODES } from '@/constants';
 
 import iconClose from '@/assets/icon-cross.svg';
 
@@ -14,12 +14,25 @@ export const TextField = ({
   error,
   className,
   onKeyDown,
-  onClick,
+  onIconCloseClick,
   ...props
 }) => {
-  const darkMode = useSelector(themeSliceSelector);
+  // const dispatch = useDispatch();
+  // function handleKeyDown(event) {
+  //   const { keyCode } = event;
 
-  const dispatch = useDispatch();
+  //   if (keyCode === KEYCODES.ESCAPE) {
+  //     dispatch(closeModal());
+  //   }
+
+  //   onKeyDown?.(event);
+  // }
+
+  // const props = {
+  //   ...props,
+  //   onKeyDown: handleKeyDown
+  // };
+  const darkMode = useSelector(themeSliceSelector);
 
   const _className = cn('text-field', {
     'text-field--multiline': multiline,
@@ -27,26 +40,9 @@ export const TextField = ({
     'text-field--d-mode': darkMode
   }, className);
 
-  function handleKeyDown(event) {
-    const { keyCode } = event;
-
-    if (keyCode === KEYCODES.ESCAPE) {
-      dispatch(closeModal());
-    }
-
-    if (onKeyDown) {
-      onKeyDown(event);
-    }
-  }
-
-  const fieldProps = {
-    ...props,
-    onKeyDown: handleKeyDown
-  };
-
   const field = multiline
-    ? <textarea { ...fieldProps } />
-    : <input { ...fieldProps } type={ type } />;
+    ? <textarea { ...props } />
+    : <input { ...props } type={ type } />;
 
   return (
     <div className="text-field__control">
@@ -54,7 +50,14 @@ export const TextField = ({
         { field }
         { error && <span className="text-field--feedback">Can't be empty</span> }
       </label>
-      { closable && <img className="text-field--close" src={ iconClose } alt="Close icon" onClick={ onClick } /> }
+      { closable && (
+        <img
+          className="text-field--close"
+          src={ iconClose }
+          alt="Close icon"
+          onClick={ onIconCloseClick }
+        />
+      ) }
     </div>
   );
 };

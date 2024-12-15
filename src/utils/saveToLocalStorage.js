@@ -1,10 +1,12 @@
 import { loadFromLocalStorage } from './loadFromLocalStorage';
 
 export const saveToLocalStorage = ({ userId, ...restPreferences }) => {
-  const storageData = loadFromLocalStorage(userId);
+  const preferences = loadFromLocalStorage(userId);
 
   const userPreferences = {
-    ...(storageData ?? { darkMode: false, sidebarVisible: false }),
+    darkMode: false,
+    sidebarVisible: true,
+    ...(preferences ?? {}),
     ...restPreferences,
   };
 

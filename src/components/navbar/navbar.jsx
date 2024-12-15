@@ -1,9 +1,8 @@
 import cn from 'classnames';
 
-import { NavbarBtnGroup } from '@components/navbar/navbar-btn-group';
-
 import logoDark from '@/assets/logo-dark.svg';
 import logoLight from '@/assets/logo-light.svg';
+import { NavbarBtnGroup } from './navbar-btn-group';
 
 export const Navbar = ({
   darkMode,

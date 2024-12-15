@@ -11,11 +11,9 @@ import {
 import { fetchUserBoards, resetUserBoards } from '@/features/boardsSlice';
 import { enableDarkTheme, enableLightTheme } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-import {
-  useSidebarToggleContext,
-  useDispatchUnwrapper,
-  useLoadPreferences
-} from '@/hooks';
+import { useSidebarToggleContext } from '@/context';
+import { useDispatchUnwrapper } from '@/hooks';
+import { loadFromLocalStorage } from '@/utils';
 import { PATHS } from '@/constants';
 
 export const Home = () => {
@@ -49,10 +47,16 @@ export const Home = () => {
     };
   }, []);
 
-  useLoadPreferences(user.uid, ({ darkMode, sidebarVisible }) => {
-    dispatch(darkMode ? enableDarkTheme() : enableLightTheme());
-    setSidebarVisible(sidebarVisible);
-  }, []);
+  useEffect(() => {
+    const preferences = loadFromLocalStorage(user.uid);
+
+    if (preferences) {
+      const { darkMode, sidebarVisible } = preferences;
+
+      dispatch(darkMode ? enableDarkTheme() : enableLightTheme());
+      setSidebarVisible(sidebarVisible);
+    }
+  }, [ dispatch, setSidebarVisible, user.uid ]);
 
   return (
     <>

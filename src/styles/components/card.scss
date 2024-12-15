@@ -41,7 +41,7 @@
     }
   }
 
-  .card__header {
+  .card__title {
     @include header-md;
 
     margin-bottom: $padding-xs-horizontal;
@@ -50,7 +50,7 @@
     white-space: nowrap;
   }
 
-  .card__summary {
+  .card__description {
     @include header-sm;
 
     color: $middle-gray;

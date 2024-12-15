@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { selectedTaskSelector } from '@/features/tasksSlice';
 
-import { Button } from '@components/ui';
+import { Button } from '@components';
 import { useTaskOperations } from '@/hooks';
 import { THUNK_STATUS } from '@/constants';
 

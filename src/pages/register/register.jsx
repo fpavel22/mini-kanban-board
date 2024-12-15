@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 
-import { PageForm } from '@components';
-import { Button, PageRedirect, TextField } from '@components/ui';
+import {
+  Button,
+  PageForm,
+  TextField
+} from '@components';
 import { useRegisterAccount } from '@/hooks';
-import { FORM_FIELDS } from '@/constants';
+import { FORM_FIELDS, SIZE } from '@/constants';
 
 const { REGISTER } = FORM_FIELDS;
 
@@ -46,19 +49,19 @@ export const Register = () => {
                   />
                 </label>
               )) }
-              <Button variety="primary" size="lg" disabled={ isLoading }>
+              <Button variety="primary" size={ SIZE.LG } disabled={ isLoading }>
                 { isLoading ? 'Signing up...' : 'Sign-up' }
               </Button>
             </>
           ) }
         </PageForm>
-        <PageRedirect center={ true }>
+        <div className="page-redirect page-redirect--center">
           <span>
             Already got an account?
             {' '}
             <Link to="/login">Log in.</Link>
           </span>
-        </PageRedirect>
+        </div>
       </div>
     </div>
   );
