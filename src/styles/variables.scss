@@ -1,47 +1,46 @@
-// Breakpoints
-$xs: 481px;
-$sm: 570px;
-$md: 769px;
-
 // Globals
+$border-radius-base: .5rem;
 $border-radius-xs: .25rem;
 $border-radius-sm: .375rem;
-$border-radius-base: .5rem;
 $border-radius-lg: .75rem;
 
+$checkbox-tooltip-width: .5rem;
+
+$padding-base-horizontal: 1.5rem;
 $padding-xs-horizontal: .5rem;
 $padding-sm-horizontal: 1rem;
-$padding-base-horizontal: 1.5rem;
 $padding-lg-horizontal: 2rem;
 $padding-xl-horizontal: 3rem;
 
 $scrollbar-border: .375rem;
 $scrollbar-width: 1.25rem;
 
-$checkbox-tooltip-width: .5rem;
+$transition-time: 100ms;
 
 $z-index-medium: 5;
 $z-index-important: 10;
 
-$transition-time: 100ms;
+// Breakpoints
+$xs: 481px;
+$sm: 570px;
+$md: 769px;
 
 // Board content
-$grid-width: 14rem;
-$grid-row-gap: 1.25rem;
 $grid-column-gap: $padding-base-horizontal;
+$grid-row-gap: 1.25rem;
+$grid-width: 14rem;
 
 // Buttons
-$btn-horizontal-padding: 1.125rem;
 $btn-border-radius: 1.25rem;
 $btn-height: 2.5rem;
-$btn-lg-height: 3rem;
+$btn-height-lg: 3rem;
+$btn-horizontal-padding: 1.125rem;
 
 // Card
-$card-vertical-padding: 1.4375rem;
 $card-priority-border: .9rem;
+$card-vertical-padding: 1.4375rem;
 
 // Card modal
-$card-modal-overlay-color: rgba(0, 0, 0, .5);
 $card-modal-width: 30rem;
 
 // Cards section
@@ -49,18 +48,18 @@ $cards-section-max-width: 17.5rem;
 $cards-section-status-size: 1rem;
 
 // Navbar
-$padding-horizontal: 2.125rem;
 $navbar-height-sm: 4.5rem;
 $navbar-height: 6rem;
+$padding-horizontal: 2.125rem;
 
 // Popup
-$min-popup-width: 10.5rem;
 $max-popup-width: 20rem;
+$min-popup-width: 10.5rem;
 
 // Sidebar
-$sidebar-slider-margin-left: .1875rem;
-$sidebar-slider-indicator-size: .875rem;
 $sidebar-slider-height: 1.25rem;
+$sidebar-slider-indicator-size: .875rem;
+$sidebar-slider-margin-left: .1875rem;
 $sidebar-slider-width: 2.5rem;
 $sidebar-width-sm: 14.5rem;
 $sidebar-width-default: 17.5rem;

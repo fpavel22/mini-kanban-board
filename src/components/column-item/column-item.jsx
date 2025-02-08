@@ -1,9 +1,9 @@
 import { DraggableWrapper } from '../drag-and-drop';
 
 export const ColumnItem = ({
+  children,
   id,
   isDraggable,
-  children,
   ...props
 }) => (
   isDraggable ? (

@@ -6,8 +6,8 @@ export const useHandleClickOutside = (isOpen, callback) => {
 
   useEffect(() => {
     function hidePopup(event) {
-      const clickedPopupBody = popupRef?.current?.contains(event.target.closest('.popup__body'));
-      const clickedToggleBody = parentRef?.current?.contains(event.target);
+      const clickedPopupBody = popupRef.current?.contains(event.target.closest('.popup__body'));
+      const clickedToggleBody = parentRef.current?.contains(event.target);
 
       if (isOpen && !clickedPopupBody && !clickedToggleBody) {
         callback?.();

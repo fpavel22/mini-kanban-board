@@ -1,13 +1,14 @@
 import { useParams } from 'react-router-dom';
 
 import iconBoard from '@/assets/icon-board.svg';
+
 import { SidebarNavigationItem } from './sidebar-navigation-item';
 
 export const SidebarNavigation = ({
+  navigationBtnText,
   navigationItems = [],
   navigationTitle,
-  navigationBtnText,
-  onButtonClick = () => {}
+  onButtonClick
 }) => {
   const { boardId } = useParams();
 
@@ -20,15 +21,15 @@ export const SidebarNavigation = ({
         { navigationItems.length > 0
           && navigationItems.map(({ path, pageName }) => (
             <SidebarNavigationItem
-              key={ path }
-              path={ path }
-              pageName={ pageName }
               isActive={ path === boardId }
+              key={ path }
+              pageName={ pageName }
+              path={ path }
             />
           )) }
       </ul>
       <div className="sidebar__create" onClick={ onButtonClick }>
-        <img src={ iconBoard } alt="Icon board" />
+        <img alt="Icon board" src={ iconBoard } />
         <span>
           +
           {' '}

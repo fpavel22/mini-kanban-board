@@ -1,0 +1,81 @@
+@import '@/styles/colors';
+@import '@/styles/variables';
+@import '@/styles/mixins/typography';
+
+.text-field__control {
+  display: flex;
+  align-items: center;
+
+  .text-field {
+    @include body-md;
+  
+    background-color: $color-white;
+    border-radius: $border-radius-xs;
+    border: 1px solid $middle-gray-25;
+    display: block;
+    position: relative;
+    flex: 1 0 auto;
+
+    &:hover,
+    &:focus-within {
+      border-color: $primary-m-purple;
+    }
+    
+    input,
+    textarea {
+      @include body-md;
+
+      background-color: transparent;
+      color: $color-black;
+      border: none;
+      font-family: inherit;
+      padding: $padding-xs-horizontal $padding-sm-horizontal;
+      height: calc($btn-height - 2px);
+      width: 100%;
+      outline: none;
+  
+      &::placeholder {
+        color: $middle-gray;
+        font-family: inherit;
+        font-weight: inherit;
+      }
+    }
+  
+    textarea {
+      font-family: inherit;
+      height: 6.825rem;
+      display: block;
+      resize: none;
+    }
+  
+    &.text-field--error {
+      border-color: $danger-m-red;
+      display: flex;
+      align-items: center;
+
+      .text-field--feedback {
+        flex: 0 0 auto;
+        margin-right: $padding-sm-horizontal;
+      }
+    }
+  
+    .text-field--feedback {
+      color: $danger-m-red;
+    }
+  
+    &.text-field--d-mode {
+      background-color: $color-black-30;
+      color: $color-white;
+
+      input,
+      textarea {
+        color: inherit;
+      }
+    }
+  }
+
+  .text-field--close {
+    margin-left: $padding-sm-horizontal;
+    cursor: pointer;
+  }
+}

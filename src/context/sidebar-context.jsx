@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 
-export const SidebarVisibleContext = createContext(null);
 export const SidebarToggleContext = createContext(null);
+export const SidebarVisibleContext = createContext(null);
 
 export const SidebarContext = ({ children }) => {
   const [ sidebarVisible, setSidebarVisible ] = useState(true);

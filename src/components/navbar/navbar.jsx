@@ -2,14 +2,20 @@ import cn from 'classnames';
 
 import logoDark from '@/assets/logo-dark.svg';
 import logoLight from '@/assets/logo-light.svg';
+
 import { NavbarBtnGroup } from './navbar-btn-group';
 
+import './navbar.scss';
+
 export const Navbar = ({
-  darkMode,
-  navbarTitle,
-  sidebarVisible,
+  btnTitle,
   className,
-  ...restProps
+  darkMode,
+  menuOptions,
+  navbarTitle,
+  onButtonClick,
+  showBtn,
+  sidebarVisible
 }) => {
   const _className = cn('header', {
     'header--d-mode': darkMode
@@ -26,7 +32,13 @@ export const Navbar = ({
       </div>
       <div className="header__informative">
         <h2 className="header__informative-title">{ navbarTitle }</h2>
-        <NavbarBtnGroup { ...restProps } darkMode={ darkMode } />
+        <NavbarBtnGroup
+          btnTitle={ btnTitle }
+          darkMode={ darkMode }
+          menuOptions={ menuOptions }
+          onButtonClick={ onButtonClick }
+          showBtn={ showBtn }
+        />
       </div>
     </header>
   );

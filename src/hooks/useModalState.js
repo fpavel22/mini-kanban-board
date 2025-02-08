@@ -11,22 +11,22 @@ export const useModalState = () => {
     dispatch(closeModalAction());
   }, [ dispatch ]);
 
-  const showViewDialog = useCallback(() => {
-    dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
+  const showDeleteDialog = useCallback(() => {
+    dispatch(openModal(MODAL_CONTENT.TASK_DELETE));
   }, [ dispatch ]);
 
   const showEditDialog = useCallback(() => {
     dispatch(openModal(MODAL_CONTENT.TASK_FORM_EDIT));
   }, [ dispatch ]);
 
-  const showDeleteDialog = useCallback(() => {
-    dispatch(openModal(MODAL_CONTENT.TASK_DELETE));
+  const showViewDialog = useCallback(() => {
+    dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
   }, [ dispatch ]);
 
   return {
     closeModal,
-    showViewDialog,
+    showDeleteDialog,
     showEditDialog,
-    showDeleteDialog
+    showViewDialog
   };
 };

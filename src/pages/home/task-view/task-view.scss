@@ -1,0 +1,45 @@
+@import '@/styles/variables';
+@import '@/styles/mixins/typography';
+
+.task__view {
+  .task__view-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .task__view-title {
+    margin-right: $padding-xs-horizontal;
+    max-width: 100%;
+    max-height: calc(1.4375rem * 3);
+    overflow: auto;
+  }
+
+  .task__view-options {
+    align-self: center;
+    cursor: pointer;
+  }
+
+  .task__view-description {
+    margin: $padding-base-horizontal 0;
+    max-height: 9rem;
+    overflow: auto;
+  }
+
+  .task__view-label {
+    @include header-sm;
+  }
+
+  .task__view-subtasks {
+    margin-bottom: $padding-base-horizontal;
+
+    .task__view-label {
+      margin-bottom: $padding-sm-horizontal;
+    }
+  }
+
+  .task__view-status {
+    .task__view-label {
+      margin-bottom: $padding-xs-horizontal;
+    }
+  }
+}

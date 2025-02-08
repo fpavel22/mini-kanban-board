@@ -40,30 +40,6 @@ export const MODAL_CONTENT = {
   TASK_DELETE: 'task-delete',
 };
 
-export const BOARD_CONTENT_LABELS = [
-  { status: 'to_do', sectionTitle: 'To do' },
-  { status: 'in_progress', sectionTitle: 'In progress' },
-  { status: 'in_review', sectionTitle: 'In review' },
-  { status: 'done', sectionTitle: 'Done' }
-];
-
-export const FORM_FIELDS = {
-  LOGIN: [
-    { name: 'email', label: 'E-mail', type: 'email' },
-    { name: 'password', label: 'Password', type: 'password' }
-  ],
-  REGISTER: [
-    { name: 'email', label: 'E-mail', type: 'email' },
-    { name: 'password', label: 'Password', type: 'password' }
-  ],
-  RESET: [
-    { name: 'email', label: 'E-mail', type: 'email' }
-  ],
-  BOARD_FORM: [
-    { name: 'board-name', label: 'Board name', type: 'text' }
-  ]
-};
-
 export const TASK_PRIORITY_OPTIONS = [
   { value: 'low', label: 'Low' },
   { value: 'normal', label: 'Normal' },

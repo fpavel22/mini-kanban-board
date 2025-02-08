@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { addBoard } from '@/features/boardsSlice';
 import { THUNK_STATUS } from '@/constants';
+import { addBoard } from '@/features/boardsSlice';
 
 import { useDispatchUnwrapper } from './useDispatchUnwrapper';
 

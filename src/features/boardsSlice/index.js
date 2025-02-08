@@ -5,16 +5,16 @@ import {
   where
 } from 'firebase/firestore';
 
-import { firestore } from '@/firebase/config';
-import { addDoc, getAllDocs } from '@/firebase/operations';
-import { FIREBASE_QUERY, FIREBASE_COLLECTIONS } from '@/firebase/constants';
 import { REDUCERS, THUNK_STATUS } from '@/constants';
+import { firestore } from '@/firebase/config';
+import { FIREBASE_COLLECTIONS, FIREBASE_QUERY } from '@/firebase/constants';
+import { addDoc, getAllDocs } from '@/firebase/operations';
 
 const initialState = {
-  boards: [],
   activeBoard: null,
-  status: THUNK_STATUS.IDLE,
-  error: null
+  boards: [],
+  error: null,
+  status: THUNK_STATUS.IDLE
 };
 
 const boardsCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.BOARDS);
@@ -40,11 +40,6 @@ export const addBoard = createAsyncThunk(`${ REDUCERS.BOARDS }/addBoard`, async 
 });
 
 const boardsSlice = createSlice({
-  name: REDUCERS.BOARDS,
-  initialState,
-  reducers: {
-    resetUserBoards: () => initialState
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserBoards.pending, (state) => {
@@ -70,14 +65,19 @@ const boardsSlice = createSlice({
 
         state.boards.push(action.payload);
       });
+  },
+  initialState,
+  name: REDUCERS.BOARDS,
+  reducers: {
+    resetUserBoards: () => initialState
   }
 });
 
 export const { resetUserBoards } = boardsSlice.actions;
 
-export const allBoardsSelector = (state) => state[ REDUCERS.BOARDS ].boards;
-export const boardsStatusSelector = (state) => state[ REDUCERS.BOARDS ].status;
-export const boardsErrorSelector = (state) => state[ REDUCERS.BOARDS ].error;
 export const activeBoardSelector = (state) => state[ REDUCERS.BOARDS ].activeBoard;
+export const allBoardsSelector = (state) => state[ REDUCERS.BOARDS ].boards;
+export const boardsErrorSelector = (state) => state[ REDUCERS.BOARDS ].error;
+export const boardsStatusSelector = (state) => state[ REDUCERS.BOARDS ].status;
 
 export const boardsReducer = boardsSlice.reducer;

@@ -1,21 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
-import App from '@/App';
-import { SidebarContext } from '@/context';
 import { store } from '@/store';
+
+import App from './App';
 
 import './styles/main.scss';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
     <Provider store={ store }>
-      <SidebarContext>
-        <App />
-      </SidebarContext>
+      <App />
     </Provider>
   </React.StrictMode>
 );

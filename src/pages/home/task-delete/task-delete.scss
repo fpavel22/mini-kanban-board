@@ -1,0 +1,30 @@
+@import '@/styles/colors';
+@import '@/styles/variables';
+
+.task__delete {
+  .task__delete-title {
+    color: $danger-m-red;
+  }
+
+  .task__delete-body {
+    font-weight: 500;
+    margin: $padding-base-horizontal 0;
+
+    .task__title {
+      font-style: italic;
+    }
+  }
+
+  .task__delete-btn-group {
+    display: flex;
+
+    .btn {
+      font-weight: 600;
+      flex: 1;
+
+      &:first-child {
+        margin-right: $padding-sm-horizontal;
+      }
+    }
+  }
+}

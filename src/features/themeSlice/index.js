@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { REDUCERS } from '@/constants';
 
 const initialState = {
@@ -6,14 +7,14 @@ const initialState = {
 };
 
 const themeSlice = createSlice({
-  name: REDUCERS.THEME,
   initialState,
+  name: REDUCERS.THEME,
   reducers: {
-    enableLightTheme: (state) => {
-      state.darkMode = false;
-    },
     enableDarkTheme: (state) => {
       state.darkMode = true;
+    },
+    enableLightTheme: (state) => {
+      state.darkMode = false;
     }
   }
 });

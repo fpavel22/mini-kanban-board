@@ -1,13 +1,3 @@
-export const FIREBASE_COLLECTIONS = {
-  BOARDS: 'boards',
-  TASKS: 'tasks'
-};
-
-export const FIREBASE_QUERY = {
-  CREATED_BY: 'createdBy',
-  PAGE_ID: 'pageId'
-};
-
 export const FIREBASE_AUTH_ERRORS = {
   INVALID_EMAIL: 'auth/invalid-email',
   WRONG_PASSWORD: 'auth/wrong-password',
@@ -20,8 +10,18 @@ export const FIREBASE_AUTH_ERRORS = {
   POPUP_CLOSED: 'auth/popup-closed-by-user'
 };
 
+export const FIREBASE_COLLECTIONS = {
+  BOARDS: 'boards',
+  TASKS: 'tasks'
+};
+
 export const FIREBASE_INTERNAL_ERRORS = {
   REGISTER_GOOGLE: 'Can\'t register with a Google account. Use the \'login with Google\' method to log in instead.',
   LOGIN_GOOGLE: 'Use the \'login with Google\' method below to log in with a Google account.',
   RECOVER_GOOGLE: 'Can\'t recover the password of a Google account.'
+};
+
+export const FIREBASE_QUERY = {
+  CREATED_BY: 'createdBy',
+  PAGE_ID: 'pageId'
 };
