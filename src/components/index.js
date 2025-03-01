@@ -6,8 +6,6 @@ export * from './card';
 
 export * from './checkbox-item';
 
-export * from './column-item';
-
 export * from './drag-and-drop';
 
 export * from './dropdown';

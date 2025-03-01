@@ -10,10 +10,10 @@ export const Form = ({
 }) => {
   const [ formState, handleChange ] = useFormState({ email: '', password: '' });
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
 
-    await onSubmit(formState);
+    onSubmit(formState);
   }
 
   return (

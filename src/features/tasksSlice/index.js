@@ -84,7 +84,7 @@ const tasksSlice = createSlice({
           task.id === action.payload.id ? action.payload : task
         ));
 
-        if (state.selectedTask.id === action.payload.id) {
+        if (state.selectedTask?.id === action.payload.id) {
           state.selectedTask = action.payload;
         }
       })

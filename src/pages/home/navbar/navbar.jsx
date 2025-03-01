@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { Navbar as PageNavbar } from '@/components';
+import { Button, Navbar as PageNavbar } from '@/components';
 import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 import { useSidebarVisibleContext } from '@/context';
 import { allBoardsSelector, boardsStatusSelector } from '@/features/boardsSlice';
@@ -55,15 +55,24 @@ export const Navbar = () => {
     dispatch(openModal(MODAL_CONTENT.TASK_FORM_ADD));
   }
 
+  const renderButton = tasksFetched && tasks.length > 0 && (
+    <Button
+      darkMode={ darkMode }
+      onClick={ onButtonClick }
+      variety="primary"
+    >
+      +
+      <span className="btn__title">Add New Task</span>
+    </Button>
+  );
+
   return (
     <PageNavbar
-      btnTitle="Add New Task"
       darkMode={ darkMode }
       menuOptions={ popupMenuOptions }
-      navbarTitle={ navbarTitles[ boardsStatus ] }
-      onButtonClick={ onButtonClick }
-      showBtn={ tasksFetched && tasks.length > 0 }
+      renderButton={ renderButton }
       sidebarVisible={ sidebarVisible }
+      title={ navbarTitles[ boardsStatus ] }
     />
   );
 };

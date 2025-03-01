@@ -8,14 +8,12 @@ import { NavbarBtnGroup } from './navbar-btn-group';
 import './navbar.scss';
 
 export const Navbar = ({
-  btnTitle,
   className,
   darkMode,
   menuOptions,
-  navbarTitle,
-  onButtonClick,
-  showBtn,
-  sidebarVisible
+  renderButton,
+  sidebarVisible,
+  title
 }) => {
   const _className = cn('header', {
     'header--d-mode': darkMode
@@ -31,13 +29,11 @@ export const Navbar = ({
         <img src={ darkMode ? logoLight : logoDark } alt="Header logo" />
       </div>
       <div className="header__informative">
-        <h2 className="header__informative-title">{ navbarTitle }</h2>
+        <h2 className="header__informative-title">{ title }</h2>
         <NavbarBtnGroup
-          btnTitle={ btnTitle }
           darkMode={ darkMode }
           menuOptions={ menuOptions }
-          onButtonClick={ onButtonClick }
-          showBtn={ showBtn }
+          renderButton={ renderButton }
         />
       </div>
     </header>

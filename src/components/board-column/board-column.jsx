@@ -1,28 +1,40 @@
 import cn from 'classnames';
 
 import { Card } from '../card';
-import { ColumnItem } from '../column-item';
+import { DraggableWrapper } from '../drag-and-drop';
 
 import './board-column.scss';
 
+const ColumnItem = ({
+  children,
+  id,
+  isDraggable
+}) => (
+  isDraggable ? (
+    <DraggableWrapper id={ id }>
+      { children }
+    </DraggableWrapper>
+  ) : children
+);
+
 export const BoardColumn = ({
-  darkMode,
   columnItems,
   Column = ColumnItem,
+  darkMode,
+  isDraggable,
   onItemClick,
-  sectionTitle,
   status,
-  ...props
+  title
 }) => {
-  const _className = cn('cards__section', {
-    'cards__section--dark': darkMode
+  const _className = cn('board-column', {
+    'board-column--dark': darkMode
   });
 
-  const sectionStatusClassName = cn('cards__section-status', {
-    [ `cards__section-status--${ status }` ]: status
+  const sectionStatusClassName = cn('board-column-status', {
+    [ `board-column-status--${ status }` ]: status
   });
 
-  const columnTitle = `${ sectionTitle } (${ columnItems.length })`;
+  const columnTitle = `${ title } (${ columnItems.length })`;
 
   function handleItemClick(task) {
     return () => {
@@ -32,37 +44,37 @@ export const BoardColumn = ({
 
   return (
     <div className={ _className }>
-      <p className="cards__section-title">
+      <p className="board-column-title">
         <span className={ sectionStatusClassName } />
-        <span className="cards__section-items">
+        <span className="board-column-items">
           { columnTitle }
         </span>
       </p>
-      <div className="cards__section-content">
-        { columnItems.map((task) => {
+      <div className="board-column-content">
+        { columnItems.map((columnItem) => {
           const {
             id,
             priority,
             subtasks,
-            title
-          } = task;
+            title: cardTitle
+          } = columnItem;
           const subtasksCount = subtasks.length;
           const tasksCompleted = subtasks.filter(({ completed }) => completed).length;
 
           return (
             <Column
-              { ...props }
               key={ id }
               id={ id }
-              onClick={ handleItemClick(task) }
+              isDraggable={ isDraggable }
             >
               <Card
                 darkMode={ darkMode }
                 description={ subtasksCount
                   ? `${ tasksCompleted } of ${ subtasksCount } subtasks completed`
                   : 'No subtasks added' }
+                onClick={ handleItemClick(columnItem) }
                 priority={ priority }
-                title={ title }
+                title={ cardTitle }
               />
             </Column>
           );

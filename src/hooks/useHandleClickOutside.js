@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react';
 
 export const useHandleClickOutside = (isOpen, callback) => {
-  const parentRef = useRef();
+  const triggerRef = useRef();
   const popupRef = useRef();
 
   useEffect(() => {
     function hidePopup(event) {
-      const clickedPopupBody = popupRef.current?.contains(event.target.closest('.popup__body'));
-      const clickedToggleBody = parentRef.current?.contains(event.target);
+      const hasClickedPopupBody = popupRef.current?.contains(event.target.closest('.popup__body'));
+      const hasClickedTriggerBody = triggerRef.current?.contains(event.target);
 
-      if (isOpen && !clickedPopupBody && !clickedToggleBody) {
+      if (isOpen && !hasClickedPopupBody && !hasClickedTriggerBody) {
         callback?.();
       }
     }
@@ -21,5 +21,5 @@ export const useHandleClickOutside = (isOpen, callback) => {
     };
   }, [ isOpen, callback ]);
 
-  return { parentRef, popupRef };
+  return { triggerRef, popupRef };
 };

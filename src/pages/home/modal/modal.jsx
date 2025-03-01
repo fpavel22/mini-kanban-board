@@ -27,7 +27,7 @@ const applyPageOverflow = (isModalVisible) => {
   documentElement.classList.toggle('modal--visible', isModalVisible);
 };
 
-export const ModalWrapper = () => {
+export const Modal = () => {
   const darkMode = useSelector(themeSliceSelector);
 
   const modalContent = useSelector(modalContentSelector);

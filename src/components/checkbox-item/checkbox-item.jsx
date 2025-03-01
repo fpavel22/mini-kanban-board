@@ -25,7 +25,7 @@ export const CheckboxItem = ({
         type="checkbox"
       />
       <span className="checkbox__title">{ children }</span>
-      <span className="checkbox__tooltip">{ title }</span>
+      { title && <span className="checkbox__tooltip">{ title }</span> }
     </label>
   );
 };

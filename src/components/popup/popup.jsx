@@ -1,6 +1,10 @@
 import cn from 'classnames';
-import { forwardRef } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { mergeRefs } from 'react-merge-refs';
+
+import { POPPER_DEFAULT_MODIFIERS, POPPER_PLACEMENTS } from '@/constants';
+import { useHandleClickOutside, usePositionPopup } from '@/hooks';
 
 import './popup.scss';
 
@@ -24,20 +28,53 @@ const PopupItem = ({
   return <li { ...props } className={ _className }>{ label }</li>;
 };
 
-export const Popup = forwardRef(({
+export const Popup = ({
   className,
   darkMode,
   items = [],
   portal = true,
   portalTarget = document.body,
+  trigger,
   ...props
-}, ref) => {
+}) => {
+  const [ showPopup, setShowPopup ] = useState(false);
+
+  const hidePopup = useCallback(() => {
+    setShowPopup(false);
+  }, []);
+
+  const { popupRef, triggerRef } = useHandleClickOutside(showPopup, hidePopup);
+
+  const {
+    popperStyles,
+    setParentRef,
+    setReferenceRef
+  } = usePositionPopup(POPPER_DEFAULT_MODIFIERS, POPPER_PLACEMENTS.bottomRight);
+
   const _className = cn('popup__body', {
     'popup__body--d-mode': darkMode
   }, className);
 
-  const popupBody = (
-    <ul { ...props } className={ _className } ref={ ref }>
+  const popupCombinedRefs = useMemo(
+    () => mergeRefs([ popupRef, setReferenceRef ]),
+    [ popupRef, setReferenceRef ]
+  );
+  const triggerCombinedRefs = useMemo(
+    () => mergeRefs([ setParentRef, triggerRef ]),
+    [ setParentRef, triggerRef ]
+  );
+
+  const togglePopup = useCallback(() => {
+    setShowPopup((prevState) => !prevState);
+  }, []);
+
+  const popupBody = showPopup && (
+    <ul
+      { ...props }
+      className={ _className }
+      ref={ popupCombinedRefs }
+      style={ popperStyles }
+    >
       { items.map(({
         disabled,
         label,
@@ -55,5 +92,10 @@ export const Popup = forwardRef(({
     </ul>
   );
 
-  return portal ? createPortal(popupBody, portalTarget) : popupBody;
-});
+  return (
+    <>
+      { trigger?.({ ref: triggerCombinedRefs, onClick: togglePopup }) }
+      { portal ? createPortal(popupBody, portalTarget) : popupBody }
+    </>
+  );
+};

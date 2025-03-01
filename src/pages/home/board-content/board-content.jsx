@@ -47,10 +47,10 @@ export const BoardContent = () => {
 
   const darkMode = useSelector(themeSliceSelector);
 
-  const user = useSelector(userSelector);
-
   const tasks = useSelector(allTasksSelector);
   const tasksFetchStatus = useSelector(tasksStatusSelector);
+
+  const user = useSelector(userSelector);
 
   const { boardId } = useParams();
   const sidebarVisible = useSidebarVisibleContext();
@@ -98,10 +98,10 @@ export const BoardContent = () => {
           <BoardColumn
             columnItems={ filterTasksByStatus(tasks, status) }
             darkMode={ darkMode }
-            isDraggable={ true }
+            isDraggable
             onItemClick={ showTaskView }
-            sectionTitle={ sectionTitle }
             status={ status }
+            title={ sectionTitle }
           />
         </DroppableWrapper>
       )) }

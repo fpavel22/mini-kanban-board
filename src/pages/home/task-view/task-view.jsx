@@ -1,5 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
-import { mergeRefs } from 'react-merge-refs';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import {
@@ -8,35 +7,17 @@ import {
   EllipsisIcon,
   Popup
 } from '@/components';
-import { POPPER_DEFAULT_MODIFIERS, TASK_PRIORITY_OPTIONS, THUNK_STATUS } from '@/constants';
+import { TASK_PRIORITY_OPTIONS, THUNK_STATUS } from '@/constants';
 import { selectedTaskSelector } from '@/features/tasksSlice';
-import {
-  useHandleClickOutside,
-  useModalState,
-  usePositionPopup,
-  useTaskOperations
-} from '@/hooks';
+import { useModalState, useTaskOperations } from '@/hooks';
 
 import './task-view.scss';
 
 export const TaskView = ({ darkMode }) => {
-  const [ popupVisible, setPopupVisible ] = useState(false);
   const selectedTask = useSelector(selectedTaskSelector);
 
   const { status: localState, updateTask } = useTaskOperations();
   const { showDeleteDialog, showEditDialog } = useModalState();
-
-  const {
-    popperStyles,
-    setParentRef,
-    setReferenceRef
-  } = usePositionPopup(POPPER_DEFAULT_MODIFIERS);
-
-  const hidePopup = useCallback(() => {
-    setPopupVisible(false);
-  }, []);
-
-  const { parentRef, popupRef } = useHandleClickOutside(popupVisible, hidePopup);
 
   const subtasksCompleted = selectedTask.subtasks.filter(({ completed }) => completed).length;
   const subtasksTotal = selectedTask.subtasks.length;
@@ -47,11 +28,13 @@ export const TaskView = ({ darkMode }) => {
     { value: 'danger', label: 'Delete task', onPopupItemClick: showDeleteDialog }
   ], [ showEditDialog, showDeleteDialog ]);
 
-  const togglePopup = useCallback(() => {
-    setPopupVisible((prevState) => !prevState);
-  }, []);
-
-  const ellipsisRefs = useMemo(() => mergeRefs([ parentRef, setParentRef ]), []);
+  const trigger = (props) => (
+    <EllipsisIcon
+      { ...props }
+      alt="Task view options icon"
+      className="task__view-options"
+    />
+  );
 
   const updateSubtaskStatus = (subtaskId) => (event) => {
     const { checked } = event.target;
@@ -89,11 +72,10 @@ export const TaskView = ({ darkMode }) => {
             { selectedTask.title }
           </h2>
         </div>
-        <EllipsisIcon
-          alt="Task view options icon"
-          className="task__view-options"
-          onClick={ togglePopup }
-          ref={ ellipsisRefs }
+        <Popup
+          darkMode={ darkMode }
+          items={ popupItems }
+          trigger={ trigger }
         />
       </div>
       <p className="task__view-description">
@@ -116,14 +98,6 @@ export const TaskView = ({ darkMode }) => {
           value={ selectedTask.priority }
         />
       </div>
-      { popupVisible && (
-        <Popup
-          darkMode={ darkMode }
-          items={ popupItems }
-          ref={ mergeRefs([ popupRef, setReferenceRef ]) }
-          style={ popperStyles }
-        />
-      ) }
     </div>
   );
 };
