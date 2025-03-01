@@ -1,37 +1,40 @@
-$primary-m-purple: rgb(99, 95, 199);
-$primary-l-purple: rgb(168, 164, 255);
+$card-dark-priority-low: rgb(198, 198, 198);
+$card-dark-priority-high: rgb(255, 188, 170);
 
-$secondary-l-purple: rgba(99, 95, 199, .1);
-$secondary-m-purple: rgba(99, 95, 199, .25);
+$card-modal-overlay-color: rgba(0, 0, 0, .5);
 
-$color-black: rgb(0, 1, 18);
-$color-black-25: rgb(32, 33, 44);
-$color-black-30: rgb(43, 44, 55);
-$color-black-50: rgb(62, 63, 78);
-
-$middle-gray: rgb(130, 143, 163);
-$middle-gray-25: rgba($middle-gray, .25);
-$light-gray: rgb(228, 235, 250);
-$lightest-gray: rgb(244, 247, 253);
-$color-white: rgb(255, 255, 255);
-
-$danger-m-red: rgb(234, 85, 85);
-$danger-l-red: rgb(255, 152, 152);
-
-$success-l-green: rgb(90, 197, 95);
+$card-priority-low: rgb(246, 246, 246);
+$card-priority-normal: rgb(205, 242, 241);
+$card-priority-high: rgb(255, 233, 227);
 
 $cards-section-to-do: rgb(73, 196, 229);
 $cards-section-in-progress: rgb(132, 113, 242);
 $cards-section-in-review: rgb(226, 103, 164);
 $cards-section-done: rgb(103, 226, 174);
 
-$card-priority-high: rgb(255, 233, 227);
-$card-dark-priority-high: rgb(255, 188, 170);
+$color-black: rgb(0, 1, 18);
+$color-black-25: rgb(32, 33, 44);
+$color-black-30: rgb(43, 44, 55);
+$color-black-50: rgb(62, 63, 78);
 
-$card-priority-normal: rgb(205, 242, 241);
+$color-white: rgb(255, 255, 255);
 
-$card-priority-low: rgb(246, 246, 246);
-$card-dark-priority-low: rgb(198, 198, 198);
+$danger-m-red: rgb(234, 85, 85);
+$danger-l-red: rgb(255, 152, 152);
+
+$light-gray: rgb(228, 235, 250);
+$lightest-gray: rgb(244, 247, 253);
+
+$middle-gray: rgb(130, 143, 163);
+$middle-gray-25: rgba($middle-gray, .25);
+
+$primary-m-purple: rgb(99, 95, 199);
+$primary-l-purple: rgb(168, 164, 255);
 
 $scrollbar-bg-color: rgb(214, 222, 225);
 $scrollbar-bg-color-hover: rgb(168, 187, 191);
+
+$secondary-l-purple: rgba(99, 95, 199, .1);
+$secondary-m-purple: rgba(99, 95, 199, .25);
+
+$success-l-green: rgb(90, 197, 95);

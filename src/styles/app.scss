@@ -1,0 +1,113 @@
+@import 'colors';
+@import 'variables';
+@import './mixins/typography';
+
+main.app {
+  background-color: $lightest-gray;
+  color: $middle-gray;
+  min-height: 100vh;
+  position: relative;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: $color-black;
+  }
+
+  .app__content-wrapper {
+    min-height: calc(100vh - $navbar-height-sm);
+    position: relative;
+
+    @media (min-width: $sm) {
+      min-height: calc(100vh - $navbar-height);
+    }
+  }
+  
+  .auth__form-wrapper {
+    min-height: inherit;
+    display: flex;
+    align-items: center;
+
+    .auth__form {
+      background-color: $color-white;
+      border-radius: $border-radius-base;
+      padding: $auth-form-padding;
+      margin: 0 auto;
+      width: 85%;
+      max-width: $auth-form-max-width;
+    }
+
+    .auth__form-title {
+      margin-bottom: $padding-lg-horizontal;
+      text-align: center;
+    }
+
+    .form-group {
+      display: block;
+      margin-bottom: $padding-base-horizontal;
+
+      span {
+        margin-bottom: $padding-xs-horizontal;
+        display: block;
+      }
+    }
+
+    .firebase--error,
+    .firebase--success {
+      border-radius: $border-radius-base;
+      padding: $padding-sm-horizontal;
+      margin-bottom: $padding-sm-horizontal;
+    }
+
+    .firebase--error {
+      background-color: $danger-l-red;
+      color: $color-black;
+    }
+
+    .firebase--success {
+      background-color: $success-l-green;
+      color: $color-white;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+
+  &--dark {
+    background-color: $color-black-25;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: $color-white;
+    }
+  }
+}
+
+.page-redirect {
+  @include body-md;
+
+  margin: $padding-sm-horizontal 0;
+
+  &:not(.page-redirect--center) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (min-width: $xs) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &.page-redirect--center {
+    text-align: center;
+  }
+}

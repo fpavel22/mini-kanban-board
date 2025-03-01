@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
+import { THUNK_STATUS } from '@/constants';
 import {
   addTask as addTaskThunk,
-  updateTask as updateTaskThunk,
   deleteTask as deleteTaskThunk,
+  updateTask as updateTaskThunk,
 } from '@/features/tasksSlice';
-import { THUNK_STATUS } from '@/constants';
 
 import { useDispatchUnwrapper } from './useDispatchUnwrapper';
 
@@ -18,20 +18,6 @@ export const useTaskOperations = () => {
 
     try {
       await unwrapDispatch(addTaskThunk(taskDetails));
-
-      setStatus(THUNK_STATUS.SUCCEEDED);
-    } catch (err) {
-      setStatus(THUNK_STATUS.FAILED);
-
-      throw err;
-    }
-  }
-
-  async function updateTask(taskDetails) {
-    setStatus(THUNK_STATUS.LOADING);
-
-    try {
-      await unwrapDispatch(updateTaskThunk(taskDetails));
 
       setStatus(THUNK_STATUS.SUCCEEDED);
     } catch (err) {
@@ -55,10 +41,24 @@ export const useTaskOperations = () => {
     }
   }
 
+  async function updateTask(taskDetails) {
+    setStatus(THUNK_STATUS.LOADING);
+
+    try {
+      await unwrapDispatch(updateTaskThunk(taskDetails));
+
+      setStatus(THUNK_STATUS.SUCCEEDED);
+    } catch (err) {
+      setStatus(THUNK_STATUS.FAILED);
+
+      throw err;
+    }
+  }
+
   return {
-    status,
     createTask,
+    deleteTask,
+    status,
     updateTask,
-    deleteTask
   };
 };

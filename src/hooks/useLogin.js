@@ -1,15 +1,15 @@
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useState } from 'react';
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 import { auth } from '@/firebase/config';
 import { FIREBASE_INTERNAL_ERRORS } from '@/firebase/constants';
-import { parseFirebaseError, isEmailGmail } from '@/utils';
+import { isEmailGmail, parseFirebaseError } from '@/utils';
 
 export const useLogin = () => {
-  const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
+  const [ loading, setLoading ] = useState(false);
 
-  async function loginWithEmailAndPassword(email, password) {
+  async function loginWithEmailAndPassword({ email, password }) {
     setError(null);
     setLoading(true);
 
@@ -42,8 +42,8 @@ export const useLogin = () => {
   }
 
   return {
-    loading,
     error,
+    loading,
     loginWithEmailAndPassword,
     loginWithGoogle
   };

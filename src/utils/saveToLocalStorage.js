@@ -1,14 +1,18 @@
 import { loadFromLocalStorage } from './loadFromLocalStorage';
 
-export const saveToLocalStorage = ({ userId, ...restPreferences }) => {
-  const storageData = loadFromLocalStorage(userId);
+const defaultSettings = {
+  darkMode: false,
+  sidebarVisible: true,
+};
 
-  const userPreferences = {
-    ...(storageData ?? { darkMode: false, sidebarVisible: false }),
-    ...restPreferences,
+export const saveToLocalStorage = ({ userId, ...restSettings }) => {
+  const settings = loadFromLocalStorage(userId);
+
+  const updatedSettings = {
+    ...defaultSettings,
+    ...(settings ?? {}),
+    ...restSettings,
   };
 
-  const stringified = JSON.stringify(userPreferences);
-
-  localStorage.setItem(userId, stringified);
+  localStorage.setItem(userId, JSON.stringify(updatedSettings));
 };

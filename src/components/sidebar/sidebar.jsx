@@ -1,16 +1,20 @@
 import cn from 'classnames';
 
-import { Button } from '@components/ui';
-import { SidebarNavigation } from '@components/sidebar/sidebar-navigation';
-import { SidebarToggle } from '@components/sidebar/sidebar-toggle';
-
 import iconShowSidebar from '@/assets/icon-show-sidebar.svg';
+import { SIZE } from '@/constants';
+
+import { Button } from '../button';
+import { SidebarNavigation } from './sidebar-navigation';
+import { SidebarToggle } from './sidebar-toggle';
+
+import './sidebar.scss';
 
 export const Sidebar = ({
   darkMode,
-  sidebarVisible,
-  showSidebar = () => {},
-  ...restProps
+  showSidebar,
+  sidebarNavigationProps,
+  sidebarToggleProps,
+  sidebarVisible
 }) => {
   const _className = cn('sidebar', {
     'sidebar--d-mode': darkMode,
@@ -24,17 +28,17 @@ export const Sidebar = ({
   return (
     <>
       <aside className={ _className }>
-        <SidebarNavigation { ...restProps } />
-        <SidebarToggle { ...restProps } />
+        <SidebarNavigation { ...sidebarNavigationProps } />
+        <SidebarToggle { ...sidebarToggleProps } />
       </aside>
       <Button
-        variety="primary"
-        size="lg"
-        darkMode={ darkMode }
         className={ showSidebarBtnClassName }
+        darkMode={ darkMode }
         onClick={ showSidebar }
+        size={ SIZE.LG }
+        variety="primary"
       >
-        <img src={ iconShowSidebar } alt="Show sidebar icon" />
+        <img alt="Show sidebar icon" src={ iconShowSidebar } />
       </Button>
     </>
   );

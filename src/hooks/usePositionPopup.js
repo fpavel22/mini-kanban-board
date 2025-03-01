@@ -4,14 +4,14 @@ import { usePopper } from 'react-popper';
 import { POPPER_PLACEMENTS } from '@/constants';
 
 export const usePositionPopup = (modifiers, placement = POPPER_PLACEMENTS.bottom) => {
-  const [ _parentRef, setParentRef ] = useState(null);
-  const [ _referenceRef, setReferenceRef ] = useState(null);
+  const [ parentRef, setParentRef ] = useState(null);
+  const [ referenceRef, setReferenceRef ] = useState(null);
 
   const {
     styles: {
       popper: popperStyles
     }
-  } = usePopper(_parentRef, _referenceRef, { modifiers, placement });
+  } = usePopper(parentRef, referenceRef, { modifiers, placement });
 
   return {
     popperStyles,

@@ -6,21 +6,21 @@ import {
   where
 } from 'firebase/firestore';
 
-import { firestore } from '@/firebase/config';
-import {
-  getAllDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc
-} from '@/firebase/operations';
-import { FIREBASE_QUERY, FIREBASE_COLLECTIONS } from '@/firebase/constants';
 import { REDUCERS, THUNK_STATUS } from '@/constants';
+import { firestore } from '@/firebase/config';
+import { FIREBASE_COLLECTIONS, FIREBASE_QUERY } from '@/firebase/constants';
+import {
+  addDoc,
+  deleteDoc,
+  getAllDocs,
+  updateDoc
+} from '@/firebase/operations';
 
 const initialState = {
-  tasks: [],
-  status: THUNK_STATUS.IDLE,
   error: null,
-  selectedTask: null
+  selectedTask: null,
+  status: THUNK_STATUS.IDLE,
+  tasks: []
 };
 
 const tasksCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.TASKS);
@@ -61,13 +61,6 @@ export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, asy
 });
 
 const tasksSlice = createSlice({
-  name: REDUCERS.TASKS,
-  initialState,
-  reducers: {
-    selectTask: (state, action) => {
-      state.selectedTask = action.payload;
-    }
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBoardTasks.pending, (state) => {
@@ -91,7 +84,7 @@ const tasksSlice = createSlice({
           task.id === action.payload.id ? action.payload : task
         ));
 
-        if (state.selectedTask.id === action.payload.id) {
+        if (state.selectedTask?.id === action.payload.id) {
           state.selectedTask = action.payload;
         }
       })
@@ -99,14 +92,21 @@ const tasksSlice = createSlice({
         state.tasks = state.tasks.filter(({ id }) => id !== action.payload);
         state.selectedTask = null;
       });
+  },
+  initialState,
+  name: REDUCERS.TASKS,
+  reducers: {
+    selectTask: (state, action) => {
+      state.selectedTask = action.payload;
+    }
   }
 });
 
 export const { selectTask } = tasksSlice.actions;
 
 export const allTasksSelector = (state) => state[ REDUCERS.TASKS ].tasks;
-export const tasksStatusSelector = (state) => state[ REDUCERS.TASKS ].status;
-export const tasksErrorSelector = (state) => state[ REDUCERS.TASKS ].error;
 export const selectedTaskSelector = (state) => state[ REDUCERS.TASKS ].selectedTask;
+export const tasksErrorSelector = (state) => state[ REDUCERS.TASKS ].error;
+export const tasksStatusSelector = (state) => state[ REDUCERS.TASKS ].status;
 
 export const tasksReducer = tasksSlice.reducer;
