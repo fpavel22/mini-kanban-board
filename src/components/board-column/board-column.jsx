@@ -1,27 +1,13 @@
 import cn from 'classnames';
 
 import { Card } from '../card';
-import { DraggableWrapper } from '../drag-and-drop';
 
 import './board-column.scss';
 
-const ColumnItem = ({
-  children,
-  id,
-  isDraggable
-}) => (
-  isDraggable ? (
-    <DraggableWrapper id={ id }>
-      { children }
-    </DraggableWrapper>
-  ) : children
-);
-
 export const BoardColumn = ({
   columnItems,
-  Column = ColumnItem,
+  Column = 'div',
   darkMode,
-  isDraggable,
   onItemClick,
   status,
   title
@@ -65,7 +51,6 @@ export const BoardColumn = ({
             <Column
               key={ id }
               id={ id }
-              isDraggable={ isDraggable }
             >
               <Card
                 darkMode={ darkMode }

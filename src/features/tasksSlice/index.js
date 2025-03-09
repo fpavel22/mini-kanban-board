@@ -48,10 +48,31 @@ export const addTask = createAsyncThunk(`${ REDUCERS.TASKS }/addTask`, async (ta
   return newTask;
 });
 
-export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, async (taskData) => {
-  const updatedTask = await updateDoc(createTaskDocumentRef(taskData.id), taskData);
+export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, async (
+  taskData,
+  {
+    dispatch,
+    getState,
+    rejectWithValue,
+    requestId
+  }
+) => {
+  const { tasks } = getState().tasks;
+  // Update task optimistically
+  // eslint-disable-next-line
+  dispatch(optimisticUpdateTask(taskData));
 
-  return updatedTask;
+  try {
+    const updatedTask = await updateDoc(createTaskDocumentRef(taskData.id), taskData);
+
+    return updatedTask;
+  } catch (error) {
+    const taskId = taskData.id ?? requestId;
+
+    // Revert to previous task if db update fails
+    const originalTask = tasks.find(({ id }) => id === taskId);
+    return rejectWithValue(error, { originalTask });
+  }
 });
 
 export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, async (id) => {
@@ -79,13 +100,24 @@ const tasksSlice = createSlice({
       .addCase(addTask.fulfilled, (state, action) => {
         state.tasks.push(action.payload);
       })
-      .addCase(updateTask.fulfilled, (state, action) => {
-        state.tasks = state.tasks.map((task) => (
-          task.id === action.payload.id ? action.payload : task
-        ));
+      .addCase(updateTask.rejected, (state, { meta }) => {
+        const originalTaskId = meta.arg.id ?? meta.requestId;
+        const originalTaskIndex = state.tasks.findIndex(({ id }) => id === originalTaskId);
 
-        if (state.selectedTask?.id === action.payload.id) {
-          state.selectedTask = action.payload;
+        if (originalTaskIndex < 0) {
+          return;
+        }
+
+        const { originalTask } = meta;
+
+        if (originalTask) {
+          state.tasks[ originalTaskIndex ] = originalTask;
+        } else {
+          state.tasks.splice(originalTaskIndex, 1);
+        }
+
+        if (state.selectedTask?.id === originalTask.id) {
+          state.selectedTask = originalTask;
         }
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
@@ -96,13 +128,26 @@ const tasksSlice = createSlice({
   initialState,
   name: REDUCERS.TASKS,
   reducers: {
+    optimisticUpdateTask: (state, action) => {
+      const updatedTaskIndex = state.tasks.findIndex(({ id }) => id === action.payload.id);
+
+      if (updatedTaskIndex < 0) {
+        return;
+      }
+
+      state.tasks[ updatedTaskIndex ] = action.payload;
+
+      if (state.selectedTask?.id === action.payload.id) {
+        state.selectedTask = action.payload;
+      }
+    },
     selectTask: (state, action) => {
       state.selectedTask = action.payload;
     }
   }
 });
 
-export const { selectTask } = tasksSlice.actions;
+export const { optimisticUpdateTask, selectTask } = tasksSlice.actions;
 
 export const allTasksSelector = (state) => state[ REDUCERS.TASKS ].tasks;
 export const selectedTaskSelector = (state) => state[ REDUCERS.TASKS ].selectedTask;

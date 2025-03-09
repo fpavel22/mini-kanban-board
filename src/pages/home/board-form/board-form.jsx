@@ -1,5 +1,5 @@
 import { Button, TextField } from '@/components';
-import { THUNK_STATUS } from '@/constants';
+import { BUTTON_VARIETIES, THUNK_STATUS } from '@/constants';
 import { useBoardOperations, useFormState } from '@/hooks';
 
 export const BoardForm = ({ closeModal, darkMode, user }) => {
@@ -33,7 +33,7 @@ export const BoardForm = ({ closeModal, darkMode, user }) => {
           value={ formState.boardName }
         />
       </div>
-      <Button disabled={ isLoading } variety="primary">
+      <Button disabled={ isLoading } variety={ BUTTON_VARIETIES.PRIMARY }>
         { isLoading ? 'Creating your board...' : 'Create board' }
       </Button>
     </form>

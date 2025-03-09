@@ -1,7 +1,7 @@
 import cn from 'classnames';
 
 import iconShowSidebar from '@/assets/icon-show-sidebar.svg';
-import { SIZE } from '@/constants';
+import { BUTTON_VARIETIES, SIZE } from '@/constants';
 
 import { Button } from '../button';
 import { SidebarNavigation } from './sidebar-navigation';
@@ -36,7 +36,7 @@ export const Sidebar = ({
         darkMode={ darkMode }
         onClick={ showSidebar }
         size={ SIZE.LG }
-        variety="primary"
+        variety={ BUTTON_VARIETIES.PRIMARY }
       >
         <img alt="Show sidebar icon" src={ iconShowSidebar } />
       </Button>

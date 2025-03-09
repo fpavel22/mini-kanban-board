@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
 import { Button } from '@/components';
-import { THUNK_STATUS } from '@/constants';
+import { BUTTON_VARIETIES, THUNK_STATUS } from '@/constants';
 import { selectedTaskSelector } from '@/features/tasksSlice';
 import { useTaskOperations } from '@/hooks';
 
@@ -34,10 +34,20 @@ export const TaskDelete = ({ closeModal }) => {
         " task? This action will remove the task and it cannot be reversed.
       </p>
       <div className="task__delete-btn-group">
-        <Button disabled={ isLoading } onClick={ onDeleteClick } variety="danger">
+        <Button
+          disabled={ isLoading }
+          onClick={ onDeleteClick }
+          variety={ BUTTON_VARIETIES.DANGER }
+        >
           { isLoading ? 'Deleting task...' : 'Delete' }
         </Button>
-        <Button disabled={ isLoading } onClick={ closeModal } variety="secondary">Cancel</Button>
+        <Button
+          disabled={ isLoading }
+          onClick={ closeModal }
+          variety={ BUTTON_VARIETIES.SECONDARY }
+        >
+          Cancel
+        </Button>
       </div>
     </div>
   );

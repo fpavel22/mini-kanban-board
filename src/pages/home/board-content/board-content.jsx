@@ -1,15 +1,29 @@
+import {
+  PointerSensor,
+  useSensor,
+  useSensors
+} from '@dnd-kit/core';
 import cn from 'classnames';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import {
   BoardColumn,
   Button,
+  DndContext,
+  DraggableWrapper,
   DroppableWrapper,
+  NotificationsContainer,
+  Notification,
   Spinner
 } from '@/components';
-import { MODAL_CONTENT, SIZE, THUNK_STATUS } from '@/constants';
+import {
+  BUTTON_VARIETIES,
+  MODAL_CONTENT,
+  SIZE,
+  THUNK_STATUS
+} from '@/constants';
 import { useSidebarVisibleContext } from '@/context';
 import { allBoardsSelector, boardsStatusSelector } from '@/features/boardsSlice';
 import { openModal } from '@/features/modalSlice';
@@ -21,8 +35,7 @@ import {
 } from '@/features/tasksSlice';
 import { themeSliceSelector } from '@/features/themeSlice';
 import { userSelector } from '@/features/userSlice';
-
-import { DragAndDrop } from '../drag-and-drop';
+import { useTaskOperations } from '@/hooks';
 
 import './board-content.scss';
 
@@ -33,13 +46,34 @@ const BOARD_CONTENT_LABELS = [
   { status: 'done', sectionTitle: 'Done' }
 ];
 
+const NOTIFICATION_FADE_MS = 2500;
+
+const MAX_DESCRIPTION_LENGTH = 24;
+
+const getTrimmedDescription = (description) => (
+  description.length > MAX_DESCRIPTION_LENGTH
+    ? `${description.slice(0, MAX_DESCRIPTION_LENGTH).trim() }...`
+    : description
+);
+
 const filterTasksByStatus = (tasks, taskStatus) => {
   const filteredTasks = tasks.filter(({ status }) => status === taskStatus);
 
   return filteredTasks;
 };
 
+const ColumnItem = ({
+  children,
+  id
+}) => (
+  <DraggableWrapper id={ id }>
+    { children }
+  </DraggableWrapper>
+);
+
 export const BoardContent = () => {
+  const [ notifications, setNotifications ] = useState([]);
+
   const dispatch = useDispatch();
 
   const boards = useSelector(allBoardsSelector);
@@ -54,6 +88,16 @@ export const BoardContent = () => {
 
   const { boardId } = useParams();
   const sidebarVisible = useSidebarVisibleContext();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      }
+    })
+  );
+
+  const { updateTask } = useTaskOperations();
 
   const boardsEmpty = boards.length === 0;
   const tasksEmpty = tasks.length === 0;
@@ -76,6 +120,35 @@ export const BoardContent = () => {
     dispatch(openModal(MODAL_CONTENT.TASK_VIEW));
   }
 
+  function handleDragEnd({ itemId, droppableId }) {
+    const draggedItem = tasks?.find(({ id }) => id === itemId);
+
+    if (draggedItem) {
+      const updatedTask = {
+        ...draggedItem,
+        status: droppableId
+      };
+
+      updateTask(updatedTask).catch(() => {
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          {
+            id: itemId,
+            message: `Could not update ${ getTrimmedDescription(
+              draggedItem.description
+            ) }'s status.`,
+          },
+        ]);
+
+        setTimeout(() => {
+          setNotifications((prevNotifications) => (
+            prevNotifications.filter(({ id }) => id !== itemId)
+          ));
+        }, NOTIFICATION_FADE_MS);
+      });
+    }
+  }
+
   const emptyBoard = (
     <div className="empty__board">
       <p>
@@ -84,7 +157,11 @@ export const BoardContent = () => {
           : 'This board is empty. Create a new task to get started.' }
       </p>
       { !boardsEmpty && (
-        <Button darkMode={ darkMode } onClick={ showTaskForm } variety="primary">
+        <Button
+          darkMode={ darkMode }
+          onClick={ showTaskForm }
+          variety={ BUTTON_VARIETIES.PRIMARY }
+        >
           + Add New Task
         </Button>
       ) }
@@ -92,20 +169,29 @@ export const BoardContent = () => {
   );
 
   const boardColumns = (
-    <DragAndDrop tasks={ tasks }>
-      { BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => (
-        <DroppableWrapper darkMode={ darkMode } id={ status } key={ status }>
-          <BoardColumn
-            columnItems={ filterTasksByStatus(tasks, status) }
-            darkMode={ darkMode }
-            isDraggable
-            onItemClick={ showTaskView }
-            status={ status }
-            title={ sectionTitle }
-          />
-        </DroppableWrapper>
-      )) }
-    </DragAndDrop>
+    <>
+      <DndContext onDragEnd={ handleDragEnd } sensors={ sensors }>
+        { BOARD_CONTENT_LABELS.map(({ status, sectionTitle }) => (
+          <DroppableWrapper darkMode={ darkMode } id={ status } key={ status }>
+            <BoardColumn
+              Column={ ColumnItem }
+              columnItems={ filterTasksByStatus(tasks, status) }
+              darkMode={ darkMode }
+              onItemClick={ showTaskView }
+              status={ status }
+              title={ sectionTitle }
+            />
+          </DroppableWrapper>
+        )) }
+      </DndContext>
+      { notifications.length > 0 && (
+        <NotificationsContainer darkMode={ darkMode }>
+          { notifications.map(({ id, message }) => (
+            <Notification key={ id } type="error">{ message }</Notification>
+          )) }
+        </NotificationsContainer>
+      ) }
+    </>
   );
 
   const content = tasksEmpty ? emptyBoard : boardColumns;

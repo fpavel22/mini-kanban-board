@@ -182,9 +182,11 @@
 .btn--show-sidebar {
   border-top-left-radius: unset;
   border-bottom-left-radius: unset;
+  padding-left: $border-radius-lg;
   min-width: unset;
   position: fixed;
   bottom: $padding-xl-horizontal;
+  left: 0px;
   transition: opacity 300ms ease;
 
   &--hidden {

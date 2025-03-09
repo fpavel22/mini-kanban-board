@@ -1,3 +1,10 @@
+export const BUTTON_VARIETIES = {
+  PRIMARY: 'primary',
+  SECONDARY: 'secondary',
+  TERTIARY: 'tertiary',
+  DANGER: 'danger'
+};
+
 export const SIZE = {
   SM: 'sm',
   MD: 'md',

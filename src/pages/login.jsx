@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import { Notification } from '@/components';
-import { PATHS } from '@/constants';
+import { Button } from '@/components';
+import { BUTTON_VARIETIES, PATHS } from '@/constants';
 import { useLogin } from '@/hooks';
 
 import { Form } from './login/form';
@@ -27,9 +27,9 @@ export const Login = () => {
           </span>
           <Link to={ PATHS.RESET }>Forgot password?</Link>
         </div>
-        <Notification onClick={ loginWithGoogle }>
+        <Button onClick={ loginWithGoogle } variety={ BUTTON_VARIETIES.SECONDARY }>
           Or login with Google
-        </Notification>
+        </Button>
       </div>
     </div>
   );

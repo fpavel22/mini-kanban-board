@@ -1,5 +1,5 @@
 import { Button, TextField } from '@/components';
-import { SIZE } from '@/constants';
+import { BUTTON_VARIETIES, SIZE } from '@/constants';
 import { useFormState } from '@/hooks';
 
 export const Form = ({
@@ -41,7 +41,7 @@ export const Form = ({
           value={ formState.password }
         />
       </label>
-      <Button disabled={ loading } size={ SIZE.LG } variety="primary">
+      <Button disabled={ loading } size={ SIZE.LG } variety={ BUTTON_VARIETIES.PRIMARY }>
         { loading ? 'Logging in...' : 'Login' }
       </Button>
     </form>

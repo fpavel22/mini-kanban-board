@@ -16,7 +16,7 @@ export * from './modal-overlay';
 
 export * from './navbar';
 
-export * from './notification';
+export * from './notifications';
 
 export * from './popup';
 

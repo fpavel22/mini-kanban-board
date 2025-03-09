@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { Button, Navbar as PageNavbar } from '@/components';
-import { MODAL_CONTENT, THUNK_STATUS } from '@/constants';
+import { BUTTON_VARIETIES, MODAL_CONTENT, THUNK_STATUS } from '@/constants';
 import { useSidebarVisibleContext } from '@/context';
 import { allBoardsSelector, boardsStatusSelector } from '@/features/boardsSlice';
 import { openModal } from '@/features/modalSlice';
@@ -59,7 +59,7 @@ export const Navbar = () => {
     <Button
       darkMode={ darkMode }
       onClick={ onButtonClick }
-      variety="primary"
+      variety={ BUTTON_VARIETIES.PRIMARY }
     >
       +
       <span className="btn__title">Add New Task</span>

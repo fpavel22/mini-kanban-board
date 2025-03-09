@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Button, Dropdown, TextField } from '@/components';
+import { BUTTON_VARIETIES, TASK_PRIORITY_OPTIONS, THUNK_STATUS } from '@/constants';
 import { selectedTaskSelector } from '@/features/tasksSlice';
 import { useModalState, useTaskOperations } from '@/hooks';
-import { TASK_PRIORITY_OPTIONS, THUNK_STATUS } from '@/constants';
 
 import './task-form.scss';
 
@@ -199,7 +199,7 @@ export const TaskForm = ({
         )) }
       </div>
       <div className="form__group">
-        <Button onClick={ addSubtask } type="button" variety="secondary">+ Add Subtask</Button>
+        <Button onClick={ addSubtask } type="button" variety={ BUTTON_VARIETIES.SECONDARY }>+ Add Subtask</Button>
       </div>
       <div className="form__group">
         <p className="form__group-title">Priority</p>
@@ -211,7 +211,7 @@ export const TaskForm = ({
           value={ fieldValues.priority }
         />
       </div>
-      <Button disabled={ isCreating } variety="primary">
+      <Button disabled={ isCreating } variety={ BUTTON_VARIETIES.PRIMARY }>
         { isCreating
           ? 'Please wait...'
           : `${ editing ? 'Save' : 'Create' } Task` }

@@ -1,5 +1,5 @@
 import { Button, TextField } from '@/components';
-import { SIZE } from '@/constants';
+import { BUTTON_VARIETIES } from '@/constants';
 import { useFormState } from '@/hooks';
 
 export const Form = ({
@@ -36,7 +36,7 @@ export const Form = ({
           value={ formState.email }
         />
       </label>
-      <Button disabled={ loading } size={ SIZE.LG } variety="primary">
+      <Button disabled={ loading } variety={ BUTTON_VARIETIES.PRIMARY }>
         { loading ? 'Please wait...' : 'Reset' }
       </Button>
     </form>
