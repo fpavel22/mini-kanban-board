@@ -17,10 +17,11 @@ import {
 } from '@/firebase/operations';
 
 const initialState = {
+  dbTasks: [],
   error: null,
   selectedTask: null,
   status: THUNK_STATUS.IDLE,
-  tasks: []
+  tasks: [],
 };
 
 const tasksCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.TASKS);
@@ -57,7 +58,6 @@ export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, asy
     requestId
   }
 ) => {
-  const { tasks } = getState().tasks;
   // Update task optimistically
   // eslint-disable-next-line
   dispatch(optimisticUpdateTask(taskData));
@@ -67,10 +67,11 @@ export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, asy
 
     return updatedTask;
   } catch (error) {
+    const { dbTasks } = getState().tasks;
     const taskId = taskData.id ?? requestId;
 
     // Revert to previous task if db update fails
-    const originalTask = tasks.find(({ id }) => id === taskId);
+    const originalTask = dbTasks.find(({ id }) => id === taskId);
     return rejectWithValue(error, { originalTask });
   }
 });
@@ -90,6 +91,7 @@ const tasksSlice = createSlice({
       .addCase(fetchBoardTasks.fulfilled, (state, action) => {
         state.status = THUNK_STATUS.SUCCEEDED;
 
+        state.dbTasks = action.payload;
         state.tasks = action.payload;
       })
       .addCase(fetchBoardTasks.rejected, (state, action) => {
@@ -98,11 +100,14 @@ const tasksSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(addTask.fulfilled, (state, action) => {
+        state.dbTasks.push(action.payload);
         state.tasks.push(action.payload);
       })
       .addCase(updateTask.rejected, (state, { meta }) => {
         const originalTaskId = meta.arg.id ?? meta.requestId;
-        const originalTaskIndex = state.tasks.findIndex(({ id }) => id === originalTaskId);
+        const originalTaskIndex = state.tasks.findIndex(
+          ({ id }) => id === originalTaskId
+        );
 
         if (originalTaskIndex < 0) {
           return;
@@ -121,7 +126,16 @@ const tasksSlice = createSlice({
         }
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
-        state.tasks = state.tasks.filter(({ id }) => id !== action.payload);
+        const deletedTaskId = state.dbTasks.findIndex(
+          ({ id }) => id === action.payload
+        );
+
+        if (deletedTaskId < 0) {
+          return;
+        }
+
+        state.dbTasks.splice(deletedTaskId, 1);
+        state.tasks.splice(deleteTask, 1);
         state.selectedTask = null;
       });
   },
@@ -129,7 +143,9 @@ const tasksSlice = createSlice({
   name: REDUCERS.TASKS,
   reducers: {
     optimisticUpdateTask: (state, action) => {
-      const updatedTaskIndex = state.tasks.findIndex(({ id }) => id === action.payload.id);
+      const updatedTaskIndex = state.tasks.findIndex(
+        ({ id }) => id === action.payload.id
+      );
 
       if (updatedTaskIndex < 0) {
         return;

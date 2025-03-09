@@ -50,7 +50,7 @@ const NOTIFICATION_FADE_MS = 2500;
 
 const MAX_DESCRIPTION_LENGTH = 24;
 
-const getTrimmedDescription = (description) => (
+const getItemTitle = (description) => (
   description.length > MAX_DESCRIPTION_LENGTH
     ? `${description.slice(0, MAX_DESCRIPTION_LENGTH).trim() }...`
     : description
@@ -130,15 +130,20 @@ export const BoardContent = () => {
       };
 
       updateTask(updatedTask).catch(() => {
-        setNotifications((prevNotifications) => [
-          ...prevNotifications,
-          {
+        setNotifications((prevNotifications) => {
+          const hasNotification = prevNotifications.find(({ id }) => id === itemId);
+
+          if (hasNotification) {
+            return prevNotifications;
+          }
+
+          return prevNotifications.concat({
             id: itemId,
-            message: `Could not update ${ getTrimmedDescription(
-              draggedItem.description
-            ) }'s status.`,
-          },
-        ]);
+            message: `Could not update ${getItemTitle(
+              draggedItem.title
+            )}'s status.`,
+          });
+        });
 
         setTimeout(() => {
           setNotifications((prevNotifications) => (
