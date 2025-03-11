@@ -1,5 +1,5 @@
-import { useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
 export const useDispatchUnwrapper = () => {
   const dispatch = useDispatch();
@@ -7,9 +7,9 @@ export const useDispatchUnwrapper = () => {
   async function unwrapDispatch(action) {
     const thunkResponse = await dispatch(action);
 
-    const results = await unwrapResult(thunkResponse);
+    const result = await unwrapResult(thunkResponse);
 
-    return results;
+    return result;
   }
 
   return unwrapDispatch;

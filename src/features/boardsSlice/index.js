@@ -1,48 +1,45 @@
-import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  collection,
+  query as firestoreQuery,
+  where
+} from 'firebase/firestore';
 
-import { getDoc, putDoc } from '@/firebase/crud';
-import { createBoardQuery, boardDocRef } from '@/utils/firebase';
 import { REDUCERS, THUNK_STATUS } from '@/constants';
+import { firestore } from '@/firebase/config';
+import { FIREBASE_COLLECTIONS, FIREBASE_QUERY } from '@/firebase/constants';
+import { addDoc, getAllDocs } from '@/firebase/operations';
 
 const initialState = {
-  boards: [],
   activeBoard: null,
-  status: THUNK_STATUS.IDLE,
-  error: null
+  boards: [],
+  error: null,
+  status: THUNK_STATUS.IDLE
 };
 
-export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserBoards`, async (id) => {
-  if (!id) {
+const boardsCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.BOARDS);
+
+export const fetchUserBoards = createAsyncThunk(`${ REDUCERS.BOARDS }/fetchUserBoards`, async (userId) => {
+  if (!userId) {
     return [];
   }
 
-  const query = createBoardQuery({ id });
-  const response = await getDoc(query);
+  const boardQuery = firestoreQuery(
+    boardsCollectionRef,
+    where(FIREBASE_QUERY.CREATED_BY, '==', userId)
+  );
+  const boards = await getAllDocs(boardQuery);
 
-  return response;
+  return boards;
 });
 
-export const addBoard = createAsyncThunk(`${ REDUCERS.BOARDS }/addBoard`, async (board) => {
-  const id = nanoid();
+export const addBoard = createAsyncThunk(`${ REDUCERS.BOARDS }/addBoard`, async (boardData) => {
+  const newBoard = await addDoc(boardsCollectionRef, boardData);
 
-  const boardData = {
-    ...board,
-    id,
-    path: id
-  };
-  const docRef = boardDocRef(id);
-
-  const response = await putDoc(docRef, boardData);
-
-  return response;
+  return newBoard;
 });
 
 const boardsSlice = createSlice({
-  name: REDUCERS.BOARDS,
-  initialState,
-  reducers: {
-    resetUserBoards: () => initialState
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserBoards.pending, (state) => {
@@ -68,14 +65,19 @@ const boardsSlice = createSlice({
 
         state.boards.push(action.payload);
       });
+  },
+  initialState,
+  name: REDUCERS.BOARDS,
+  reducers: {
+    resetUserBoards: () => initialState
   }
 });
 
 export const { resetUserBoards } = boardsSlice.actions;
 
-export const allBoardsSelector = (state) => state[ REDUCERS.BOARDS ].boards;
-export const boardsStatusSelector = (state) => state[ REDUCERS.BOARDS ].status;
-export const boardsErrorSelector = (state) => state[ REDUCERS.BOARDS ].error;
 export const activeBoardSelector = (state) => state[ REDUCERS.BOARDS ].activeBoard;
+export const allBoardsSelector = (state) => state[ REDUCERS.BOARDS ].boards;
+export const boardsErrorSelector = (state) => state[ REDUCERS.BOARDS ].error;
+export const boardsStatusSelector = (state) => state[ REDUCERS.BOARDS ].status;
 
 export const boardsReducer = boardsSlice.reducer;

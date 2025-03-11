@@ -1,4 +1,4 @@
-export { DragAndDrop } from './drag-and-drop';
+export { DndContext } from './dnd-context';
 
 export { DraggableWrapper } from './draggable-wrapper';
 

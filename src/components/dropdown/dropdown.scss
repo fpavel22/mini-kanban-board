@@ -1,0 +1,24 @@
+@import '@/styles/colors';
+@import '@/styles/variables';
+
+.dropdown__select {
+  border: 1px solid $middle-gray-25;
+  border-radius: $border-radius-xs;
+  font-family: inherit;
+  padding: 0 $padding-sm-horizontal;
+  height: $btn-height;
+  width: 100%;
+  display: block;
+  cursor: pointer;
+  outline: none;
+
+  &:hover,
+  &:focus-within {
+    border-color: $primary-m-purple;
+  }
+
+  &.dropdown__select--d-mode {
+    background-color: $color-black-30;
+    color: $color-white;
+  }
+}

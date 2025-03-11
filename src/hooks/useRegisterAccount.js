@@ -1,16 +1,15 @@
-import { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { useState } from 'react';
 
 import { auth } from '@/firebase/config';
-import { isEmailGmail } from '@/utils/utils';
-import { determineErrorMessage } from '@/utils/firebase';
-import { FIREBASE_INTERNAL_ERRORS } from '@/constants';
+import { FIREBASE_INTERNAL_ERRORS } from '@/firebase/constants';
+import { isEmailGmail, parseFirebaseError } from '@/utils';
 
 export const useRegisterAccount = () => {
-  const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
+  const [ loading, setLoading ] = useState(false);
 
-  async function registerAccount(email, password) {
+  async function registerAccount({ email, password }) {
     setError(null);
     setLoading(true);
 
@@ -23,13 +22,11 @@ export const useRegisterAccount = () => {
 
       await sendEmailVerification(response.user);
     } catch (err) {
-      const errorContent = determineErrorMessage(err);
-
-      setError(errorContent);
+      setError(parseFirebaseError(err));
     } finally {
       setLoading(false);
     }
   }
 
-  return { loading, error, registerAccount };
+  return { error, loading, registerAccount };
 };

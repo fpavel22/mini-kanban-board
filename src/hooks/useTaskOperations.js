@@ -1,27 +1,25 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 
-import {
-  selectedTaskSelector,
-  setTask,
-  deleteTask as deleteTaskAction
-} from '@/features/tasksSlice';
 import { THUNK_STATUS } from '@/constants';
+import {
+  addTask as addTaskThunk,
+  deleteTask as deleteTaskThunk,
+  updateTask as updateTaskThunk,
+} from '@/features/tasksSlice';
 
 import { useDispatchUnwrapper } from './useDispatchUnwrapper';
 
 export const useTaskOperations = () => {
-  const [ status, setStatus ] = useState(false);
-  const selectedTask = useSelector(selectedTaskSelector);
+  const [ status, setStatus ] = useState(THUNK_STATUS.IDLE);
   const unwrapDispatch = useDispatchUnwrapper();
 
   async function createTask(taskDetails) {
     setStatus(THUNK_STATUS.LOADING);
 
     try {
-      await unwrapDispatch(setTask(taskDetails));
+      await unwrapDispatch(addTaskThunk(taskDetails));
 
-      setStatus(THUNK_STATUS.IDLE);
+      setStatus(THUNK_STATUS.SUCCEEDED);
     } catch (err) {
       setStatus(THUNK_STATUS.FAILED);
 
@@ -33,9 +31,9 @@ export const useTaskOperations = () => {
     setStatus(THUNK_STATUS.LOADING);
 
     try {
-      await unwrapDispatch(deleteTaskAction(taskId));
+      await unwrapDispatch(deleteTaskThunk(taskId));
 
-      setStatus(THUNK_STATUS.IDLE);
+      setStatus(THUNK_STATUS.SUCCEEDED);
     } catch (err) {
       setStatus(THUNK_STATUS.FAILED);
 
@@ -43,37 +41,24 @@ export const useTaskOperations = () => {
     }
   }
 
-  function updateSubtaskStatus(subtaskId) {
-    return async (event) => {
-      setStatus(THUNK_STATUS.LOADING);
+  async function updateTask(taskDetails) {
+    setStatus(THUNK_STATUS.LOADING);
 
-      try {
-        const { checked } = event.target;
+    try {
+      await unwrapDispatch(updateTaskThunk(taskDetails));
 
-        const updatedSubtasks = selectedTask.subtasks.map((subtask) => (
-          subtask.id === subtaskId ? { ...subtask, completed: checked } : subtask
-        ));
+      setStatus(THUNK_STATUS.SUCCEEDED);
+    } catch (err) {
+      setStatus(THUNK_STATUS.FAILED);
 
-        const taskData = {
-          ...selectedTask,
-          subtasks: updatedSubtasks
-        };
-
-        await unwrapDispatch(setTask(taskData));
-
-        setStatus(THUNK_STATUS.IDLE);
-      } catch (err) {
-        setStatus(THUNK_STATUS.FAILED);
-
-        throw err;
-      }
-    };
+      throw err;
+    }
   }
 
   return {
-    status,
     createTask,
     deleteTask,
-    updateSubtaskStatus
+    status,
+    updateTask,
   };
 };

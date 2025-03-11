@@ -1,12 +1,14 @@
-export const DEFAULT_CARD_STATUS = 'to_do';
-
-export const SIZE = {
-  LG: 'lg'
+export const BUTTON_VARIETIES = {
+  PRIMARY: 'primary',
+  SECONDARY: 'secondary',
+  TERTIARY: 'tertiary',
+  DANGER: 'danger'
 };
 
-export const POPUP_STATES = {
-  DANGER: 'danger',
-  IMPORTANT: 'important'
+export const SIZE = {
+  SM: 'sm',
+  MD: 'md',
+  LG: 'lg'
 };
 
 export const KEYCODES = {
@@ -45,37 +47,13 @@ export const MODAL_CONTENT = {
   TASK_DELETE: 'task-delete',
 };
 
-export const BOARD_CONTENT_LABELS = [
-  { status: 'to_do', sectionTitle: 'To do' },
-  { status: 'in_progress', sectionTitle: 'In progress' },
-  { status: 'in_review', sectionTitle: 'In review' },
-  { status: 'done', sectionTitle: 'Done' }
-];
-
-export const FORM_FIELDS = {
-  LOGIN: [
-    { name: 'email', label: 'E-mail', type: 'email' },
-    { name: 'password', label: 'Password', type: 'password' }
-  ],
-  REGISTER: [
-    { name: 'email', label: 'E-mail', type: 'email' },
-    { name: 'password', label: 'Password', type: 'password' }
-  ],
-  RESET: [
-    { name: 'email', label: 'E-mail', type: 'email' }
-  ],
-  BOARD_FORM: [
-    { name: 'board-name', label: 'Board name', type: 'text' }
-  ]
-};
-
-export const DROPDOWN_DEFAULT_OPTIONS = [
+export const TASK_PRIORITY_OPTIONS = [
   { value: 'low', label: 'Low' },
   { value: 'normal', label: 'Normal' },
   { value: 'high', label: 'High' }
 ];
 
-export const POPPER_MODIFIERS = [
+export const POPPER_DEFAULT_MODIFIERS = [
   {
     name: 'offset',
     options: {
@@ -91,32 +69,4 @@ export const POPPER_PLACEMENTS = {
   bottom: 'bottom',
   bottomRight: 'bottom-end',
   bottomLeft: 'bottom-start'
-};
-
-export const FIREBASE_COLLECTIONS = {
-  BOARDS: 'boards',
-  TASKS: 'tasks'
-};
-
-export const FIREBASE_QUERY = {
-  CREATED_BY: 'createdBy',
-  PAGE_ID: 'pageId'
-};
-
-export const FIREBASE_AUTH_ERRORS = {
-  INVALID_EMAIL: 'auth/invalid-email',
-  WRONG_PASSWORD: 'auth/wrong-password',
-  INTERNAL_ERROR: 'auth/internal-error',
-  USER_NOT_FOUND: 'auth/user-not-found',
-  REQUEST_LIMIT: 'auth/too-many-requests',
-  EMAIL_USED: 'auth/email-already-in-use',
-  WEAK_PASSWORD: 'auth/weak-password',
-  NOT_ALLOWED: 'auth/operation-not-allowed',
-  POPUP_CLOSED: 'auth/popup-closed-by-user'
-};
-
-export const FIREBASE_INTERNAL_ERRORS = {
-  REGISTER_GOOGLE: 'Can\'t register with a Google account. Use the \'login with Google\' method to log in instead.',
-  LOGIN_GOOGLE: 'Use the \'login with Google\' method below to log in with a Google account.',
-  RECOVER_GOOGLE: 'Can\'t recover the password of a Google account.'
 };

@@ -1,0 +1,52 @@
+@import '@/styles/colors';
+@import '@/styles/variables';
+@import '@/styles/mixins/typography';
+
+.board-column {
+  padding: $padding-sm-horizontal $padding-sm-horizontal;
+  border-left: 1px solid $light-gray;
+  border-right: 1px solid $light-gray;
+  height: 100%;
+  
+  @media (min-width: $md) {
+    padding: $padding-sm-horizontal $padding-base-horizontal;
+  }
+
+  .board-column-title {
+    @include header-sm;
+
+    margin-bottom: $padding-base-horizontal;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+  }
+
+  .board-column-status {
+    border-radius: 50%;
+    margin-right: .75rem;
+    height: $cards-section-status-size;
+    width: $cards-section-status-size;
+    display: inline-block;
+
+    &--to_do {
+      background-color: $cards-section-to-do;
+    }
+
+    &--in_progress {
+      background-color: $cards-section-in-progress;
+    }
+
+    &--in_review {
+      background-color: $cards-section-in-review;
+    }
+
+    &--done {
+      background-color: $cards-section-done;
+    }
+  }
+
+  &--dark {
+    border-color: $color-black-50;
+  }
+}

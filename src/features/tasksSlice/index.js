@@ -1,134 +1,173 @@
-import { createAsyncThunk, createSlice, miniSerializeError } from '@reduxjs/toolkit';
-
-import { getDoc, putDoc, deleteDoc } from '@/firebase/crud';
-import { createTasksQuery, taskDocRef } from '@/utils/firebase';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
-  REDUCERS,
-  THUNK_STATUS,
-  FIREBASE_COLLECTIONS
-} from '@/constants';
+  collection,
+  doc,
+  query as firestoreQuery,
+  where
+} from 'firebase/firestore';
+
+import { REDUCERS, THUNK_STATUS } from '@/constants';
+import { firestore } from '@/firebase/config';
+import { FIREBASE_COLLECTIONS, FIREBASE_QUERY } from '@/firebase/constants';
+import {
+  addDoc,
+  deleteDoc,
+  getAllDocs,
+  updateDoc
+} from '@/firebase/operations';
 
 const initialState = {
-  tasks: [],
-  status: THUNK_STATUS.IDLE,
+  dbTasks: [],
   error: null,
-  selectedTask: null
+  selectedTask: null,
+  status: THUNK_STATUS.IDLE,
+  tasks: [],
 };
 
-export const fetchTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchTasks`, async (ids) => {
-  const { boardId, userId } = ids;
+const tasksCollectionRef = collection(firestore, FIREBASE_COLLECTIONS.TASKS);
 
+const createTaskDocumentRef = (id) => doc(firestore, FIREBASE_COLLECTIONS.TASKS, id);
+
+export const fetchBoardTasks = createAsyncThunk(`${ REDUCERS.TASKS }/fetchBoardTasks`, async ({ boardId, userId }) => {
   if (!boardId || !userId) {
     return [];
   }
 
-  const query = createTasksQuery({ id: boardId, userId });
-  const response = await getDoc(query);
+  const tasksQuery = firestoreQuery(
+    tasksCollectionRef,
+    where(FIREBASE_QUERY.PAGE_ID, '==', boardId),
+    where(FIREBASE_QUERY.CREATED_BY, '==', userId)
+  );
+  const boardTasks = await getAllDocs(tasksQuery);
 
-  return response;
+  return boardTasks;
 });
 
-export const setTask = createAsyncThunk(`${ REDUCERS.TASKS }/setTask`, async (
-  task,
+export const addTask = createAsyncThunk(`${ REDUCERS.TASKS }/addTask`, async (taskData) => {
+  const newTask = await addDoc(tasksCollectionRef, taskData);
+
+  return newTask;
+});
+
+export const updateTask = createAsyncThunk(`${ REDUCERS.TASKS }/updateTask`, async (
+  taskData,
   {
+    dispatch,
     getState,
-    requestId,
-    rejectWithValue
+    rejectWithValue,
+    requestId
   }
 ) => {
-  const taskId = task.id ?? requestId;
+  // Update task optimistically
+  // eslint-disable-next-line
+  dispatch(optimisticUpdateTask(taskData));
 
   try {
-    const taskData = {
-      ...task,
-      id: taskId
-    };
-    const docRef = taskDocRef(taskId);
+    const updatedTask = await updateDoc(createTaskDocumentRef(taskData.id), taskData);
 
-    const response = await putDoc(docRef, taskData);
+    return updatedTask;
+  } catch (error) {
+    const { dbTasks } = getState().tasks;
+    const taskId = taskData.id ?? requestId;
 
-    return response;
-  } catch (err) {
-    const { tasks } = getState().tasks;
-
-    const originalTask = tasks.find(({ id }) => id === taskId);
-    return rejectWithValue(miniSerializeError(err), { originalTask });
+    // Revert to previous task if db update fails
+    const originalTask = dbTasks.find(({ id }) => id === taskId);
+    return rejectWithValue(error, { originalTask });
   }
 });
 
 export const deleteTask = createAsyncThunk(`${ REDUCERS.TASKS }/deleteTask`, async (id) => {
-  const response = await deleteDoc(FIREBASE_COLLECTIONS.TASKS, id);
+  const deletedTaskId = await deleteDoc(createTaskDocumentRef(id));
 
-  return response;
+  return deletedTaskId;
 });
 
 const tasksSlice = createSlice({
-  name: REDUCERS.TASKS,
-  initialState,
-  reducers: {
-    selectTask: (state, action) => {
-      state.selectedTask = action.payload;
-    }
-  },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTasks.pending, (state) => {
+      .addCase(fetchBoardTasks.pending, (state) => {
         state.status = THUNK_STATUS.LOADING;
       })
-      .addCase(fetchTasks.fulfilled, (state, action) => {
+      .addCase(fetchBoardTasks.fulfilled, (state, action) => {
         state.status = THUNK_STATUS.SUCCEEDED;
 
+        state.dbTasks = action.payload;
         state.tasks = action.payload;
       })
-      .addCase(fetchTasks.rejected, (state, action) => {
+      .addCase(fetchBoardTasks.rejected, (state, action) => {
         state.status = THUNK_STATUS.FAILED;
 
         state.error = action.error.message;
       })
-      .addCase(setTask.pending, (state, action) => {
-        const taskId = action.meta.arg.id ?? action.meta.requestId;
+      .addCase(addTask.fulfilled, (state, action) => {
+        state.dbTasks.push(action.payload);
+        state.tasks.push(action.payload);
+      })
+      .addCase(updateTask.rejected, (state, { meta }) => {
+        const originalTaskId = meta.arg.id ?? meta.requestId;
+        const originalTaskIndex = state.tasks.findIndex(
+          ({ id }) => id === originalTaskId
+        );
 
-        const taskIndex = state.tasks.findIndex(({ id }) => id === taskId);
-        const finalTask = { ...action.meta.arg, id: taskId };
-
-        if (taskIndex >= 0) {
-          state.tasks[ taskIndex ] = finalTask;
-        } else {
-          state.tasks.push(finalTask);
+        if (originalTaskIndex < 0) {
+          return;
         }
 
-        state.selectedTask = finalTask;
-      })
-      .addCase(setTask.rejected, (state, action) => {
-        const taskId = action.meta.arg.id ?? action.meta.requestId;
-        const taskIndex = state.tasks.findIndex(({ id }) => id === taskId);
+        const { originalTask } = meta;
 
-        if (taskIndex >= 0) {
-          const { originalTask } = action.meta;
+        if (originalTask) {
+          state.tasks[ originalTaskIndex ] = originalTask;
+        } else {
+          state.tasks.splice(originalTaskIndex, 1);
+        }
 
-          if (originalTask) {
-            state.tasks[ taskIndex ] = originalTask;
-            state.selectedTask = originalTask;
-          } else {
-            state.tasks.splice(taskIndex, 1);
-            state.selectedTask = null;
-          }
+        if (state.selectedTask?.id === originalTask.id) {
+          state.selectedTask = originalTask;
         }
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
-        const updatedTasks = state.tasks.filter(({ id }) => id !== action.payload);
+        const deletedTaskId = state.dbTasks.findIndex(
+          ({ id }) => id === action.payload
+        );
 
-        state.tasks = updatedTasks;
+        if (deletedTaskId < 0) {
+          return;
+        }
+
+        state.dbTasks.splice(deletedTaskId, 1);
+        state.tasks.splice(deleteTask, 1);
         state.selectedTask = null;
       });
+  },
+  initialState,
+  name: REDUCERS.TASKS,
+  reducers: {
+    optimisticUpdateTask: (state, action) => {
+      const updatedTaskIndex = state.tasks.findIndex(
+        ({ id }) => id === action.payload.id
+      );
+
+      if (updatedTaskIndex < 0) {
+        return;
+      }
+
+      state.tasks[ updatedTaskIndex ] = action.payload;
+
+      if (state.selectedTask?.id === action.payload.id) {
+        state.selectedTask = action.payload;
+      }
+    },
+    selectTask: (state, action) => {
+      state.selectedTask = action.payload;
+    }
   }
 });
 
-export const { selectTask } = tasksSlice.actions;
+export const { optimisticUpdateTask, selectTask } = tasksSlice.actions;
 
 export const allTasksSelector = (state) => state[ REDUCERS.TASKS ].tasks;
-export const tasksStatusSelector = (state) => state[ REDUCERS.TASKS ].status;
-export const tasksErrorSelector = (state) => state[ REDUCERS.TASKS ].error;
 export const selectedTaskSelector = (state) => state[ REDUCERS.TASKS ].selectedTask;
+export const tasksErrorSelector = (state) => state[ REDUCERS.TASKS ].error;
+export const tasksStatusSelector = (state) => state[ REDUCERS.TASKS ].status;
 
 export const tasksReducer = tasksSlice.reducer;

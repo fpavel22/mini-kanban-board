@@ -1,0 +1,19 @@
+@import '@/styles/colors';
+@import '@/styles/variables';
+
+.notification {
+  padding-left: $padding-sm-horizontal;
+  border-left: .125rem solid transparent;
+
+  &--error {
+    border-color: $danger-m-red;
+  }
+
+  &--success {
+    border-color: $success-l-green;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: $padding-base-horizontal;
+  }
+}

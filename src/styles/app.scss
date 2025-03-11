@@ -1,0 +1,32 @@
+@import 'colors';
+@import 'variables';
+@import './mixins/typography';
+
+main.app {
+  background-color: $lightest-gray;
+  color: $middle-gray;
+  min-height: 100vh;
+  position: relative;
+
+  .app__content-wrapper {
+    min-height: calc(100vh - $navbar-height-sm);
+    position: relative;
+
+    @media (min-width: $sm) {
+      min-height: calc(100vh - $navbar-height);
+    }
+  }
+
+  &--dark {
+    background-color: $color-black-25;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: $color-white;
+    }
+  }
+}

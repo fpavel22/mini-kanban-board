@@ -1,0 +1,19 @@
+@import '@/styles/colors';
+@import '@/styles/variables';
+
+.notifications-container {
+  padding: $notifications-container-padding;
+  border-radius: $border-radius-lg;
+  background-color: $color-white;
+  color: $color-black-30;
+  position: fixed;
+  bottom: $notifications-container-fixed-bottom;
+  right: $notifications-container-fixed-right;
+  width: 100%;
+  max-width: $notifications-container-max-width;
+
+  &--d-mode {
+    background-color: $color-black-30;
+    color: $color-white;
+  }
+}
